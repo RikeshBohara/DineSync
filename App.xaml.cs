@@ -1,5 +1,5 @@
-﻿using DineSync.Data;
-using DineSync.ViewModels;
+﻿using DineSync.Controls;
+using DineSync.Data;
 
 namespace DineSync
 {
@@ -11,6 +11,13 @@ namespace DineSync
             InitializeComponent();
 
             MainPage = new AppShell();
+
+            Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping(nameof(BorderlessEntry), (handler, view) =>
+            {
+#if ANDROID
+                handler.PlatformView.SetBackgroundColor(Android.Graphics.Color.Transparent);
+#endif
+            });
 
             _DbConfig = dbConfig;
         }
