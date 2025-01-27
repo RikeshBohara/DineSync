@@ -7,7 +7,7 @@
     Shell.FlyoutBehavior="Disabled"
     Shell.FlyoutItemIsVisible="False"
     Shell.NavBarIsVisible="False"
-    Style="{StaticResource loginPageStyle}">
+    Style="{StaticResource contentPageBackgroundStyle}">
     <VerticalStackLayout Grid.Column="2" Style="{StaticResource loginVerticalStackLayoutStyle}">
         <Label Style="{StaticResource loginTitleStyle}" Text="Registration" />
         <Frame Style="{StaticResource inputEntryFrameStyle}">

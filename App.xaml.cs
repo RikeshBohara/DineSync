@@ -1,16 +1,17 @@
 ﻿using DineSync.Controls;
 using DineSync.Data;
+using DineSync.ViewModels;
 
 namespace DineSync
 {
     public partial class App : Application
     {
         private readonly DbConfig _DbConfig;
-        public App(DbConfig dbConfig)
+        public App(DbConfig dbConfig, AppShellViewModel appShellViewModel)
         {
             InitializeComponent();
 
-            MainPage = new AppShell();
+            MainPage = new AppShell(appShellViewModel);
 
             Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping(nameof(BorderlessEntry), (handler, view) =>
             {

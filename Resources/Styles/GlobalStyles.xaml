@@ -62,7 +62,26 @@
         <Setter Property="TextColor" Value="#ffffff" />
     </Style>
 
-    <Style x:Key="loginPageStyle" TargetType="ContentPage">
+    <Style x:Key="contentPageBackgroundStyle" TargetType="ContentPage">
         <Setter Property="BackgroundColor" Value="#252836" />
+    </Style>
+
+    <Style x:Key="shellStyle" TargetType="Shell">
+        <Setter Property="FlyoutBehavior" Value="Locked" />
+        <Setter Property="FlyoutWidth" Value="60" />
+    </Style>
+
+    <Style x:Key="shellHeaderImageStyle" TargetType="Image">
+        <Setter Property="Margin" Value="0,20,0,20" />
+        <Setter Property="Aspect" Value="AspectFit" />
+        <Setter Property="HeightRequest" Value="40" />
+        <Setter Property="HorizontalOptions" Value="Center" />
+    </Style>
+
+    <Style x:Key="shellFooterImageStyle" TargetType="Image">
+        <Setter Property="Margin" Value="0,25,0,25" />
+        <Setter Property="Aspect" Value="AspectFit" />
+        <Setter Property="HeightRequest" Value="24" />
+        <Setter Property="HorizontalOptions" Value="Center" />
     </Style>
 </ResourceDictionary>
