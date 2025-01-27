@@ -3,6 +3,7 @@
     x:Class="DineSync.Views.Pages.SignupPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:DineSync.Controls"
     Shell.FlyoutBehavior="Disabled"
     Shell.FlyoutItemIsVisible="False"
     Shell.NavBarIsVisible="False"
@@ -15,11 +16,11 @@
                     Grid.Column="0"
                     Source="profile.png"
                     Style="{StaticResource inputEntryImageStyle}" />
-                <Entry
+                <controls:BorderlessEntry
                     Grid.Column="1"
                     Placeholder="Enter Your Name"
-                    Text="{Binding Name}"
-                    TextColor="Black" />
+                    Style="{StaticResource inputEntryStyle}"
+                    Text="{Binding Name}" />
             </Grid>
         </Frame>
         <Frame Style="{StaticResource inputEntryFrameStyle}">
@@ -28,7 +29,7 @@
                     Grid.Column="0"
                     Source="email.png"
                     Style="{StaticResource inputEntryImageStyle}" />
-                <Entry
+                <controls:BorderlessEntry
                     Grid.Column="1"
                     Placeholder="Enter Your Email"
                     Style="{StaticResource inputEntryStyle}"
@@ -38,7 +39,7 @@
         <Frame Style="{StaticResource inputEntryFrameStyle}">
             <Grid ColumnDefinitions="Auto, *, Auto">
                 <Image Source="password.png" Style="{StaticResource inputEntryImageStyle}" />
-                <Entry
+                <controls:BorderlessEntry
                     Grid.Column="1"
                     IsPassword="{Binding IsPasswordVisible}"
                     Placeholder="Enter Your Password"
@@ -60,7 +61,7 @@
                     Grid.Column="0"
                     Source="password.png"
                     Style="{StaticResource inputEntryImageStyle}" />
-                <Entry
+                <controls:BorderlessEntry
                     Grid.Column="1"
                     IsPassword="{Binding IsPassword2Visible}"
                     Placeholder="Confirm Your Password"

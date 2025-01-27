@@ -40,6 +40,7 @@
 
     <Style x:Key="inputEntryStyle" TargetType="Entry">
         <Setter Property="TextColor" Value="Black" />
+        <Setter Property="VerticalOptions" Value="Center" />
     </Style>
 
     <Style x:Key="loginButtonStyle" TargetType="Button">

@@ -3,6 +3,7 @@
     x:Class="DineSync.Views.Pages.LoginPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:DineSync.Controls"
     Shell.FlyoutBehavior="Disabled"
     Shell.FlyoutItemIsVisible="False"
     Shell.NavBarIsVisible="False"
@@ -21,7 +22,7 @@
                         Grid.Column="0"
                         Source="email.png"
                         Style="{StaticResource inputEntryImageStyle}" />
-                    <Entry
+                    <controls:BorderlessEntry
                         Grid.Column="1"
                         Placeholder="Enter Your Email"
                         Style="{StaticResource inputEntryStyle}"
@@ -31,7 +32,7 @@
             <Frame Style="{StaticResource inputEntryFrameStyle}">
                 <Grid ColumnDefinitions="Auto, *, Auto">
                     <Image Source="password.png" Style="{StaticResource inputEntryImageStyle}" />
-                    <Entry
+                    <controls:BorderlessEntry
                         Grid.Column="1"
                         IsPassword="{Binding IsPasswordVisible}"
                         Placeholder="Enter Your Password"
