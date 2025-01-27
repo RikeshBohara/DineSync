@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="DineSync.Views.Pages.LoginPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    Shell.FlyoutBehavior="Disabled"
+    Shell.FlyoutItemIsVisible="False"
+    Shell.NavBarIsVisible="False"
+    Style="{StaticResource loginPageStyle}">
+    <Grid Padding="20" ColumnDefinitions="*, Auto, *">
+        <Image
+            Grid.Column="0"
+            Source="hero_login.png"
+            Style="{StaticResource heroImageStyle}" />
+        <BoxView Grid.Column="1" Style="{StaticResource loginBoxViewStyle}" />
+        <VerticalStackLayout Grid.Column="2" Style="{StaticResource loginVerticalStackLayoutStyle}">
+            <Label Style="{StaticResource loginTitleStyle}" Text="Welcome Back !" />
+            <Frame Style="{StaticResource inputEntryFrameStyle}">
+                <Grid ColumnDefinitions="Auto, *">
+                    <Image
+                        Grid.Column="0"
+                        Source="email.png"
+                        Style="{StaticResource inputEntryImageStyle}" />
+                    <Entry
+                        Grid.Column="1"
+                        Placeholder="Enter Your Email"
+                        Style="{StaticResource inputEntryStyle}"
+                        Text="{Binding Email}" />
+                </Grid>
+            </Frame>
+            <Frame Style="{StaticResource inputEntryFrameStyle}">
+                <Grid ColumnDefinitions="Auto, *, Auto">
+                    <Image Source="password.png" Style="{StaticResource inputEntryImageStyle}" />
+                    <Entry
+                        Grid.Column="1"
+                        IsPassword="{Binding IsPasswordVisible}"
+                        Placeholder="Enter Your Password"
+                        Style="{StaticResource inputEntryStyle}"
+                        Text="{Binding Password}" />
+                    <Image
+                        Grid.Column="2"
+                        Source="{Binding PasswordVisibilityIcon}"
+                        Style="{StaticResource inputEntryImageStyle}">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding TogglePasswordVisibilityCommand}" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                </Grid>
+            </Frame>
+            <Button
+                Command="{Binding LoginCommand}"
+                Style="{StaticResource loginButtonStyle}"
+                Text="Login" />
+            <HorizontalStackLayout HorizontalOptions="Center">
+                <Label Style="{StaticResource paragraphLabelStyle}" Text="Don't have an account ? " />
+                <Label Style="{StaticResource redirectLabelStyle}" Text="Signup">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding NavigateToSignupCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>

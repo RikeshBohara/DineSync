@@ -1,4 +1,9 @@
 ﻿using CommunityToolkit.Maui;
+using DineSync.Data;
+using DineSync.Repository.Implementations;
+using DineSync.Repository.Interfaces;
+using DineSync.ViewModels;
+using DineSync.Views.Pages;
 using Microsoft.Extensions.Logging;
 
 namespace DineSync
@@ -13,13 +18,21 @@ namespace DineSync
                 .UseMauiCommunityToolkit()
                 .ConfigureFonts(fonts =>
                 {
-                    fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-                    fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                    fonts.AddFont("Inter-Regular.ttf", "InterRegular");
+                    fonts.AddFont("Inter-Semibold.ttf", "InterSemibold");
                 });
 
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
+            builder.Services.AddSingleton<DbConfig>();
+            builder.Services.AddSingleton<LoginPage>();
+            builder.Services.AddSingleton<SignupPage>();
+            builder.Services.AddSingleton<LoginPageViewModel>();
+            builder.Services.AddSingleton<SignupPageViewModel>();
+
+            builder.Services.AddSingleton<ISignupRepository, SignupRepository>();
+            builder.Services.AddSingleton<ILoginRepository, LoginRepository>();
 
             return builder.Build();
         }
