@@ -11,6 +11,7 @@ namespace DineSync.Models
         public string OrderNumber { get; set; }
         public decimal TotalAmount { get; set; }
         public int TotalItemsCount { get; set; }
+        public int GuestCount { get; set; }
         public string PaymentMode { get; set; }
         public string Status { get; set; }
         public string SpecialRequest { get; set; }
