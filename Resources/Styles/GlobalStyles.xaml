@@ -39,7 +39,7 @@
     </Style>
 
     <Style x:Key="inputEntryStyle" TargetType="Entry">
-        <Setter Property="TextColor" Value="Black" />
+        <Setter Property="TextColor" Value="#000000" />
         <Setter Property="VerticalOptions" Value="Center" />
     </Style>
 
@@ -83,5 +83,55 @@
         <Setter Property="Aspect" Value="AspectFit" />
         <Setter Property="HeightRequest" Value="24" />
         <Setter Property="HorizontalOptions" Value="Center" />
+    </Style>
+
+    <Style x:Key="mainGridStyle" TargetType="Grid">
+        <Setter Property="BackgroundColor" Value="#252836" />
+    </Style>
+
+    <Style x:Key="sideGridStyle" TargetType="Grid">
+        <Setter Property="BackgroundColor" Value="#1f1d2b" />
+    </Style>
+
+    <Style x:Key="labelHeaderStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="#ffffff" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="FontSize" Value="30" />
+        <Setter Property="FontFamily" Value="Inter-SemiBold" />
+        <Setter Property="Margin" Value="20,30,0,0" />
+    </Style>
+
+    <Style x:Key="labelStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="#ffffff" />
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="VerticalOptions" Value="Center" />
+    </Style>
+
+    <Style x:Key="tableGridStyle" TargetType="Grid">
+        <Setter Property="Margin" Value="20,0,20,0" />
+    </Style>
+
+    <Style x:Key="tableGridSecondRowStyle" TargetType="Grid">
+        <Setter Property="Margin" Value="20,80,20,0" />
+    </Style>
+
+    <Style x:Key="tableBottomGridStyle" TargetType="Grid">
+        <Setter Property="Margin" Value="30,0,30,0" />
+        <Setter Property="HeightRequest" Value="40" />
+        <Setter Property="VerticalOptions" Value="Start" />
+    </Style>
+
+    <Style x:Key="tableHorizontalLayoutStyle" TargetType="HorizontalStackLayout">
+        <Setter Property="Margin" Value="0,0,50,0" />
+        <Setter Property="Spacing" Value="10" />
+    </Style>
+
+    <Style x:Key="tablePageButtonStyle" TargetType="Button">
+        <Setter Property="HorizontalOptions" Value="End" />
+        <Setter Property="BackgroundColor" Value="#f67f20" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="FontFamily" Value="Inter-SemiBold" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="TextColor" Value="#ffffff" />
     </Style>
 </ResourceDictionary>

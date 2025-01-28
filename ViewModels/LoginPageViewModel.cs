@@ -51,7 +51,11 @@ namespace DineSync.ViewModels
 
             var user = await _LoginRepository.LoginAsync(Email, Password);
 
-            if (user != null)
+            if (user != null && user.Role== "Owner")
+            {
+                await Shell.Current.GoToAsync("///Dashboard", new Dictionary<string, object> { { "User", user } });
+            }
+            else if(user!=null && user.Role != "Owner")
             {
                 await Shell.Current.GoToAsync("///HomePage");
             }
