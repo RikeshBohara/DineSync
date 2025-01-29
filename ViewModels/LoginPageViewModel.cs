@@ -57,7 +57,7 @@ namespace DineSync.ViewModels
             }
             else if(user!=null && user.Role != "Owner")
             {
-                await Shell.Current.GoToAsync("///TablePage");
+                await Shell.Current.GoToAsync("///TablePage", new Dictionary<string, object> { { "User", user } });
             }
             else
             {

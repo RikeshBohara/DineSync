@@ -2,9 +2,9 @@ using CommunityToolkit.Maui.Views;
 
 namespace DineSync.Views.Popups;
 
-public partial class AddTablePopup : Popup
+public partial class AddMenuCategoryPopup : Popup
 {
-	public AddTablePopup()
+	public AddMenuCategoryPopup()
 	{
 		InitializeComponent();
 	}

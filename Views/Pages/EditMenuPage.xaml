@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="DineSync.Views.Pages.EditMenuPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:DineSync.Controls"
+    Title="EditMenuPage"
+    Shell.NavBarIsVisible="False"
+    Style="{StaticResource contentPageBackgroundStyle}">
+    <Grid ColumnDefinitions=".70*, .30*">
+        <Grid
+            Grid.Column="0"
+            RowDefinitions=".1*, .05*, .1*, .6*, .1*"
+            Style="{StaticResource mainGridStyle}">
+            <Grid Grid.Row="0" ColumnDefinitions="*, Auto">
+                <Label
+                    Grid.Column="0"
+                    Style="{StaticResource labelHeaderStyle}"
+                    Text="Edit Menu" />
+                <Button
+                    Grid.Column="1"
+                    Margin="10,30,30,0"
+                    Command="{Binding MenuCategoryPopupCommand}"
+                    HeightRequest="40"
+                    Style="{StaticResource tablePageButtonStyle}"
+                    Text="Add Menu Categories"
+                    VerticalOptions="Center" />
+            </Grid>
+            <BoxView
+                Grid.Row="1"
+                Margin="30"
+                BackgroundColor="Gray"
+                HeightRequest="2"
+                HorizontalOptions="FillAndExpand" />
+            <CollectionView
+                Grid.Row="2"
+                ItemsSource="{Binding MenuCategories}"
+                SelectedItem="{Binding SelectedMenuCategory, Mode=TwoWay}"
+                SelectionMode="None">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Horizontal" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <HorizontalStackLayout>
+                            <Border
+                                Margin="20,0,0,0"
+                                HeightRequest="40"
+                                Stroke="Gray"
+                                StrokeShape="RoundRectangle 10"
+                                StrokeThickness="4"
+                                WidthRequest="145">
+                                <Grid Padding="0,5,0,5" ColumnDefinitions=".3*, .6*">
+                                    <Image
+                                        Grid.Column="0"
+                                        Aspect="AspectFit"
+                                        HeightRequest="20"
+                                        Source="bowls.png" />
+                                    <Label
+                                        Grid.Column="1"
+                                        FontSize="16"
+                                        Style="{StaticResource labelStyle}"
+                                        Text="{Binding Name}" />
+                                </Grid>
+                            </Border>
+                        </HorizontalStackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                <CollectionView.EmptyView>
+                    <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                        <Label Style="{StaticResource labelStyle}" Text="No Menu Items available" />
+                        <Label Style="{StaticResource labelStyle}" Text="Click 'Add Menu Category' to create a new Menu Category" />
+                    </StackLayout>
+                </CollectionView.EmptyView>
+            </CollectionView>
+        </Grid>
+        <Grid Grid.Column="1" Style="{StaticResource sideGridStyle}">
+            <Grid RowDefinitions=".1*, .05*, .7*, .1*">
+                <Grid Grid.Row="0" ColumnDefinitions="*, Auto">
+                    <VerticalStackLayout Grid.Column="0">
+                        <Label
+                            Grid.Column="0"
+                            Margin="20,30,0,0"
+                            FontSize="24"
+                            Text="Add Menu Items"
+                            TextColor="White"
+                            VerticalOptions="Center" />
+                    </VerticalStackLayout>
+                    <Button
+                        Grid.Column="1"
+                        Margin="10,30,30,0"
+                        Command="{Binding RemoveTableCommand}"
+                        HeightRequest="40"
+                        Style="{StaticResource tablePageButtonStyle}"
+                        Text="Delete Menu"
+                        VerticalOptions="Center" />
+                </Grid>
+                <BoxView
+                    Grid.Row="1"
+                    Margin="10"
+                    BackgroundColor="Gray"
+                    HeightRequest="2"
+                    HorizontalOptions="FillAndExpand" />
+                <VerticalStackLayout Grid.Row="2" Spacing="10">
+                    <Border
+                        BackgroundColor="LightGray"
+                        HeightRequest="150"
+                        WidthRequest="150">
+                        <Grid RowDefinitions="*,Auto">
+                            <Image Source="{Binding Image}" />
+                            <Label
+                                HorizontalOptions="Center"
+                                IsVisible="{Binding IsImageAdded}"
+                                Text="Add Image"
+                                VerticalOptions="Center" />
+                        </Grid>
+                    </Border>
+                    <Label
+                        FontSize="18"
+                        HorizontalOptions="Center"
+                        Style="{StaticResource labelStyle}"
+                        Text="Name"
+                        VerticalOptions="Center"
+                        WidthRequest="325" />
+                    <Frame
+                        Padding="10,0,10,0"
+                        HeightRequest="40"
+                        Style="{StaticResource inputEntryFrameStyle}"
+                        WidthRequest="325">
+                        <controls:BorderlessEntry
+                            Placeholder="Enter Dish Name"
+                            Style="{StaticResource inputEntryStyle}"
+                            Text="{Binding Name}" />
+                    </Frame>
+                    <Label
+                        FontSize="18"
+                        HorizontalOptions="Center"
+                        Style="{StaticResource labelStyle}"
+                        Text="Price"
+                        VerticalOptions="Center"
+                        WidthRequest="325" />
+                    <Frame
+                        Padding="10,0,10,0"
+                        HeightRequest="40"
+                        Style="{StaticResource inputEntryFrameStyle}"
+                        WidthRequest="325">
+                        <controls:BorderlessEntry
+                            Keyboard="Numeric"
+                            Placeholder="Enter Dish Price"
+                            Style="{StaticResource inputEntryStyle}"
+                            Text="{Binding Price}" />
+                    </Frame>
+                    <Label
+                        FontSize="18"
+                        HorizontalOptions="Center"
+                        Style="{StaticResource labelStyle}"
+                        Text="Category"
+                        VerticalOptions="Center"
+                        WidthRequest="325" />
+                    <Frame
+                        Padding="10,0,10,0"
+                        HeightRequest="40"
+                        Style="{StaticResource inputEntryFrameStyle}"
+                        WidthRequest="325">
+                        <Picker
+                            Title="Select Category"
+                            ItemDisplayBinding="{Binding Name}"
+                            ItemsSource="{Binding MenuCategories}"
+                            SelectedItem="{Binding SelectedCategory}"
+                            TextColor="{StaticResource Black}" />
+                    </Frame>
+                    <Label
+                        FontSize="18"
+                        HorizontalOptions="Center"
+                        Style="{StaticResource labelStyle}"
+                        Text="Description"
+                        VerticalOptions="Center"
+                        WidthRequest="325" />
+                    <Frame
+                        Padding="10,0,10,0"
+                        HeightRequest="60"
+                        Style="{StaticResource inputEntryFrameStyle}"
+                        WidthRequest="325">
+                        <Editor
+                            Placeholder="Enter Description"
+                            Style="{StaticResource inputEntryStyle}"
+                            Text="{Binding NewMenuCategory}" />
+                    </Frame>
+                </VerticalStackLayout>
+                <Button
+                    Grid.Row="3"
+                    Style="{StaticResource samllButtonStyle}"
+                    Text="Add Menu Item" />
+                <VerticalStackLayout Spacing="10" />
+            </Grid>
+        </Grid>
+    </Grid>
+</ContentPage>

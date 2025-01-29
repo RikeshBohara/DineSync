@@ -99,7 +99,6 @@
         <Setter Property="FontSize" Value="30" />
         <Setter Property="FontFamily" Value="Inter-SemiBold" />
         <Setter Property="Margin" Value="20,30,0,0" />
-        <Setter Property="HorizontalOptions" Value="Center" />
     </Style>
 
     <Style x:Key="labelStyle" TargetType="Label">
