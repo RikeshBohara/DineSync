@@ -12,6 +12,10 @@ namespace DineSync.ViewModels
     {
         #region Fields
         private readonly ITableRepository _TableRepository;
+        private readonly IUserRepository _UserRepository;
+
+        [ObservableProperty]
+        private User _User;
 
         [ObservableProperty]
         private ObservableCollection<Table> _Tables;
@@ -98,6 +102,7 @@ namespace DineSync.ViewModels
             _AddTablePopup = popup;
             Shell.Current.ShowPopup(popup);
         }
+
         #endregion
     }
 }

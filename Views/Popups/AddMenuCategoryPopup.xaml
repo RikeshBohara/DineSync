@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup
+    x:Class="DineSync.Views.Popups.AddMenuCategoryPopup"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:DineSync.Controls"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    Size="300, 200"
+    Color="{DynamicResource PopupColor}">
+    <Border Padding="10" StrokeShape="RoundRectangle 10">
+        <VerticalStackLayout Style="{StaticResource loginVerticalStackLayoutStyle}">
+            <Label
+                HorizontalOptions="Center"
+                Style="{StaticResource labelStyle}"
+                Text="Menu Category"
+                VerticalOptions="Center"
+                WidthRequest="200" />
+            <Frame Style="{StaticResource inputEntryFrameStyle}" WidthRequest="200">
+                <controls:BorderlessEntry
+                    Placeholder="Category Name"
+                    Style="{StaticResource inputEntryStyle}"
+                    Text="{Binding NewMenuCategory}" />
+            </Frame>
+            <Button
+                Command="{Binding AddMenuCategoryCommand}"
+                HorizontalOptions="Center"
+                Style="{StaticResource loginButtonStyle}"
+                Text="Add Category"
+                VerticalOptions="Center" />
+        </VerticalStackLayout>
+    </Border>
+</toolkit:Popup>
+

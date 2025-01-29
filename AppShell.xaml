@@ -29,17 +29,17 @@
         FlyoutIcon="user.png"
         Route="EmployeePage" />
     <ShellContent
-        ContentTemplate="{DataTemplate views:MenuPage}"
+        ContentTemplate="{DataTemplate views:EditMenuPage}"
         FlyoutIcon="bowls.png"
-        Route="MenuPage" />
+        Route="EditMenuPage" />
     <ShellContent
         ContentTemplate="{DataTemplate views:TablePage}"
         FlyoutIcon="table.png"
         Route="TablePage" />
     <ShellContent
-        ContentTemplate="{DataTemplate views:HomePage}"
+        ContentTemplate="{DataTemplate views:MenuPage}"
         FlyoutIcon="menu.png"
-        Route="HomePage" />
+        Route="MenuPage" />
     <ShellContent
         ContentTemplate="{DataTemplate views:OrderPage}"
         FlyoutIcon="list.png"

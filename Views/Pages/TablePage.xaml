@@ -17,7 +17,7 @@
     <Grid ColumnDefinitions=".70*, .30*">
         <Grid
             Grid.Column="0"
-            RowDefinitions=".10*, .05*, .85*"
+            RowDefinitions=".10*, .10*, .80*"
             Style="{StaticResource mainGridStyle}">
             <Grid Grid.Row="0" ColumnDefinitions="*, Auto">
                 <Label
@@ -97,13 +97,19 @@
         <Grid Grid.Column="1" Style="{StaticResource sideGridStyle}">
             <VerticalStackLayout Spacing="10">
                 <Grid ColumnDefinitions="*, Auto">
-                    <Label
-                        Grid.Column="0"
-                        Margin="20,30,0,0"
-                        FontSize="24"
-                        Text="{Binding SelectedTable.TableNumber, StringFormat='Table# {0}', FallbackValue='Select a Table'}"
-                        TextColor="White"
-                        VerticalOptions="Center" />
+                    <VerticalStackLayout Grid.Column="0">
+                        <Label
+                            Grid.Column="0"
+                            Margin="20,30,0,0"
+                            FontSize="24"
+                            Text="{Binding SelectedTable.TableNumber, StringFormat='Table# {0}', FallbackValue='Select a Table'}"
+                            TextColor="White"
+                            VerticalOptions="Center" />
+                        <Label
+                            Margin="20,0,0,0"
+                            Style="{StaticResource labelStyle}"
+                            Text="{Binding User.Name, StringFormat='Waiter: {0}', FallbackValue=''}" />
+                    </VerticalStackLayout>
                     <Button
                         Grid.Column="1"
                         Margin="10,30,30,0"
