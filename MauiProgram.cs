@@ -39,7 +39,7 @@ namespace DineSync
             builder.Services.AddSingleton<SignupPageViewModel>();
             builder.Services.AddSingleton<AppShellViewModel>();
             builder.Services.AddSingleton<TablePageViewModel>();
-            builder.Services.AddTransient<MenuPageViewModel>();
+            builder.Services.AddSingleton<EmployeePageViewModel>();
             builder.Services.AddTransient<DashboardPageViewModel>();
             builder.Services.AddSingleton<App>();
             builder.Services.AddSingleton<AppShell>();
@@ -47,6 +47,7 @@ namespace DineSync
             builder.Services.AddSingleton<ISignupRepository, SignupRepository>();
             builder.Services.AddSingleton<ILoginRepository, LoginRepository>();
             builder.Services.AddSingleton<ITableRepository, TableRepository>();
+            builder.Services.AddSingleton<IUserRepository, UserRepository>();
 
             return builder.Build();
         }
