@@ -51,7 +51,7 @@ namespace DineSync
                 MenuPageShellContent.IsVisible = true;
                 OrderPageShellContent.IsVisible = true;
             }
-            else if (Role == "Waiter" || Role == "Reception" )
+            else if (Role == "Waiter")
             {
                 TablePageShellContent.IsVisible = true;
                 MenuPageShellContent.IsVisible = true;

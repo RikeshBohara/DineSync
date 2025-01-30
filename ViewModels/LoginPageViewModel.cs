@@ -68,9 +68,13 @@ namespace DineSync.ViewModels
             {
                 await Shell.Current.GoToAsync($"DashboardPage", new Dictionary<string, object> { { "User", user } });
             }
-            else if(user!=null && user.Role != "Owner")
+            else if(user!=null && user.Role == "Waiter")
             {
                 await Shell.Current.GoToAsync($"TablePage", new Dictionary<string, object> { { "User", user } });
+            }
+            else if (user != null && (user.Role == "Kitchen" || user.Role == "Reception"))
+            {
+                await Shell.Current.GoToAsync($"OrderPage", new Dictionary<string, object> { { "User", user } });
             }
             else
             {
