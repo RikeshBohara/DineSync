@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DineSync.Models;
+﻿using DineSync.Models;
 
 namespace DineSync.Repository.Interfaces
 {
@@ -11,6 +6,7 @@ namespace DineSync.Repository.Interfaces
     {
         Task<MenuCategory[]> GetMenuCategoriesAsync();
         Task<int> AddMenuCategoryAsync(MenuCategory menuCategory);
-        Task<int> RemoveMenuCategoryAsync(MenuCategory menuCategory);
+        Task<int> RemoveMenuCategoryWithItemsAsync(MenuCategory menuCategory);
+        Task<MenuCategory> CheckIfCategoryExistsAsync(string name);
     }
 }

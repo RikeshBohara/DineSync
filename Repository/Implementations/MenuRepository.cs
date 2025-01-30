@@ -29,5 +29,52 @@ namespace DineSync.Repository.Implementations
         {
             return await _Connection.DeleteAsync(menu);
         }
+
+        public async Task AddMenuCategoryMappingAsync(MenuCategoryMapping mapping)
+        {
+            await _Connection.InsertAsync(mapping);
+        }
+
+        public async Task<Menu[]> GetMenusByCategoryAsync(int categoryId)
+        {
+            var mappings = await _Connection.Table<MenuCategoryMapping>()
+                                            .Where(menu => menu.MenuCategoryId == categoryId)
+                                            .ToArrayAsync();
+
+            var menuIds = mappings.Select(menu => menu.MenuId).ToList();
+
+            if (!menuIds.Any())
+                return Array.Empty<Menu>();
+
+            var menus = await _Connection.Table<Menu>()
+                                         .Where(menu => menuIds.Contains(menu.Id))
+                                         .ToArrayAsync();
+
+            return menus.ToArray();
+        }
+
+        public async Task<MenuCategoryMapping> GetMenuCategoryMappingAsync(int menuId)
+        {
+            return await _Connection.Table<MenuCategoryMapping>().FirstOrDefaultAsync(menu => menu.MenuId == menuId);
+        }
+
+        public async Task<Menu> CheckIfMenuExistsAsync(string name, decimal price, string description, int categoryId)
+        {
+            var categoryMappings = await _Connection.Table<MenuCategoryMapping>()
+                .Where(m => m.MenuCategoryId == categoryId)
+                .ToArrayAsync();
+
+            if (!categoryMappings.Any())
+                return null;
+
+            var menuIdsInCategory = categoryMappings.Select(menu => menu.MenuId).ToList();
+
+            return await _Connection.Table<Menu>()
+                .Where(menu => menu.Name == name &&
+                           menu.Price == price &&
+                           menu.Description == description &&
+                           menuIdsInCategory.Contains(menu.Id))
+                .FirstOrDefaultAsync();
+        }
     }
 }

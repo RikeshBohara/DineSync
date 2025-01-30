@@ -69,7 +69,7 @@ namespace DineSync.ViewModels
             SelectedUser = user;
             Name = user.Name;
             Email = user.Email;
-            Password = Password;
+            Password = string.Empty;
             Role = user.Role;
             IsPopupVisible = true;
         }
