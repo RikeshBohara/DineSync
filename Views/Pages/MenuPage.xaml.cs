@@ -1,9 +1,12 @@
+using DineSync.ViewModels;
+
 namespace DineSync.Views.Pages;
 
 public partial class MenuPage : ContentPage
 {
-	public MenuPage()
+	public MenuPage(MenuPageViewModel menuPageViewModel)
 	{
 		InitializeComponent();
+		BindingContext = menuPageViewModel;
 	}
 }

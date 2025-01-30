@@ -50,9 +50,10 @@
                     <DataTemplate>
                         <Grid Margin="20,0,20,10" Padding="10">
                             <Border
+                                BackgroundColor="#1f1d2b"
                                 Stroke="{Binding Status, Converter={StaticResource TableStatusColorConverter}}"
                                 StrokeShape="RoundRectangle 10"
-                                StrokeThickness="4">
+                                StrokeThickness="3">
                                 <Border.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:TablePageViewModel}}, Path=TableTappedCommand}" CommandParameter="{Binding .}" />
                                 </Border.GestureRecognizers>
@@ -60,6 +61,7 @@
                                     <Image
                                         Grid.Row="0"
                                         Aspect="AspectFit"
+                                        BackgroundColor="#474747"
                                         HeightRequest="150"
                                         Source="tables.png" />
                                     <Grid

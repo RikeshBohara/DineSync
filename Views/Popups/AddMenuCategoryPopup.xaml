@@ -25,7 +25,7 @@
                 Command="{Binding AddMenuCategoryCommand}"
                 HorizontalOptions="Center"
                 Style="{StaticResource loginButtonStyle}"
-                Text="Add Category"
+                Text="Save Category"
                 VerticalOptions="Center" />
         </VerticalStackLayout>
     </Border>
