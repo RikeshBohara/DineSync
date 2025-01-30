@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DineSync.Repository.Interfaces;
+using DineSync.Views.Pages;
 
 namespace DineSync.ViewModels
 {
@@ -19,6 +20,18 @@ namespace DineSync.ViewModels
 
         [ObservableProperty]
         private string _PasswordVisibilityIcon = "view.png";
+
+        private string _Role;
+
+        public string Role
+        {
+            get => _Role;
+            set
+            {
+                _Role = value;
+                OnPropertyChanged();
+            }
+        }
 
         public LoginPageViewModel(ILoginRepository loginRepository)
         {
@@ -53,17 +66,23 @@ namespace DineSync.ViewModels
 
             if (user != null && user.Role== "Owner")
             {
-                await Shell.Current.GoToAsync("///DashboardPage", new Dictionary<string, object> { { "User", user } });
+                await Shell.Current.GoToAsync($"DashboardPage", new Dictionary<string, object> { { "User", user } });
             }
-            else if(user!=null && user.Role != "Owner")
+            else if(user!=null && user.Role == "Waiter")
             {
-                await Shell.Current.GoToAsync("///TablePage", new Dictionary<string, object> { { "User", user } });
+                await Shell.Current.GoToAsync($"TablePage", new Dictionary<string, object> { { "User", user } });
+            }
+            else if (user != null && (user.Role == "Kitchen" || user.Role == "Reception"))
+            {
+                await Shell.Current.GoToAsync($"OrderPage", new Dictionary<string, object> { { "User", user } });
             }
             else
             {
                 await Shell.Current.DisplayAlert("Error", "Invalid email or password.", "OK");
                 return;
             }
+            Role = user.Role;
+            MessagingCenter.Send(this, "Role", Role);
 
             Email = string.Empty;
             Password = string.Empty;

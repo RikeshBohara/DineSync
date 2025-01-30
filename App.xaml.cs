@@ -7,11 +7,11 @@ namespace DineSync
     public partial class App : Application
     {
         private readonly DbConfig _DbConfig;
-        public App(DbConfig dbConfig, AppShellViewModel appShellViewModel)
+        public App(DbConfig dbConfig)
         {
             InitializeComponent();
 
-            MainPage = new AppShell(appShellViewModel);
+            MainPage = new AppShell();
 
             Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping(nameof(BorderlessEntry), (handler, view) =>
             {

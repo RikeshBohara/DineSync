@@ -21,26 +21,32 @@
         Route="SignupPage"
         Shell.FlyoutItemIsVisible="False" />
     <ShellContent
+        x:Name="DashboardPageShellContent"
         ContentTemplate="{DataTemplate views:DashboardPage}"
         FlyoutIcon="statisctics.png"
         Route="DashboardPage" />
     <ShellContent
+        x:Name="EmployeePageShellContent"
         ContentTemplate="{DataTemplate views:EmployeePage}"
         FlyoutIcon="user.png"
         Route="EmployeePage" />
     <ShellContent
+        x:Name="EditMenuPageShellContent"
         ContentTemplate="{DataTemplate views:EditMenuPage}"
         FlyoutIcon="bowls.png"
         Route="EditMenuPage" />
     <ShellContent
+        x:Name="TablePageShellContent"
         ContentTemplate="{DataTemplate views:TablePage}"
         FlyoutIcon="table.png"
         Route="TablePage" />
     <ShellContent
+        x:Name="MenuPageShellContent"
         ContentTemplate="{DataTemplate views:MenuPage}"
         FlyoutIcon="menu.png"
         Route="MenuPage" />
     <ShellContent
+        x:Name="OrderPageShellContent"
         ContentTemplate="{DataTemplate views:OrderPage}"
         FlyoutIcon="list.png"
         Route="OrderPage" />
@@ -48,7 +54,7 @@
     <Shell.FlyoutFooter>
         <Image Source="logout.png" Style="{StaticResource shellFooterImageStyle}">
             <Image.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding NavigateToLoginCommand}" />
+                <TapGestureRecognizer Tapped="NavigateToLogin" />
             </Image.GestureRecognizers>
         </Image>
     </Shell.FlyoutFooter>

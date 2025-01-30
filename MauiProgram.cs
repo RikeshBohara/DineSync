@@ -37,7 +37,6 @@ namespace DineSync
             builder.Services.AddTransient<MenuPage>();
             builder.Services.AddSingleton<LoginPageViewModel>();
             builder.Services.AddSingleton<SignupPageViewModel>();
-            builder.Services.AddSingleton<AppShellViewModel>();
             builder.Services.AddSingleton<TablePageViewModel>();
             builder.Services.AddSingleton<EmployeePageViewModel>();
             builder.Services.AddTransient<DashboardPageViewModel>();
