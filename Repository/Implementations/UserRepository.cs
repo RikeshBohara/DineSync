@@ -24,7 +24,6 @@ namespace DineSync.Repository.Implementations
             return await _Connection.InsertAsync(user);
         }
 
-
         public async Task<int> RemoveUserAsync(User user)
         {
             return await _Connection.DeleteAsync(user);
@@ -33,6 +32,11 @@ namespace DineSync.Repository.Implementations
         public async Task<int> UpdateUserAsync(User user)
         {
             return await _Connection.UpdateAsync(user);
+        }
+
+        public async Task<User> GetUserByIdAsync(int id)
+        {
+            return await _Connection.Table<User>().FirstOrDefaultAsync(user => user.Id == id);
         }
     }
 }

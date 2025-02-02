@@ -12,7 +12,6 @@ namespace DineSync.Converters
                 {
                     "Available" => Colors.Green,
                     "Occupied" => Colors.Red,
-                    "Reserved" => Colors.Orange,
                     _ => Colors.Gray
                 };
             }

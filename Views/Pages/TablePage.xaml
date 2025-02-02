@@ -97,7 +97,7 @@
             </CollectionView>
         </Grid>
         <Grid Grid.Column="1" Style="{StaticResource sideGridStyle}">
-            <VerticalStackLayout Spacing="10">
+            <Grid RowDefinitions=".1*, .05*, .7*, .1*">
                 <Grid ColumnDefinitions="*, Auto">
                     <VerticalStackLayout Grid.Column="0">
                         <Label
@@ -121,23 +121,42 @@
                         Text="Delete Table"
                         VerticalOptions="Center" />
                 </Grid>
-
                 <BoxView
                     Grid.Row="1"
                     Margin="10"
                     BackgroundColor="Gray"
                     HeightRequest="2"
                     HorizontalOptions="FillAndExpand" />
-
-                <VerticalStackLayout Spacing="10">
-                    <Label
-                        Margin="20,0,0,0"
-                        FontAttributes="Bold"
-                        FontSize="16"
-                        Style="{StaticResource labelStyle}"
-                        Text="Occupants:" />
+                <VerticalStackLayout Grid.Row="2" Spacing="10">
+                    <Grid Margin="20,0" ColumnDefinitions="Auto, Auto">
+                        <Label
+                            Grid.Column="0"
+                            FontSize="18"
+                            HorizontalOptions="Center"
+                            Style="{StaticResource labelStyle}"
+                            Text="Occupants: "
+                            VerticalOptions="Center"
+                            WidthRequest="100" />
+                        <Frame
+                            Grid.Column="1"
+                            Padding="10,0,10,0"
+                            HeightRequest="40"
+                            Style="{StaticResource inputEntryFrameStyle}"
+                            WidthRequest="100">
+                            <controls:BorderlessEntry
+                                Placeholder="{Binding SelectedTable.GuestCount}"
+                                Style="{StaticResource inputEntryStyle}"
+                                Text="{Binding GuestsCount}" />
+                        </Frame>
+                    </Grid>
                 </VerticalStackLayout>
-            </VerticalStackLayout>
+                <Button
+                    Grid.Row="3"
+                    Command="{Binding SaveGuestsCommand}"
+                    Style="{StaticResource samllButtonStyle}"
+                    Text="Order Menu" />
+                <VerticalStackLayout Spacing="10" />
+            </Grid>
         </Grid>
     </Grid>
 </ContentPage>

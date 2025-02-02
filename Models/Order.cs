@@ -14,7 +14,6 @@ namespace DineSync.Models
         public int GuestCount { get; set; }
         public string PaymentMode { get; set; }
         public string Status { get; set; }
-        public string SpecialRequest { get; set; }
         public DateTime CreatedAt { get; set; }
     };
 }
