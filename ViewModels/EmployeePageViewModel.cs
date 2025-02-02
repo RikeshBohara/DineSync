@@ -46,7 +46,7 @@ namespace DineSync.ViewModels
             LoadUsers();
         }
 
-        public async Task LoadUsers()
+        public async void LoadUsers()
         {
             var users = await _UserRepository.GetAllUsersAsync();
             Users = new ObservableCollection<User>(users);

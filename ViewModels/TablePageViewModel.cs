@@ -11,6 +11,8 @@ namespace DineSync.ViewModels
     public partial class TablePageViewModel : ObservableObject
     {
         #region Fields
+        public static TablePageViewModel Instance { get; private set; }
+
         private readonly ITableRepository _TableRepository;
         private readonly IUserRepository _UserRepository;
 
@@ -26,7 +28,12 @@ namespace DineSync.ViewModels
         [ObservableProperty]
         private Table _SelectedTable;
 
+        [ObservableProperty]
+        private string _GuestsCount;
+
         private Popup _AddTablePopup;
+
+        private Popup _SaveTableOccupantsPopup;
         #endregion
 
         #region Constructor
@@ -35,11 +42,12 @@ namespace DineSync.ViewModels
             _TableRepository = tableRepository;
             Tables = new ObservableCollection<Table>();
             LoadTables();
+            Instance = this;
         }
         #endregion
 
         #region Methods
-        public async Task LoadTables()
+        public async void LoadTables()
         {
             var tables = await _TableRepository.GetAllTablesAsync();
             Tables = new ObservableCollection<Table>(tables);
@@ -88,8 +96,67 @@ namespace DineSync.ViewModels
                 await _TableRepository.RemoveTableAsync(SelectedTable);
                 Tables.Remove(SelectedTable);
                 SelectedTable = null;
-                await LoadTables();
+                LoadTables();
             }
+        }
+
+        [RelayCommand]
+        public async Task SaveGuests(object selectedTable)
+        {
+            try
+            {
+                if (SelectedTable.Status != "Occupied")
+                {
+                    if (int.TryParse(GuestsCount, out int count) && count > 0 && count <= SelectedTable.Capacity)
+                    {
+                        await SaveGuestCount(count);
+                        GuestsCount = string.Empty;
+                        _SaveTableOccupantsPopup?.Close();
+
+                        var navigationParams = new Dictionary<string, object>
+                        {
+                            { "SelectedTable", SelectedTable }
+                        };
+                        await Shell.Current.GoToAsync("//MenuPage", navigationParams);
+                    }
+                    else
+                    {
+                        await Shell.Current.DisplayAlert("Error", "Occupants must be a valid number greater than 0", "OK");
+                    }
+                }
+                else
+                {
+                    var navigationParams = new Dictionary<string, object>
+                    {
+                        { "SelectedTable", SelectedTable }
+                    };
+                    await Shell.Current.GoToAsync("//MenuPage", navigationParams);
+                }
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", $"{ex}", "OK");
+            }
+        }
+
+        [RelayCommand]
+        public async Task SaveGuestCount(int count)
+        {
+            SelectedTable.GuestCount = count;
+            SelectedTable.Status = "Occupied";
+            SelectedTable.AssignedWaiterId = User.Id;
+            await _TableRepository.UpdateTableAsync(SelectedTable);
+            LoadTables();
+        }
+
+        [RelayCommand]
+        public async Task EditGuestCount(int count)
+        {
+            SelectedTable.GuestCount = count;
+            SelectedTable.Status = "Occupied";
+            SelectedTable.AssignedWaiterId = User.Id;
+            await _TableRepository.UpdateTableAsync(SelectedTable);
+            LoadTables();
         }
 
         [RelayCommand]
@@ -102,7 +169,6 @@ namespace DineSync.ViewModels
             _AddTablePopup = popup;
             Shell.Current.ShowPopup(popup);
         }
-
         #endregion
     }
 }

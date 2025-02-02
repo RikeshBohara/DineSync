@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Runtime.CompilerServices;
 using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -8,12 +9,16 @@ using DineSync.Views.Popups;
 
 namespace DineSync.ViewModels
 {
-    public partial class MenuPageViewModel : ObservableObject
+    public partial class MenuPageViewModel : ObservableObject, IQueryAttributable
     {
         #region Fields
         private readonly IMenuCategoryRepository _MenuCategoryRepository;
 
         private readonly IMenuRepository _MenuRepository;
+
+        private readonly IUserRepository _UserRepository;
+
+        private readonly IOrderItemRepository _OrderItemRepository;
 
         [ObservableProperty]
         private ObservableCollection<MenuCategory> _MenuCategories;
@@ -48,16 +53,34 @@ namespace DineSync.ViewModels
         [ObservableProperty]
         private MenuCategory _SelectedMenuCategory;
 
+        [ObservableProperty]
+        private Table _SelectedTable;
+
+        [ObservableProperty]
+        private ObservableCollection<OrderItem> _CurrentOrderItems;
+
+        [ObservableProperty]
+        private Order _CurrentOrder;
+
+        [ObservableProperty]
+        private string _OrderNumber;
+
+        [ObservableProperty]
+        private int _CurrentQuantity = 1;
+
         private Popup _AddMenuCategoryPopup;
         #endregion
 
         #region Constructor
-        public MenuPageViewModel(IMenuCategoryRepository menuCategoryRepository, IMenuRepository menuRepository)
+        public MenuPageViewModel(IMenuCategoryRepository menuCategoryRepository, IMenuRepository menuRepository, IUserRepository userRepository, IOrderItemRepository orderItemRepository)
         {
             _MenuCategoryRepository = menuCategoryRepository;
             _MenuRepository = menuRepository;
+            _UserRepository = userRepository;
+            _OrderItemRepository = orderItemRepository;
             MenuCategories = new ObservableCollection<MenuCategory>();
             Menus = new ObservableCollection<Menu>();
+            CurrentOrderItems = new ObservableCollection<OrderItem>();
             LoadMenuCategory();
             LoadMenu();
         }
@@ -224,10 +247,68 @@ namespace DineSync.ViewModels
         }
 
         [RelayCommand]
-        public async Task MenuItemTapped(Menu selectedMenu)
+        private void MenuItemTapped(Menu menu)
         {
-            _SelectedMenu= selectedMenu;
-            OnPropertyChanged(nameof(_SelectedMenu));
+            var currentOrderItem = CurrentOrderItems.FirstOrDefault(item => item.MenuItemId == menu.Id);
+
+            if (currentOrderItem != null)
+            {
+                currentOrderItem.Quantity++;
+            }
+            else
+            {
+                currentOrderItem = new OrderItem
+                {
+                    MenuItemId = menu.Id,
+                    Name = menu.Name,
+                    Price = menu.Price,
+                    Quantity = CurrentQuantity,
+                    Icon = menu.Image
+                };
+                CurrentOrderItems.Add(currentOrderItem);
+            }
+            UpdateOrderTotal();
+        }
+
+        [RelayCommand]
+        private void IncrementQuantity(OrderItem orderItem)
+        {
+            if (orderItem != null)
+            {
+                orderItem.Quantity++;
+                UpdateOrderTotal();
+            }
+        }
+
+        [RelayCommand]
+        private void DecrementQuantity(OrderItem orderItem)
+        {
+            if (orderItem != null && orderItem.Quantity > 1)
+            {
+                orderItem.Quantity--;
+                UpdateOrderTotal();
+            }
+            else
+            {
+                CurrentOrderItems.Remove(orderItem);
+                UpdateOrderTotal();
+            }
+        }
+
+        private void UpdateOrderTotal()
+        {
+            if (CurrentOrder == null)
+                CurrentOrder = new Order();
+
+            CurrentOrder.TotalAmount = CurrentOrderItems.Sum(item => item.Price * item.Quantity);
+            OnPropertyChanged(nameof(CurrentOrder));
+        }
+
+        [RelayCommand]
+        private async void CancelOrder()
+        {
+            CurrentOrderItems.Clear();
+            UpdateOrderTotal();
         }
 
         [RelayCommand]
@@ -299,6 +380,30 @@ namespace DineSync.ViewModels
             };
             _AddMenuCategoryPopup = popup;
             Shell.Current.ShowPopup(popup);
+        }
+
+        private async Task LoadWaiterNameAsync()
+        {
+            if (SelectedTable?.AssignedWaiterId > 0)
+            {
+                var waiter = await _UserRepository.GetUserByIdAsync(SelectedTable.AssignedWaiterId);
+                SelectedTable.WaiterName = waiter?.Name ?? "Unassigned";
+                OnPropertyChanged(nameof(SelectedTable));
+            }
+        }
+
+        public void ApplyQueryAttributes(IDictionary<string, object> query)
+        {
+            if (query.TryGetValue("SelectedTable", out var table) && table is Table selected)
+            {
+                SelectedTable = selected;
+                if (SelectedTable.AssignedWaiterId > 0)
+                {
+                    var waiter = _UserRepository.GetUserByIdAsync(SelectedTable.AssignedWaiterId);
+                    _ = LoadWaiterNameAsync();
+                }
+                OnPropertyChanged(nameof(SelectedTable));
+            }
         }
         #endregion
     }

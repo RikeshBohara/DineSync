@@ -24,9 +24,9 @@ namespace DineSync
         {
             InitializeComponent();
 
-            MessagingCenter.Subscribe<LoginPageViewModel, string>(this, "Role", (sender, arg) =>
+            MessagingCenter.Subscribe<LoginPageViewModel, string>(this, "Role", (sender, role) =>
             {
-                Role = arg;
+                Role = role;
                 UpdateFlyoutItemsVisibility();
             });
 

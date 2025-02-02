@@ -94,9 +94,6 @@
                                             Aspect="AspectFit"
                                             HeightRequest="20"
                                             Source="more.png">
-                                            <!--<Image.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MenuPageViewModel}}, Path=RemoveMenuCategoryCommand}" CommandParameter="{Binding .}" />
-                                            </Image.GestureRecognizers>-->
                                             <Image.GestureRecognizers>
                                                 <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MenuPageViewModel}}, Path=ShowMoreMenuCommand}" CommandParameter="{Binding .}" />
                                             </Image.GestureRecognizers>

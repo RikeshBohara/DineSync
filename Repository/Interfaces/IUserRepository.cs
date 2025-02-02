@@ -8,5 +8,6 @@ namespace DineSync.Repository.Interfaces
         Task<int> AddUserAsync(User user);
         Task<int> RemoveUserAsync(User user);
         Task<int> UpdateUserAsync(User user);
+        Task<User> GetUserByIdAsync(int id);
     }
 }

@@ -28,5 +28,10 @@ namespace DineSync.Repository.Implementations
         {
             return await _Connection.DeleteAsync(table);
         }
+
+        public async Task<int> UpdateTableAsync(Table table)
+        {
+            return await _Connection.UpdateAsync(table);
+        }
     }
 }
