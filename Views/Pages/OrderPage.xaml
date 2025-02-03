@@ -3,12 +3,130 @@
     x:Class="DineSync.Views.Pages.OrderPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewmodels="clr-namespace:DineSync.ViewModels"
     Shell.NavBarIsVisible="False"
     Style="{StaticResource contentPageBackgroundStyle}">
-    <VerticalStackLayout>
-        <Label
-            HorizontalOptions="Center"
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" />
-    </VerticalStackLayout>
+    <ScrollView>
+        <Grid ColumnDefinitions="0.6*, 0.4*">
+            <Grid RowDefinitions=".1*, .05*, .85*" Style="{StaticResource mainGridStyle}">
+                <Label
+                    Grid.Row="0"
+                    Style="{StaticResource labelHeaderStyle}"
+                    Text="Orders" />
+                <BoxView
+                    Grid.Row="1"
+                    Margin="30"
+                    BackgroundColor="Gray"
+                    HeightRequest="2"
+                    HorizontalOptions="FillAndExpand" />
+                <CollectionView Grid.Row="2" ItemsSource="{Binding Orders}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="20,0,20,0" Padding="10">
+                                <Border
+                                    Padding="20"
+                                    BackgroundColor="#1f1d2b"
+                                    Stroke="Transparent"
+                                    StrokeShape="RoundRectangle 10">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:OrderPageViewModel}}, Path=ShowOrderDetailsCommand}" CommandParameter="{Binding .}" />
+                                    </Border.GestureRecognizers>
+                                    <StackLayout>
+                                        <Label Text="{Binding OrderNumber, StringFormat='Order Number: {0}'}" TextColor="White" />
+                                        <Label Text="{Binding TableNumber, StringFormat='Table Number: {0}'}" TextColor="White" />
+                                        <Label Text="{Binding GuestCount, StringFormat='Guest Count: {0}'}" TextColor="White" />
+                                        <Label Text="{Binding Status, StringFormat='Order Status: {0}'}" TextColor="White" />
+                                        <Label Text="{Binding TotalAmount, StringFormat='Total: रु. {0}'}" TextColor="White" />
+                                    </StackLayout>
+                                </Border>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+            <Grid Grid.Column="1" Style="{StaticResource sideGridStyle}">
+                <Grid RowDefinitions=".1*, .05*, .6*, .1*, .1*">
+                    <VerticalStackLayout Grid.Row="0">
+                        <Label Style="{StaticResource labelHeaderStyle}" Text="Order Details" />
+                    </VerticalStackLayout>
+                    <BoxView
+                        Grid.Row="1"
+                        Margin="10"
+                        BackgroundColor="Gray"
+                        HeightRequest="2"
+                        HorizontalOptions="FillAndExpand" />
+                    <ScrollView Grid.Row="2">
+                        <VerticalStackLayout>
+                            <Border
+                                Grid.Row="0"
+                                Margin="10"
+                                Padding="10"
+                                BackgroundColor="#252836"
+                                Stroke="Transparent"
+                                StrokeShape="RoundRectangle 10">
+                                <StackLayout>
+                                    <Label
+                                        Margin="0"
+                                        HorizontalOptions="Center"
+                                        Style="{StaticResource labelHeaderStyle}"
+                                        Text="{Binding SelectedOrder.OrderNumber, StringFormat='Order #{0}'}" />
+                                    <Label Style="{StaticResource labelStyle}" Text="{Binding OrderTable.TableNumber, StringFormat='Table: {0}'}" />
+                                    <Label Style="{StaticResource labelStyle}" Text="{Binding SelectedOrder.OrderDate, StringFormat='Date: {0:g}'}" />
+                                    <Label Text="{Binding OrderStatus, StringFormat='Order Status: {0}'}" TextColor="White" />
+                                </StackLayout>
+                            </Border>
+                            <CollectionView
+                                Grid.Row="3"
+                                ItemsSource="{Binding OrderItems}"
+                                SelectionMode="None">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border
+                                            Margin="10"
+                                            Padding="10"
+                                            BackgroundColor="#252836"
+                                            Stroke="Transparent"
+                                            StrokeShape="RoundRectangle 10">
+                                            <Grid ColumnDefinitions="Auto,*,*,Auto" ColumnSpacing="10">
+                                                <Image
+                                                    Grid.Column="0"
+                                                    HeightRequest="40"
+                                                    Source="{Binding Icon}"
+                                                    WidthRequest="40" />
+                                                <Label
+                                                    Grid.Column="1"
+                                                    Style="{StaticResource labelStyle}"
+                                                    Text="{Binding Name}"
+                                                    VerticalOptions="Center" />
+                                                <Label
+                                                    Grid.Column="2"
+                                                    Style="{StaticResource labelStyle}"
+                                                    Text="{Binding Quantity, StringFormat='x{0}'}"
+                                                    VerticalOptions="Center" />
+                                                <Label
+                                                    Grid.Column="3"
+                                                    Style="{StaticResource labelStyle}"
+                                                    Text="{Binding Amount, StringFormat='रु. {0}'}"
+                                                    VerticalOptions="Center" />
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </VerticalStackLayout>
+                    </ScrollView>
+                    <Label
+                        Grid.Row="3"
+                        Margin="20,0"
+                        Style="{StaticResource labelStyle}"
+                        Text="{Binding SelectedOrder.TotalAmount, StringFormat='Total: रु. {0}'}" />
+                    <Button
+                        Grid.Row="4"
+                        Command="{Binding CancelOrderCommand}"
+                        Style="{StaticResource samllButtonStyle}"
+                        Text="Confirm Payment" />
+                </Grid>
+            </Grid>
+        </Grid>
+    </ScrollView>
 </ContentPage>
