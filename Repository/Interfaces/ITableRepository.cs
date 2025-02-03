@@ -8,5 +8,6 @@ namespace DineSync.Repository.Interfaces
         Task<int> AddTableAsync(Table table);
         Task<int> RemoveTableAsync(Table table);
         Task<int> UpdateTableAsync(Table table);
+        Task<Table> GetTableByIdAsync(int id);
     }
 }

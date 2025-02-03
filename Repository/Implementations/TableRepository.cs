@@ -33,5 +33,11 @@ namespace DineSync.Repository.Implementations
         {
             return await _Connection.UpdateAsync(table);
         }
+
+        public async Task<Table> GetTableByIdAsync(int id)
+        {
+            return await _Connection.Table<Table>()
+                .FirstOrDefaultAsync(table => table.Id == id);
+        }
     }
 }

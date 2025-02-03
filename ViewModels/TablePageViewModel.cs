@@ -11,8 +11,6 @@ namespace DineSync.ViewModels
     public partial class TablePageViewModel : ObservableObject
     {
         #region Fields
-        public static TablePageViewModel Instance { get; private set; }
-
         private readonly ITableRepository _TableRepository;
         private readonly IUserRepository _UserRepository;
 
@@ -42,7 +40,6 @@ namespace DineSync.ViewModels
             _TableRepository = tableRepository;
             Tables = new ObservableCollection<Table>();
             LoadTables();
-            Instance = this;
         }
         #endregion
 

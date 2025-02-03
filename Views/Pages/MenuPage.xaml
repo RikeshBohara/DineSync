@@ -152,9 +152,9 @@
                 <VerticalStackLayout Grid.Row="0">
                     <Label
                         Margin="20,30,0,0"
-                        FontSize="18"
+                        FontSize="20"
                         HorizontalOptions="Center"
-                        Text="{Binding OrderNumber, StringFormat='Order# {0}'}"
+                        Text="Current Order"
                         TextColor="White"
                         VerticalOptions="Center" />
                     <Grid ColumnDefinitions="*, Auto">
@@ -257,7 +257,10 @@
                     Margin="20,0"
                     Style="{StaticResource labelStyle}"
                     Text="{Binding CurrentOrder.TotalAmount, StringFormat='Total: रु. {0}'}" />
-                <HorizontalStackLayout Grid.Row="4" Spacing="20">
+                <HorizontalStackLayout
+                    Grid.Row="4"
+                    HorizontalOptions="Center"
+                    Spacing="20">
                     <Button
                         Command="{Binding SaveOrderCommand}"
                         Style="{StaticResource samllButtonStyle}"

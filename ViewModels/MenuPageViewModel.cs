@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Runtime.CompilerServices;
 using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -19,6 +18,8 @@ namespace DineSync.ViewModels
         private readonly IUserRepository _UserRepository;
 
         private readonly IOrderItemRepository _OrderItemRepository;
+
+        private readonly IOrderRepository _OrderRepository;
 
         [ObservableProperty]
         private ObservableCollection<MenuCategory> _MenuCategories;
@@ -65,19 +66,17 @@ namespace DineSync.ViewModels
         [ObservableProperty]
         private string _OrderNumber;
 
-        [ObservableProperty]
-        private int _CurrentQuantity = 1;
-
         private Popup _AddMenuCategoryPopup;
         #endregion
 
         #region Constructor
-        public MenuPageViewModel(IMenuCategoryRepository menuCategoryRepository, IMenuRepository menuRepository, IUserRepository userRepository, IOrderItemRepository orderItemRepository)
+        public MenuPageViewModel(IMenuCategoryRepository menuCategoryRepository, IMenuRepository menuRepository, IUserRepository userRepository, IOrderItemRepository orderItemRepository, IOrderRepository orderRepository)
         {
             _MenuCategoryRepository = menuCategoryRepository;
             _MenuRepository = menuRepository;
             _UserRepository = userRepository;
             _OrderItemRepository = orderItemRepository;
+            _OrderRepository = orderRepository;
             MenuCategories = new ObservableCollection<MenuCategory>();
             Menus = new ObservableCollection<Menu>();
             CurrentOrderItems = new ObservableCollection<OrderItem>();
@@ -106,6 +105,7 @@ namespace DineSync.ViewModels
             if (string.IsNullOrEmpty(NewMenuCategory))
             {
                 await Shell.Current.DisplayAlert("Error", "Category Name cannot be empty", "OK");
+                return;
             }
             var existingCategory = await _MenuCategoryRepository.CheckIfCategoryExistsAsync(Name);
             if (existingCategory != null)
@@ -135,7 +135,7 @@ namespace DineSync.ViewModels
         }
 
         [RelayCommand]
-        private async Task ShowMoreMenu(MenuCategory menuCategory)
+        public async Task ShowMoreMenu(MenuCategory menuCategory)
         {
             if (menuCategory == null) return;
 
@@ -247,31 +247,38 @@ namespace DineSync.ViewModels
         }
 
         [RelayCommand]
-        private void MenuItemTapped(Menu menu)
+        public async void MenuItemTapped(Menu menu)
         {
-            var currentOrderItem = CurrentOrderItems.FirstOrDefault(item => item.MenuItemId == menu.Id);
-
-            if (currentOrderItem != null)
+            if (SelectedTable == null)
             {
-                currentOrderItem.Quantity++;
+                await Shell.Current.DisplayAlert("Error", "Select a table to take orders", "OK");
             }
             else
             {
-                currentOrderItem = new OrderItem
+                var currentOrderItem = CurrentOrderItems.FirstOrDefault(item => item.MenuItemId == menu.Id);
+
+                if (currentOrderItem != null)
                 {
-                    MenuItemId = menu.Id,
-                    Name = menu.Name,
-                    Price = menu.Price,
-                    Quantity = CurrentQuantity,
-                    Icon = menu.Image
-                };
-                CurrentOrderItems.Add(currentOrderItem);
+                    currentOrderItem.Quantity++;
+                }
+                else
+                {
+                    currentOrderItem = new OrderItem
+                    {
+                        MenuItemId = menu.Id,
+                        Name = menu.Name,
+                        Price = menu.Price,
+                        Quantity = 1,
+                        Icon = menu.Image
+                    };
+                    CurrentOrderItems.Add(currentOrderItem);
+                }
+                UpdateOrderTotal();
             }
-            UpdateOrderTotal();
         }
 
         [RelayCommand]
-        private void IncrementQuantity(OrderItem orderItem)
+        public void IncrementQuantity(OrderItem orderItem)
         {
             if (orderItem != null)
             {
@@ -281,7 +288,7 @@ namespace DineSync.ViewModels
         }
 
         [RelayCommand]
-        private void DecrementQuantity(OrderItem orderItem)
+        public void DecrementQuantity(OrderItem orderItem)
         {
             if (orderItem != null && orderItem.Quantity > 1)
             {
@@ -295,24 +302,91 @@ namespace DineSync.ViewModels
             }
         }
 
-        private void UpdateOrderTotal()
-        {
-            if (CurrentOrder == null)
-                CurrentOrder = new Order();
-
-            CurrentOrder.TotalAmount = CurrentOrderItems.Sum(item => item.Price * item.Quantity);
-            OnPropertyChanged(nameof(CurrentOrder));
-        }
-
         [RelayCommand]
-        private async void CancelOrder()
+        public async void CancelOrder()
         {
             CurrentOrderItems.Clear();
             UpdateOrderTotal();
         }
 
         [RelayCommand]
-        private async Task RemoveMenu()
+        private async Task SaveOrder()
+        {
+            try
+            {
+                if (CurrentOrderItems == null || !CurrentOrderItems.Any())
+                {
+                    await Shell.Current.DisplayAlert("Error", "Cannot save empty order", "OK");
+                    return;
+                }
+
+                if (SelectedTable == null)
+                {
+                    await Shell.Current.DisplayAlert("Error", "No table selected", "OK");
+                    return;
+                }
+
+                var order = new Order
+                {
+                    TableNumber = SelectedTable.TableNumber,
+                    EmployeeId = SelectedTable.AssignedWaiterId,
+                    TotalAmount = CurrentOrderItems.Sum(item => item.Amount),
+                    TotalItemsCount = CurrentOrderItems.Sum(item => item.Quantity),
+                    GuestCount = SelectedTable.GuestCount,
+                    Status = "Pending",
+                    OrderDate = DateTime.Now
+                };
+
+                var orderId = await _OrderRepository.SaveOrderAsync(order);
+                order.Id = orderId;
+                order.OrderNumber = orderId.ToString();
+
+                await _OrderRepository.UpdateOrderAsync(order);
+
+                OrderNumber = order.OrderNumber;
+
+                foreach (var item in CurrentOrderItems)
+                {
+                    var orderItem = new OrderItem
+                    {
+                        OrderId = orderId,
+                        MenuItemId = item.MenuItemId,
+                        Name = item.Name,
+                        Quantity = item.Quantity,
+                        Price = item.Price,
+                        Icon = item.Icon
+                    };
+
+                    await _OrderItemRepository.SaveOrderItemAsync(orderItem);
+                }
+                OnPropertyChanged(nameof(OrderNumber));
+                CurrentOrderItems.Clear();
+                CurrentOrder = new Order();
+
+                await Shell.Current.DisplayAlert("Success", "Order saved successfully", "OK");
+
+                await Shell.Current.GoToAsync("..");
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", $"Failed to save order: {ex.Message}", "OK");
+            }
+        }
+
+        public void UpdateOrderTotal()
+        {
+            if (CurrentOrder == null)
+            {
+                CurrentOrder = new Order();
+            }
+
+            CurrentOrder.TotalAmount = CurrentOrderItems.Sum(item => item.Price * item.Quantity);
+            CurrentOrder.TotalItemsCount = CurrentOrderItems.Sum(item => item.Quantity);
+            OnPropertyChanged(nameof(CurrentOrder));
+        }
+
+        [RelayCommand]
+        public async Task RemoveMenu()
         {
             if (SelectedMenu != null)
             {
@@ -382,7 +456,7 @@ namespace DineSync.ViewModels
             Shell.Current.ShowPopup(popup);
         }
 
-        private async Task LoadWaiterNameAsync()
+        public async Task LoadWaiterNameAsync()
         {
             if (SelectedTable?.AssignedWaiterId > 0)
             {
@@ -392,7 +466,7 @@ namespace DineSync.ViewModels
             }
         }
 
-        public void ApplyQueryAttributes(IDictionary<string, object> query)
+        public async void ApplyQueryAttributes(IDictionary<string, object> query)
         {
             if (query.TryGetValue("SelectedTable", out var table) && table is Table selected)
             {
@@ -400,7 +474,7 @@ namespace DineSync.ViewModels
                 if (SelectedTable.AssignedWaiterId > 0)
                 {
                     var waiter = _UserRepository.GetUserByIdAsync(SelectedTable.AssignedWaiterId);
-                    _ = LoadWaiterNameAsync();
+                    await LoadWaiterNameAsync();
                 }
                 OnPropertyChanged(nameof(SelectedTable));
             }

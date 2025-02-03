@@ -41,6 +41,7 @@ namespace DineSync
             builder.Services.AddSingleton<EmployeePageViewModel>();
             builder.Services.AddSingleton<DashboardPageViewModel>();
             builder.Services.AddSingleton<MenuPageViewModel>();
+            builder.Services.AddSingleton<OrderPageViewModel>();
             builder.Services.AddSingleton<App>();
             builder.Services.AddSingleton<AppShell>();
 
@@ -51,6 +52,7 @@ namespace DineSync
             builder.Services.AddSingleton<IMenuCategoryRepository, MenuCategoryRepository>();
             builder.Services.AddSingleton<IMenuRepository, MenuRepository>();
             builder.Services.AddSingleton<IOrderItemRepository, OrderItemRepository>();
+            builder.Services.AddSingleton<IOrderRepository, OrderRepository>();
 
             return builder.Build();
         }
