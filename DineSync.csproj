@@ -66,6 +66,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Views\Pages\PaymentPage.xaml.cs">
+	    <DependentUpon>PaymentPage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Views\Popups\AddMenuCategoryPopup.xaml.cs">
 	    <DependentUpon>AddMenuCategoryPopup.xaml</DependentUpon>
 	  </Compile>
@@ -78,7 +81,7 @@
 	  <MauiXaml Update="Views\Popups\AddTablePopup.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\Pages\DashboardPage.xaml">
+	  <MauiXaml Update="Views\Pages\PaymentPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Pages\EmployeePage.xaml">

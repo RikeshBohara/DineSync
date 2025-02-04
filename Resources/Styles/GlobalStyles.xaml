@@ -28,9 +28,9 @@
     </Style>
 
     <Style x:Key="inputEntryFrameStyle" TargetType="Frame">
-        <Setter Property="Padding" Value="10,0,10,0" />
         <Setter Property="BackgroundColor" Value="#fafafa" />
         <Setter Property="HeightRequest" Value="50" />
+        <Setter Property="Padding" Value="10,0" />
     </Style>
 
     <Style x:Key="inputEntryImageStyle" TargetType="Image">
@@ -41,6 +41,11 @@
     <Style x:Key="inputEntryStyle" TargetType="Entry">
         <Setter Property="TextColor" Value="#000000" />
         <Setter Property="VerticalOptions" Value="Center" />
+    </Style>
+
+    <Style x:Key="inputFrameStyle" TargetType="Frame">
+        <Setter Property="HeightRequest" Value="40" />
+        <Setter Property="Padding" Value="10,0" />
     </Style>
 
     <Style x:Key="loginButtonStyle" TargetType="Button">
@@ -99,11 +104,12 @@
         <Setter Property="FontSize" Value="30" />
         <Setter Property="FontFamily" Value="Inter-SemiBold" />
         <Setter Property="Margin" Value="20,30,0,0" />
+        <Setter Property="VerticalOptions" Value="Center" />
     </Style>
 
     <Style x:Key="labelStyle" TargetType="Label">
         <Setter Property="TextColor" Value="#ffffff" />
-        <Setter Property="FontSize" Value="20" />
+        <Setter Property="FontSize" Value="16" />
         <Setter Property="VerticalOptions" Value="Center" />
     </Style>
 
@@ -140,13 +146,15 @@
         <Setter Property="Padding" Value="10" />
     </Style>
 
-    <Style x:Key="samllButtonStyle" TargetType="Button">
-        <Setter Property="Margin" Value="20" />
+    <Style x:Key="smallButtonStyle" TargetType="Button">
         <Setter Property="HorizontalOptions" Value="Center" />
+        <Setter Property="VerticalOptions" Value="Center" />
         <Setter Property="BackgroundColor" Value="#f67f20" />
         <Setter Property="FontFamily" Value="Inter-SemiBold" />
         <Setter Property="FontSize" Value="16" />
         <Setter Property="TextColor" Value="#ffffff" />
+        <Setter Property="HeightRequest" Value="40" />
+        <Setter Property="Margin" Value="10,20,30,20" />
     </Style>
 
     <Style x:Key="employeePageBorderStyle" TargetType="Border">
@@ -158,5 +166,65 @@
         <Setter Property="StrokeThickness" Value="1" />
         <Setter Property="StrokeShape" Value="RoundRectangle 10" />
         <Setter Property="Padding" Value="20" />
+    </Style>
+
+    <Style x:Key="tableImageStyle" TargetType="Image">
+        <Setter Property="Aspect" Value="AspectFit" />
+        <Setter Property="BackgroundColor" Value="#474747" />
+        <Setter Property="HeightRequest" Value="150" />
+    </Style>
+
+    <Style x:Key="boxViewStyle" TargetType="BoxView">
+        <Setter Property="Margin" Value="10" />
+        <Setter Property="BackgroundColor" Value="Gray" />
+        <Setter Property="HeightRequest" Value="2" />
+        <Setter Property="HorizontalOptions" Value="FillAndExpand" />
+    </Style>
+
+    <Style x:Key="orderBorderStyle" TargetType="Border">
+        <Setter Property="Padding" Value="30" />
+        <Setter Property="BackgroundColor" Value="#1f1d2b" />
+        <Setter Property="Stroke" Value="Transparent" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 10" />
+    </Style>
+
+    <Style x:Key="orderDetailBorderStyle" TargetType="Border">
+        <Setter Property="Margin" Value="10" />
+        <Setter Property="Padding" Value="10" />
+        <Setter Property="BackgroundColor" Value="#252836" />
+        <Setter Property="Stroke" Value="Transparent" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 10" />
+    </Style>
+
+    <Style x:Key="categoryBorderStyle" TargetType="Border">
+        <Setter Property="Margin" Value="20,0,0,0" />
+        <Setter Property="BackgroundColor" Value="#1f1d2b" />
+        <Setter Property="HeightRequest" Value="40" />
+        <Setter Property="WidthRequest" Value="145" />
+        <Setter Property="Stroke" Value="Transparent" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 10" />
+    </Style>
+
+    <Style x:Key="menuBorderStyle" TargetType="Border">
+        <Setter Property="Padding" Value="20,20,20,0" />
+        <Setter Property="BackgroundColor" Value="#1f1d2b" />
+        <Setter Property="Stroke" Value="Transparent" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 10" />
+    </Style>
+
+    <Style x:Key="sideGridBorderStyle" TargetType="Border">
+        <Setter Property="Margin" Value="10" />
+        <Setter Property="Padding" Value="10" />
+        <Setter Property="BackgroundColor" Value="#252836" />
+        <Setter Property="Stroke" Value="Transparent" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 10" />
+    </Style>
+
+    <Style x:Key="menuOrderGridBorderStyle" TargetType="Border">
+        <Setter Property="Margin" Value="10" />
+        <Setter Property="Padding" Value="10, 10, 10, 0" />
+        <Setter Property="BackgroundColor" Value="#252836" />
+        <Setter Property="Stroke" Value="Transparent" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 10" />
     </Style>
 </ResourceDictionary>

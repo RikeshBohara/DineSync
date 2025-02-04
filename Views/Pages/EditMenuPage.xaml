@@ -11,7 +11,7 @@
     <Grid ColumnDefinitions=".70*, .30*">
         <Grid
             Grid.Column="0"
-            RowDefinitions=".1*, .05*, .1*, .6*, .1*"
+            RowDefinitions=".1*, .05*, .1*, .6*"
             Style="{StaticResource mainGridStyle}">
             <Grid Grid.Row="0" ColumnDefinitions="*, Auto">
                 <Label
@@ -23,25 +23,13 @@
                     Margin="10,30,30,0"
                     Command="{Binding MenuCategoryPopupCommand}"
                     HeightRequest="40"
-                    Style="{StaticResource loginButtonStyle}"
+                    Style="{StaticResource smallButtonStyle}"
                     Text="Add Menu Categories"
                     VerticalOptions="Center" />
             </Grid>
-            <BoxView
-                Grid.Row="1"
-                Margin="30"
-                BackgroundColor="Gray"
-                HeightRequest="2"
-                HorizontalOptions="FillAndExpand" />
+            <BoxView Grid.Row="1" Style="{StaticResource boxViewStyle}" />
             <Grid Grid.Row="2" ColumnDefinitions="Auto, *">
-                <Border
-                    Grid.Column="0"
-                    Margin="20,0,0,0"
-                    BackgroundColor="#1f1d2b"
-                    HeightRequest="40"
-                    Stroke="Transparent"
-                    StrokeShape="RoundRectangle 10"
-                    WidthRequest="145">
+                <Border Grid.Column="0" Style="{StaticResource categoryBorderStyle}">
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding LoadAllMenuCommand}" />
                     </Border.GestureRecognizers>
@@ -68,13 +56,7 @@
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <HorizontalStackLayout>
-                                <Border
-                                    Margin="20,0,0,0"
-                                    BackgroundColor="#1f1d2b"
-                                    HeightRequest="40"
-                                    Stroke="Transparent"
-                                    StrokeShape="RoundRectangle 10"
-                                    WidthRequest="145">
+                                <Border Style="{StaticResource categoryBorderStyle}">
                                     <Border.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MenuPageViewModel}}, Path=CategoryTappedCommand}" CommandParameter="{Binding .}" />
                                     </Border.GestureRecognizers>
@@ -129,11 +111,7 @@
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Grid Margin="20,0,20,10" Padding="10">
-                            <Border
-                                Padding="20,20,20,0"
-                                BackgroundColor="#1f1d2b"
-                                Stroke="Transparent"
-                                StrokeShape="RoundRectangle 10">
+                            <Border Style="{StaticResource menuBorderStyle}">
                                 <Border.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MenuPageViewModel}}, Path=EditMenuCommand}" CommandParameter="{Binding .}" />
                                 </Border.GestureRecognizers>
@@ -179,32 +157,24 @@
             </CollectionView>
         </Grid>
         <Grid Grid.Column="1" Style="{StaticResource sideGridStyle}">
-            <Grid RowDefinitions=".1*, .05*, .7*, .1*">
+            <Grid RowDefinitions=".1*, .05*, .6*, .1*">
                 <Grid Grid.Row="0" ColumnDefinitions="*, Auto">
                     <VerticalStackLayout Grid.Column="0">
                         <Label
                             Grid.Column="0"
-                            Margin="20,30,0,0"
-                            FontSize="24"
-                            Text="Add Menu Items"
-                            TextColor="White"
-                            VerticalOptions="Center" />
+                            Style="{StaticResource labelHeaderStyle}"
+                            Text="Add Menu " />
                     </VerticalStackLayout>
                     <Button
                         Grid.Column="1"
                         Margin="10,30,30,0"
                         Command="{Binding RemoveMenuCommand}"
                         HeightRequest="40"
-                        Style="{StaticResource tablePageButtonStyle}"
+                        Style="{StaticResource smallButtonStyle}"
                         Text="Delete Menu"
                         VerticalOptions="Center" />
                 </Grid>
-                <BoxView
-                    Grid.Row="1"
-                    Margin="10"
-                    BackgroundColor="Gray"
-                    HeightRequest="2"
-                    HorizontalOptions="FillAndExpand" />
+                <BoxView Grid.Row="1" Style="{StaticResource boxViewStyle}" />
                 <VerticalStackLayout Grid.Row="2" Spacing="10">
                     <Border
                         BackgroundColor="LightGray"
@@ -298,7 +268,7 @@
                 <Button
                     Grid.Row="3"
                     Command="{Binding SaveMenuItemCommand}"
-                    Style="{StaticResource samllButtonStyle}"
+                    Style="{StaticResource smallButtonStyle}"
                     Text="Add Menu Item" />
                 <VerticalStackLayout Spacing="10" />
             </Grid>
