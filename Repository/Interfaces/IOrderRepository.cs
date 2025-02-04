@@ -4,10 +4,13 @@ namespace DineSync.Repository.Interfaces
 {
     public interface IOrderRepository
     {
-        Task<Order[]> GetAllOrdersAsync();
+        Task<List<Order>> GetAllOrdersAsync();
         Task<int> SaveOrderAsync(Order order);
         Task UpdateOrderAsync(Order order);
-        Task<Order[]> GetOrderByStatus(Order order);
-        Task<Order[]> GetOrderByPaymentStatus(Order order);
+        Task<List<Order>> GetPaidPaymentOrdersAsync();
+        Task<List<Order>> GetUnpaidPaymentOrdersAsync();
+        Task<List<Order>> GetPendingOrdersAsync();
+        Task<List<Order>> GetCompletedOrdersAsync();
+        Task<List<Order>> GetOrdersByTableAsync(int tableId);
     }
 }

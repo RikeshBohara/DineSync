@@ -14,9 +14,9 @@ namespace DineSync.Repository.Implementations
             _Connection = dbConfig.GetConnection();
         }
 
-        public async Task<Table[]> GetAllTablesAsync()
+        public async Task<List<Table>> GetAllTablesAsync()
         {
-            return await _Connection.Table<Table>().ToArrayAsync();
+            return await _Connection.Table<Table>().ToListAsync();
         }
 
         public async Task<int> AddTableAsync(Table table)
@@ -36,8 +36,7 @@ namespace DineSync.Repository.Implementations
 
         public async Task<Table> GetTableByIdAsync(int id)
         {
-            return await _Connection.Table<Table>()
-                .FirstOrDefaultAsync(table => table.Id == id);
+            return await _Connection.Table<Table>().FirstOrDefaultAsync(table => table.Id == id);
         }
     }
 }

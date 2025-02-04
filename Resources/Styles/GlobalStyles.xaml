@@ -227,4 +227,11 @@
         <Setter Property="Stroke" Value="Transparent" />
         <Setter Property="StrokeShape" Value="RoundRectangle 10" />
     </Style>
+
+    <Style x:Key="tablePageOrderBorderStyle" TargetType="Border">
+        <Setter Property="Padding" Value="20" />
+        <Setter Property="BackgroundColor" Value="#252836" />
+        <Setter Property="Stroke" Value="Transparent" />
+        <Setter Property="StrokeShape" Value="RoundRectangle 10" />
+    </Style>
 </ResourceDictionary>

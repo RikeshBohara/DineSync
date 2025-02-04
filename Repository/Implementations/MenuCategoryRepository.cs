@@ -14,9 +14,9 @@ namespace DineSync.Repository.Implementations
             _Connection = dbConfig.GetConnection();
         }
 
-        public async Task<MenuCategory[]> GetMenuCategoriesAsync()
+        public async Task<List<MenuCategory>> GetMenuCategoriesAsync()
         {
-            return await _Connection.Table<MenuCategory>().ToArrayAsync();
+            return await _Connection.Table<MenuCategory>().ToListAsync();
         }
 
         public async Task<int> AddMenuCategoryAsync(MenuCategory menuCategory)
@@ -26,18 +26,13 @@ namespace DineSync.Repository.Implementations
 
         public async Task<int> RemoveMenuCategoryWithItemsAsync(MenuCategory menuCategory)
         {
-            var mappings = await _Connection.Table<MenuCategoryMapping>()
-                                           .Where(mapping => mapping.MenuCategoryId == menuCategory.Id)
-                                           .ToArrayAsync();
-
-            var menuIds = mappings.Select(mapping => mapping.MenuId).ToArray();
-
-            if (menuIds.Any())
-            {
-                await _Connection.Table<Menu>().DeleteAsync(menu => menuIds.Contains(menu.Id));
-            }
-
-            return await _Connection.DeleteAsync(menuCategory);
+            var deleteMenusQuery = @"DELETE FROM Menu 
+                                   WHERE Id IN (SELECT MenuId FROM MenuCategoryMapping 
+                                                 WHERE MenuCategoryId = ?)";
+            var deleteCategoryQuery = @"DELETE FROM MenuCategory 
+                                      WHERE Id = ?";
+            await _Connection.ExecuteAsync(deleteMenusQuery, menuCategory.Id);
+            return await _Connection.ExecuteAsync(deleteCategoryQuery, menuCategory.Id);
         }
 
         public async Task<MenuCategory> CheckIfCategoryExistsAsync(string name)

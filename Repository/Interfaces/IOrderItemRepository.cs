@@ -4,8 +4,8 @@ namespace DineSync.Repository.Interfaces
 {
     public interface IOrderItemRepository
     {
-        Task<OrderItem[]> GetAllOrderItemsAsync();
+        Task<List<OrderItem>> GetAllOrderItemsAsync();
         Task<int> SaveOrderItemAsync(OrderItem orderItem);
-        Task<OrderItem[]> GetOrderItemsByOrderIdAsync(int orderId);
+        Task<List<OrderItem>> GetOrderItemsByOrderIdAsync(int orderId);
     }
 }

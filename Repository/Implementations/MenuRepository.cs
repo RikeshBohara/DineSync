@@ -14,9 +14,9 @@ namespace DineSync.Repository.Implementations
             _Connection = dbConfig.GetConnection();
         }
 
-        public async Task<Menu[]> GetAllMenuAsync()
+        public async Task<List<Menu>> GetAllMenuAsync()
         {
-            return await _Connection.Table<Menu>().ToArrayAsync();
+            return await _Connection.Table<Menu>().ToListAsync();
         }
 
         public async Task<int> AddNewMenuAsync(Menu menu)
@@ -34,23 +34,13 @@ namespace DineSync.Repository.Implementations
         {
             await _Connection.InsertAsync(mapping);
         }
-
-        public async Task<Menu[]> GetMenusByCategoryAsync(int categoryId)
+        public async Task<List<Menu>> GetMenusByCategoryAsync(int categoryId)
         {
-            var mappings = await _Connection.Table<MenuCategoryMapping>()
-                                            .Where(menu => menu.MenuCategoryId == categoryId)
-                                            .ToArrayAsync();
-
-            var menuIds = mappings.Select(menu => menu.MenuId).ToArray();
-
-            if (!menuIds.Any())
-                return Array.Empty<Menu>();
-
-            var menus = await _Connection.Table<Menu>()
-                                         .Where(menu => menuIds.Contains(menu.Id))
-                                         .ToArrayAsync();
-
-            return menus.ToArray();
+            var query = @"SELECT menu.* FROM Menu menu
+                        INNER JOIN MenuCategoryMapping mapping ON menu.Id = mapping.MenuId
+                        WHERE mapping.MenuCategoryId = ?";
+            var menus = await _Connection.QueryAsync<Menu>(query, categoryId);
+            return menus.ToList();
         }
 
         public async Task<MenuCategoryMapping> GetMenuCategoryMappingAsync(int menuId)
@@ -60,21 +50,16 @@ namespace DineSync.Repository.Implementations
 
         public async Task<Menu> CheckIfMenuExistsAsync(string name, decimal price, string description, int categoryId)
         {
-            var categoryMappings = await _Connection.Table<MenuCategoryMapping>()
-                .Where(m => m.MenuCategoryId == categoryId)
-                .ToArrayAsync();
-
-            if (!categoryMappings.Any())
-                return null;
-
-            var menuIdsInCategory = categoryMappings.Select(menu => menu.MenuId).ToList();
-
-            return await _Connection.Table<Menu>()
-                .Where(menu => menu.Name == name &&
-                           menu.Price == price &&
-                           menu.Description == description &&
-                           menuIdsInCategory.Contains(menu.Id))
-                .FirstOrDefaultAsync();
+            var query = @"SELECT menu.* 
+                        FROM Menu menu
+                        INNER JOIN MenuCategoryMapping mapping ON menu.Id = mapping.MenuId
+                        WHERE mapping.MenuCategoryId = ? 
+                        AND menu.Name = ? 
+                        AND menu.Price = ? 
+                        AND menu.Description = ? 
+                        LIMIT 1";
+            var menus = await _Connection.QueryAsync<Menu>(query, categoryId, name, price, description);
+            return menus.FirstOrDefault();
         }
     }
 }

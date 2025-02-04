@@ -57,7 +57,7 @@ namespace DineSync.ViewModels
             _OrderRepository = orderRepository;
             _OrderItemRepository = orderItemRepository;
             _TableRepository = tableRepository;
-            LoadOrders();
+            _ = LoadOrders();
         }
 
         public void SetOrderNumber(string orderNumber)
@@ -66,7 +66,8 @@ namespace DineSync.ViewModels
             OnPropertyChanged(nameof(OrderNumber));
         }
 
-        public async void LoadOrders()
+        [RelayCommand]
+        public async Task LoadOrders()
         {
             var orders = await _OrderRepository.GetAllOrdersAsync();
             Orders = new ObservableCollection<Order>(orders.OrderByDescending(order => order.OrderDate));
@@ -89,7 +90,7 @@ namespace DineSync.ViewModels
             }
             if (order.PaymentStatus == "Paid")
             {
-                IsEnabled = false;
+                IsPaymentEnabled = false;
             }
 
             SelectedOrder = order;
@@ -118,7 +119,7 @@ namespace DineSync.ViewModels
             }
             SelectedOrder.Status = "Completed";
             await _OrderRepository.UpdateOrderAsync(SelectedOrder);
-            LoadOrders();
+            await LoadOrders();
             IsEnabled = false;
         }
 
@@ -132,8 +133,36 @@ namespace DineSync.ViewModels
             }
             SelectedOrder.PaymentStatus = "Paid";
             await _OrderRepository.UpdateOrderAsync(SelectedOrder);
-            LoadOrders();
+            await LoadOrders();
             IsPaymentEnabled = false;
+        }
+
+        [RelayCommand]
+        public async Task LoadPaidOrders()
+        {
+            var paidOrders = await _OrderRepository.GetPaidPaymentOrdersAsync();
+            Orders = new ObservableCollection<Order>(paidOrders.OrderByDescending(paidOrder => paidOrder.OrderDate));
+        }
+
+        [RelayCommand]
+        public async Task LoadUnpaidOrders()
+        {
+            var unpaidOrders = await _OrderRepository.GetUnpaidPaymentOrdersAsync();
+            Orders = new ObservableCollection<Order>(unpaidOrders.OrderByDescending(unpaidOrder => unpaidOrder.OrderDate));
+        }
+
+        [RelayCommand]
+        public async Task LoadPendingOrders()
+        {
+            var pendingOrders = await _OrderRepository.GetPendingOrdersAsync();
+            Orders = new ObservableCollection<Order>(pendingOrders.OrderByDescending(pendingOrder => pendingOrder.OrderDate));
+        }
+
+        [RelayCommand]
+        public async Task LoadCompletedOrders()
+        {
+            var completedOrders = await _OrderRepository.GetCompletedOrdersAsync();
+            Orders = new ObservableCollection<Order>(completedOrders.OrderByDescending(completedOrder => completedOrder.OrderDate));
         }
     }
 }
