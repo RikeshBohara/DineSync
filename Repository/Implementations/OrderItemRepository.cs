@@ -14,9 +14,9 @@ namespace DineSync.Repository.Implementations
             _Connection = dbConfig.GetConnection();
         }
 
-        public async Task<OrderItem[]> GetAllOrderItemsAsync()
+        public async Task<List<OrderItem>> GetAllOrderItemsAsync()
         {
-            return await _Connection.Table<OrderItem>().ToArrayAsync();
+            return await _Connection.Table<OrderItem>().ToListAsync();
         }
 
         public async Task<int> SaveOrderItemAsync(OrderItem orderItem)
@@ -24,11 +24,9 @@ namespace DineSync.Repository.Implementations
             return await _Connection.InsertAsync(orderItem);
         }
 
-        public async Task<OrderItem[]> GetOrderItemsByOrderIdAsync(int orderId)
+        public async Task<List<OrderItem>> GetOrderItemsByOrderIdAsync(int orderId)
         {
-            return await _Connection.Table<OrderItem>()
-                                  .Where(orderItem => orderItem.OrderId == orderId)
-                                  .ToArrayAsync();
+            return await _Connection.Table<OrderItem>().Where(orderItem => orderItem.OrderId == orderId).ToListAsync();
         }
     }
 }

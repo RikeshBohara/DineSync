@@ -7,13 +7,45 @@
     Shell.NavBarIsVisible="False"
     Style="{StaticResource contentPageBackgroundStyle}">
     <Grid ColumnDefinitions="0.6*, 0.4*">
-        <Grid RowDefinitions=".1*, .05*, .85*" Style="{StaticResource mainGridStyle}">
+        <Grid RowDefinitions=".1*, .1*, .05*, .85*" Style="{StaticResource mainGridStyle}">
             <Label
                 Grid.Row="0"
                 Style="{StaticResource labelHeaderStyle}"
                 Text="Orders" />
             <BoxView Grid.Row="1" Style="{StaticResource boxViewStyle}" />
-            <CollectionView Grid.Row="2" ItemsSource="{Binding Orders}">
+            <HorizontalStackLayout Grid.Row="2" Margin="15,10">
+                <Border Style="{StaticResource categoryBorderStyle}">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding LoadOrdersCommand}" />
+                    </Border.GestureRecognizers>
+                    <Label
+                        FontSize="16"
+                        HorizontalOptions="Center"
+                        Style="{StaticResource labelStyle}"
+                        Text="All" />
+                </Border>
+                <Border Style="{StaticResource categoryBorderStyle}">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding LoadPendingOrdersCommand}" />
+                    </Border.GestureRecognizers>
+                    <Label
+                        FontSize="16"
+                        HorizontalOptions="Center"
+                        Style="{StaticResource labelStyle}"
+                        Text="Pending" />
+                </Border>
+                <Border Style="{StaticResource categoryBorderStyle}">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding LoadCompletedOrdersCommand}" />
+                    </Border.GestureRecognizers>
+                    <Label
+                        FontSize="16"
+                        HorizontalOptions="Center"
+                        Style="{StaticResource labelStyle}"
+                        Text="Completed" />
+                </Border>
+            </HorizontalStackLayout>
+            <CollectionView Grid.Row="3" ItemsSource="{Binding Orders}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Grid Margin="20,0,20,0" Padding="10">
@@ -69,7 +101,7 @@
                         <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
                             <HorizontalStackLayout Spacing="10">
                                 <Image HeightRequest="20" Source="table.png" />
-                                <Label Style="{StaticResource labelStyle}" Text="{Binding OrderTable.TableNumber}" />
+                                <Label Style="{StaticResource labelStyle}" Text="{Binding TableNumber}" />
                             </HorizontalStackLayout>
                             <HorizontalStackLayout Spacing="10">
                                 <Image HeightRequest="20" Source="user.png" />

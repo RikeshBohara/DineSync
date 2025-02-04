@@ -13,6 +13,7 @@ namespace DineSync.ViewModels
         #region Fields
         private readonly ITableRepository _TableRepository;
         private readonly IUserRepository _UserRepository;
+        private readonly IOrderRepository _OrderRepository;
 
         [ObservableProperty]
         private User _User;
@@ -29,16 +30,21 @@ namespace DineSync.ViewModels
         [ObservableProperty]
         private string _GuestsCount;
 
+        [ObservableProperty]
+        private ObservableCollection<Order> _TableOrders;
+
         private Popup _AddTablePopup;
 
         private Popup _SaveTableOccupantsPopup;
         #endregion
 
         #region Constructor
-        public TablePageViewModel(ITableRepository tableRepository)
+        public TablePageViewModel(ITableRepository tableRepository, IOrderRepository orderRepository)
         {
             _TableRepository = tableRepository;
+            _OrderRepository = orderRepository;
             Tables = new ObservableCollection<Table>();
+            TableOrders = new ObservableCollection<Order>();
             LoadTables();
         }
         #endregion
@@ -83,6 +89,7 @@ namespace DineSync.ViewModels
         {
             _SelectedTable = selectedTable;
             OnPropertyChanged(nameof(SelectedTable));
+            await GetOrders(selectedTable);
         }
 
         [RelayCommand]
@@ -165,6 +172,13 @@ namespace DineSync.ViewModels
             };
             _AddTablePopup = popup;
             Shell.Current.ShowPopup(popup);
+        }
+
+        [RelayCommand]
+        public async Task GetOrders(Table selectedTable)
+        {
+            var orders = await _OrderRepository.GetOrdersByTableAsync(selectedTable.Id);
+            TableOrders = new ObservableCollection<Order>(orders);
         }
         #endregion
     }

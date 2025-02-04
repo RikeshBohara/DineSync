@@ -328,6 +328,7 @@ namespace DineSync.ViewModels
 
                 var order = new Order
                 {
+                    TableId = SelectedTable.Id,
                     TableNumber = SelectedTable.TableNumber,
                     EmployeeId = SelectedTable.AssignedWaiterId,
                     TotalAmount = CurrentOrderItems.Sum(item => item.Amount),

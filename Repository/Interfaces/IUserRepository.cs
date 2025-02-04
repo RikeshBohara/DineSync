@@ -4,7 +4,7 @@ namespace DineSync.Repository.Interfaces
 {
     public interface IUserRepository
     {
-        Task<User[]> GetAllUsersAsync();
+        Task<List<User>> GetAllUsersAsync();
         Task<int> AddUserAsync(User user);
         Task<int> RemoveUserAsync(User user);
         Task<int> UpdateUserAsync(User user);

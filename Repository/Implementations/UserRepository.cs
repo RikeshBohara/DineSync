@@ -14,9 +14,9 @@ namespace DineSync.Repository.Implementations
             _Connection = dbConfig.GetConnection();
         }
 
-        public async Task<User[]> GetAllUsersAsync()
+        public async Task<List<User>> GetAllUsersAsync()
         {
-            return await _Connection.Table<User>().ToArrayAsync();
+            return await _Connection.Table<User>().ToListAsync();
         }
 
         public async Task<int> AddUserAsync(User user)

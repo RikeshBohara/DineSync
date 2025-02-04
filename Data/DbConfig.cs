@@ -39,7 +39,6 @@ namespace DineSync.Data
             await _Connection.CreateTableAsync<MenuCategoryMapping>();
             await _Connection.CreateTableAsync<OrderItem>();
             await _Connection.CreateTableAsync<Order>();
-            await _Connection.CreateTableAsync<Bill>();
         }
     }
 }
