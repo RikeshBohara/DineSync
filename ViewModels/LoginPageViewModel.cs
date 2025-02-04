@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DineSync.Repository.Interfaces;
-using DineSync.Views.Pages;
 
 namespace DineSync.ViewModels
 {
@@ -66,7 +65,7 @@ namespace DineSync.ViewModels
 
             if (user != null && user.Role== "Owner")
             {
-                await Shell.Current.GoToAsync($"/DashboardPage", new Dictionary<string, object> { { "User", user } });
+                await Shell.Current.GoToAsync($"/PaymentPage", new Dictionary<string, object> { { "User", user } });
             }
             else if(user!=null && user.Role == "Waiter")
             {

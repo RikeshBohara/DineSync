@@ -32,14 +32,13 @@ namespace DineSync
             builder.Services.AddSingleton<EditMenuPage>();
             builder.Services.AddSingleton<OrderPage>();
             builder.Services.AddSingleton<TablePage>();
-            builder.Services.AddSingleton<DashboardPage>();
+            builder.Services.AddSingleton<PaymentPage>();
             builder.Services.AddSingleton<EmployeePage>();
             builder.Services.AddSingleton<MenuPage>();
             builder.Services.AddSingleton<LoginPageViewModel>();
             builder.Services.AddSingleton<SignupPageViewModel>();
             builder.Services.AddSingleton<TablePageViewModel>();
             builder.Services.AddSingleton<EmployeePageViewModel>();
-            builder.Services.AddSingleton<DashboardPageViewModel>();
             builder.Services.AddSingleton<MenuPageViewModel>();
             builder.Services.AddSingleton<OrderPageViewModel>();
             builder.Services.AddSingleton<App>();

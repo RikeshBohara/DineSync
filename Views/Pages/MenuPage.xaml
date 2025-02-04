@@ -13,21 +13,9 @@
                 Grid.Row="0"
                 Style="{StaticResource labelHeaderStyle}"
                 Text="Select Menu" />
-            <BoxView
-                Grid.Row="1"
-                Margin="30"
-                BackgroundColor="Gray"
-                HeightRequest="2"
-                HorizontalOptions="FillAndExpand" />
+            <BoxView Grid.Row="1" Style="{StaticResource boxViewStyle}" />
             <Grid Grid.Row="2" ColumnDefinitions="Auto, *">
-                <Border
-                    Grid.Column="0"
-                    Margin="20,0,0,0"
-                    BackgroundColor="#1f1d2b"
-                    HeightRequest="40"
-                    Stroke="Transparent"
-                    StrokeShape="RoundRectangle 10"
-                    WidthRequest="145">
+                <Border Grid.Column="0" Style="{StaticResource categoryBorderStyle}">
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding LoadAllMenuCommand}" />
                     </Border.GestureRecognizers>
@@ -54,13 +42,7 @@
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <HorizontalStackLayout>
-                                <Border
-                                    Margin="20,0,0,0"
-                                    BackgroundColor="#1f1d2b"
-                                    HeightRequest="40"
-                                    Stroke="Transparent"
-                                    StrokeShape="RoundRectangle 10"
-                                    WidthRequest="145">
+                                <Border Style="{StaticResource categoryBorderStyle}">
                                     <Border.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MenuPageViewModel}}, Path=CategoryTappedCommand}" CommandParameter="{Binding .}" />
                                     </Border.GestureRecognizers>
@@ -98,11 +80,7 @@
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Grid Margin="20,0,20,10" Padding="10">
-                            <Border
-                                Padding="20,20,20,0"
-                                BackgroundColor="#1f1d2b"
-                                Stroke="Transparent"
-                                StrokeShape="RoundRectangle 10">
+                            <Border Style="{StaticResource menuBorderStyle}">
                                 <Border.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MenuPageViewModel}}, Path=MenuItemTappedCommand}" CommandParameter="{Binding .}" />
                                 </Border.GestureRecognizers>
@@ -148,126 +126,109 @@
             </CollectionView>
         </Grid>
         <Grid Grid.Column="1" Style="{StaticResource sideGridStyle}">
-            <Grid RowDefinitions=".1*, .05*, .6*, .1*, .1*">
-                <VerticalStackLayout Grid.Row="0">
-                    <Label
-                        Margin="20,30,0,0"
-                        FontSize="20"
-                        HorizontalOptions="Center"
-                        Text="Current Order"
-                        TextColor="White"
-                        VerticalOptions="Center" />
-                    <Grid ColumnDefinitions="*, Auto">
+            <Grid RowDefinitions=".25*, .7*, .1*, .13*">
+                <Border Grid.Row="0" Style="{StaticResource sideGridBorderStyle}">
+                    <StackLayout>
                         <Label
-                            Grid.Column="0"
-                            Margin="20,10,0,0"
-                            FontSize="16"
-                            Text="{Binding SelectedTable.TableNumber, StringFormat='Table: {0}'}"
-                            TextColor="White"
-                            VerticalOptions="Center" />
-                        <Label
-                            Grid.Column="1"
-                            Margin="20,10,20,0"
-                            FontSize="16"
-                            Text="{Binding SelectedTable.GuestCount, StringFormat='Guests: {0}'}"
-                            TextColor="White"
-                            VerticalOptions="Center" />
-                    </Grid>
-                </VerticalStackLayout>
-                <BoxView
-                    Grid.Row="1"
-                    Margin="10"
-                    BackgroundColor="Gray"
-                    HeightRequest="2"
-                    HorizontalOptions="FillAndExpand" />
-                <ScrollView Grid.Row="2">
-                    <VerticalStackLayout Spacing="20">
-                        <CollectionView ItemsSource="{Binding CurrentOrderItems}">
-                            <CollectionView.ItemTemplate>
-                                <DataTemplate>
-                                    <Border
-                                        Margin="10"
-                                        Padding="10"
-                                        BackgroundColor="#252836"
-                                        Stroke="Transparent"
-                                        StrokeShape="RoundRectangle 10">
-                                        <Grid
-                                            ColumnDefinitions="Auto, *, *"
-                                            ColumnSpacing="20"
-                                            RowDefinitions="Auto, *">
-                                            <Image
-                                                Grid.Row="0"
-                                                Grid.RowSpan="2"
-                                                Grid.Column="0"
-                                                Aspect="AspectFit"
-                                                HeightRequest="60"
-                                                Source="{Binding Icon}"
-                                                WidthRequest="60" />
-                                            <Label
-                                                Grid.Row="0"
-                                                Grid.Column="1"
-                                                Style="{StaticResource labelStyle}"
-                                                Text="{Binding Name}" />
-                                            <Label
-                                                Grid.Row="0"
-                                                Grid.Column="2"
-                                                Style="{StaticResource labelStyle}"
-                                                Text="Quantity" />
-                                            <Label
-                                                Grid.Row="1"
-                                                Grid.Column="1"
-                                                Style="{StaticResource labelStyle}"
-                                                Text="{Binding Amount, StringFormat='रु. {0}'}" />
-                                            <Grid
-                                                Grid.Row="1"
-                                                Grid.Column="2"
-                                                ColumnDefinitions="*, Auto, *"
-                                                ColumnSpacing="10">
-                                                <Button
-                                                    Grid.Column="0"
-                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MenuPageViewModel}}, Path=DecrementQuantityCommand}"
-                                                    CommandParameter="{Binding .}"
-                                                    HeightRequest="40"
-                                                    Style="{StaticResource samllButtonStyle}"
-                                                    Text="-"
-                                                    WidthRequest="40" />
-                                                <Label
-                                                    Grid.Column="1"
-                                                    Style="{StaticResource labelStyle}"
-                                                    Text="{Binding Quantity}"
-                                                    VerticalOptions="Center" />
-                                                <Button
-                                                    Grid.Column="2"
-                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MenuPageViewModel}}, Path=IncrementQuantityCommand}"
-                                                    CommandParameter="{Binding .}"
-                                                    HeightRequest="40"
-                                                    Style="{StaticResource samllButtonStyle}"
-                                                    Text="+"
-                                                    WidthRequest="40" />
-                                            </Grid>
-                                        </Grid>
-                                    </Border>
-                                </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>
-                    </VerticalStackLayout>
-                </ScrollView>
+                            HorizontalOptions="Center"
+                            Style="{StaticResource labelHeaderStyle}"
+                            Text="Current Order" />
+                        <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
+                            <HorizontalStackLayout Spacing="10">
+                                <Image HeightRequest="20" Source="table.png" />
+                                <Label
+                                    FontSize="16"
+                                    Style="{StaticResource labelStyle}"
+                                    Text="{Binding SelectedTable.TableNumber}" />
+                            </HorizontalStackLayout>
+                            <HorizontalStackLayout Grid.Column="1" Spacing="10">
+                                <Image HeightRequest="20" Source="user.png" />
+                                <Label
+                                    FontSize="16"
+                                    Style="{StaticResource labelStyle}"
+                                    Text="{Binding SelectedTable.GuestCount}" />
+                            </HorizontalStackLayout>
+                        </HorizontalStackLayout>
+                    </StackLayout>
+                </Border>
+                <CollectionView Grid.Row="1" ItemsSource="{Binding CurrentOrderItems}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Border Style="{StaticResource menuOrderGridBorderStyle}">
+                                <Grid
+                                    ColumnDefinitions="Auto, *, *"
+                                    ColumnSpacing="20"
+                                    RowDefinitions="Auto, *">
+                                    <Image
+                                        Grid.Row="0"
+                                        Grid.RowSpan="2"
+                                        Grid.Column="0"
+                                        Aspect="AspectFit"
+                                        HeightRequest="60"
+                                        Source="{Binding Icon}"
+                                        WidthRequest="60" />
+                                    <Label
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        Style="{StaticResource labelStyle}"
+                                        Text="{Binding Name}" />
+                                    <Label
+                                        Grid.Row="0"
+                                        Grid.Column="2"
+                                        Style="{StaticResource labelStyle}"
+                                        Text="Quantity" />
+                                    <Label
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        Style="{StaticResource labelStyle}"
+                                        Text="{Binding Amount, StringFormat='रु. {0}'}" />
+                                    <Grid
+                                        Grid.Row="1"
+                                        Grid.Column="2"
+                                        ColumnDefinitions="*, *, *"
+                                        ColumnSpacing="10">
+                                        <Button
+                                            Grid.Column="0"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MenuPageViewModel}}, Path=DecrementQuantityCommand}"
+                                            CommandParameter="{Binding .}"
+                                            HeightRequest="40"
+                                            Style="{StaticResource smallButtonStyle}"
+                                            Text="-"
+                                            WidthRequest="40" />
+                                        <Label
+                                            Grid.Column="1"
+                                            Style="{StaticResource labelStyle}"
+                                            Text="{Binding Quantity}" />
+                                        <Button
+                                            Grid.Column="2"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MenuPageViewModel}}, Path=IncrementQuantityCommand}"
+                                            CommandParameter="{Binding .}"
+                                            HeightRequest="40"
+                                            Style="{StaticResource smallButtonStyle}"
+                                            Text="+"
+                                            WidthRequest="40" />
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
                 <Label
-                    Grid.Row="3"
+                    Grid.Row="2"
                     Margin="20,0"
                     Style="{StaticResource labelStyle}"
                     Text="{Binding CurrentOrder.TotalAmount, StringFormat='Total: रु. {0}'}" />
                 <HorizontalStackLayout
-                    Grid.Row="4"
+                    Grid.Row="3"
                     HorizontalOptions="Center"
                     Spacing="20">
                     <Button
                         Command="{Binding SaveOrderCommand}"
-                        Style="{StaticResource samllButtonStyle}"
+                        Style="{StaticResource smallButtonStyle}"
                         Text="Save Order" />
                     <Button
                         Command="{Binding CancelOrderCommand}"
-                        Style="{StaticResource samllButtonStyle}"
+                        Style="{StaticResource smallButtonStyle}"
                         Text="Cancel Order" />
                 </HorizontalStackLayout>
             </Grid>

@@ -41,7 +41,7 @@ namespace DineSync.Repository.Implementations
                                             .Where(menu => menu.MenuCategoryId == categoryId)
                                             .ToArrayAsync();
 
-            var menuIds = mappings.Select(menu => menu.MenuId).ToList();
+            var menuIds = mappings.Select(menu => menu.MenuId).ToArray();
 
             if (!menuIds.Any())
                 return Array.Empty<Menu>();

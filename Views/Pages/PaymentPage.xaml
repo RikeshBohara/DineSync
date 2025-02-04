@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-    x:Class="DineSync.Views.Pages.OrderPage"
+    x:Class="DineSync.Views.Pages.PaymentPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:viewmodels="clr-namespace:DineSync.ViewModels"
@@ -39,7 +39,7 @@
                                         Grid.Column="1"
                                         FontSize="20"
                                         Style="{StaticResource labelStyle}"
-                                        Text="{Binding Status}" />
+                                        Text="{Binding PaymentStatus}" />
                                     <HorizontalStackLayout Grid.Row="1" Spacing="20">
                                         <HorizontalStackLayout Spacing="10">
                                             <Image HeightRequest="20" Source="table.png" />
@@ -50,6 +50,11 @@
                                             <Label Style="{StaticResource labelStyle}" Text="{Binding GuestCount}" />
                                         </HorizontalStackLayout>
                                     </HorizontalStackLayout>
+                                    <Label
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        Style="{StaticResource labelStyle}"
+                                        Text="{Binding TotalAmount, StringFormat='रु. {0}'}" />
                                 </Grid>
                             </Border>
                         </Grid>
@@ -58,7 +63,7 @@
             </CollectionView>
         </Grid>
         <Grid Grid.Column="1" Style="{StaticResource sideGridStyle}">
-            <Grid RowDefinitions=".15*,.5*,.1*">
+            <Grid RowDefinitions=".15*, .5*, .05*, .1*">
                 <Border Grid.Row="0" Style="{StaticResource orderDetailBorderStyle}">
                     <StackLayout>
                         <Label
@@ -94,8 +99,8 @@
                     SelectionMode="None">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <Border Margin="10" Style="{StaticResource orderDetailBorderStyle}">
-                                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="15">
+                            <Border Style="{StaticResource orderDetailBorderStyle}">
+                                <Grid ColumnDefinitions="Auto,*,*,Auto" ColumnSpacing="10">
                                     <Image
                                         Grid.Column="0"
                                         HeightRequest="40"
@@ -111,17 +116,27 @@
                                         Style="{StaticResource labelStyle}"
                                         Text="{Binding Quantity, StringFormat='x{0}'}"
                                         VerticalOptions="Center" />
+                                    <Label
+                                        Grid.Column="3"
+                                        Style="{StaticResource labelStyle}"
+                                        Text="{Binding Amount, StringFormat='रु. {0}'}"
+                                        VerticalOptions="Center" />
                                 </Grid>
                             </Border>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-                <Button
+                <Label
                     Grid.Row="2"
-                    Command="{Binding UpdateOrderStatusCommand}"
-                    IsEnabled="{Binding IsEnabled}"
+                    Margin="20,0"
+                    Style="{StaticResource labelStyle}"
+                    Text="{Binding SelectedOrder.TotalAmount, StringFormat='Total: रु. {0}'}" />
+                <Button
+                    Grid.Row="3"
+                    Command="{Binding UpdatePaymentStatusCommand}"
+                    IsEnabled="{Binding IsPaymentEnabled}"
                     Style="{StaticResource smallButtonStyle}"
-                    Text="Completed" />
+                    Text="Confirm Payment" />
             </Grid>
         </Grid>
     </Grid>

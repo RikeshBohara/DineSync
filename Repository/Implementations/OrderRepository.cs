@@ -17,7 +17,6 @@ namespace DineSync.Repository.Implementations
         {
             return await _Connection.Table<Order>().ToArrayAsync();
         }
-
         public async Task<int> SaveOrderAsync(Order order)
         {
             await _Connection.InsertAsync(order);
@@ -26,6 +25,14 @@ namespace DineSync.Repository.Implementations
         public async Task UpdateOrderAsync(Order order)
         {
             await _Connection.UpdateAsync(order);
+        }
+        public async Task<Order[]> GetOrderByPaymentStatus(Order order)
+        {
+            throw new NotImplementedException();
+        }
+        public async Task<Order[]> GetOrderByStatus(Order order)
+        {
+            throw new NotImplementedException();
         }
     }
 }

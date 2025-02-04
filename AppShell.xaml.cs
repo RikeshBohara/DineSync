@@ -32,7 +32,7 @@ namespace DineSync
 
             Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
             Routing.RegisterRoute(nameof(SignupPage), typeof(SignupPage));
-            Routing.RegisterRoute(nameof(DashboardPage), typeof(DashboardPage));
+            Routing.RegisterRoute(nameof(PaymentPage), typeof(PaymentPage));
             Routing.RegisterRoute(nameof(EmployeePage), typeof(EmployeePage));
             Routing.RegisterRoute(nameof(EditMenuPage), typeof(EditMenuPage));
             Routing.RegisterRoute(nameof(MenuPage), typeof(MenuPage));
@@ -44,7 +44,7 @@ namespace DineSync
         {
              if (Role == "Owner")
             {
-                DashboardPageShellContent.IsVisible = true;
+                PaymentPageShellContent.IsVisible = true;
                 EmployeePageShellContent.IsVisible = true;
                 EditMenuPageShellContent.IsVisible = true;
                 TablePageShellContent.IsVisible = true;
@@ -56,7 +56,7 @@ namespace DineSync
                 TablePageShellContent.IsVisible = true;
                 MenuPageShellContent.IsVisible = true;
                 OrderPageShellContent.IsVisible = true;
-                DashboardPageShellContent.IsVisible = false;
+                PaymentPageShellContent.IsVisible = false;
                 EmployeePageShellContent.IsVisible = false;
                 EditMenuPageShellContent.IsVisible = false;
             }
@@ -65,7 +65,7 @@ namespace DineSync
                 OrderPageShellContent.IsVisible = true;
                 TablePageShellContent.IsVisible = false;
                 MenuPageShellContent.IsVisible = false;
-                DashboardPageShellContent.IsVisible = false;
+                PaymentPageShellContent.IsVisible = false;
                 EmployeePageShellContent.IsVisible = false;
                 EditMenuPageShellContent.IsVisible = false;
             }
