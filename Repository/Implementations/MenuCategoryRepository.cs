@@ -7,13 +7,18 @@ namespace DineSync.Repository.Implementations
 {
     public class MenuCategoryRepository : IMenuCategoryRepository
     {
+        #region Fields
         private readonly SQLiteAsyncConnection _Connection;
+        #endregion
 
+        #region Constructor
         public MenuCategoryRepository(DbConfig dbConfig)
         {
             _Connection = dbConfig.GetConnection();
         }
+        #endregion
 
+        #region Methods
         public async Task<List<MenuCategory>> GetMenuCategoriesAsync()
         {
             return await _Connection.Table<MenuCategory>().ToListAsync();
@@ -39,5 +44,6 @@ namespace DineSync.Repository.Implementations
         {
             return await _Connection.Table<MenuCategory>().FirstOrDefaultAsync(category => category.Name == name);
         }
+        #endregion
     }
 }

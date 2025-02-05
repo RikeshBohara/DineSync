@@ -7,13 +7,18 @@ namespace DineSync.Repository.Implementations
 {
     public class TableRepository : ITableRepository
     {
+        #region Fields
         private readonly SQLiteAsyncConnection _Connection;
+        #endregion
 
+        #region Constructor
         public TableRepository(DbConfig dbConfig)
         {
             _Connection = dbConfig.GetConnection();
         }
+        #endregion
 
+        #region Methods
         public async Task<List<Table>> GetAllTablesAsync()
         {
             return await _Connection.Table<Table>().ToListAsync();
@@ -38,5 +43,6 @@ namespace DineSync.Repository.Implementations
         {
             return await _Connection.Table<Table>().FirstOrDefaultAsync(table => table.Id == id);
         }
+        #endregion
     }
 }

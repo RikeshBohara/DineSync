@@ -14,7 +14,9 @@ namespace DineSync.ViewModels
         #region Fields
         private readonly ITableRepository _TableRepository;
         private readonly IOrderRepository _OrderRepository;
+        #endregion
 
+        #region Properties
         [ObservableProperty]
         private User _User;
 

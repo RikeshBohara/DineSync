@@ -3,108 +3,196 @@
     x:Class="DineSync.Views.Pages.EmployeePage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:DineSync.Controls"
     xmlns:viewmodels="clr-namespace:DineSync.ViewModels"
     Shell.NavBarIsVisible="False"
     Style="{StaticResource contentPageBackgroundStyle}">
-    <Grid RowDefinitions="Auto,Auto,*,Auto">
-        <Label
-            Grid.Row="0"
-            Style="{StaticResource labelHeaderStyle}"
-            Text="Employee Management" />
+    <Grid ColumnDefinitions=".70*, .30*">
         <Grid
-            Grid.Row="1"
-            ColumnDefinitions="*,*,*,Auto"
-            Style="{StaticResource employeePageGridStyle}">
+            Grid.Column="0"
+            RowDefinitions=".1*, .05*, .1*, .6*"
+            Style="{StaticResource mainGridStyle}">
             <Label
-                Grid.Column="0"
-                Style="{StaticResource labelStyle}"
-                Text="Name" />
-            <Label
-                Grid.Column="1"
-                Style="{StaticResource labelStyle}"
-                Text="Email" />
-            <Label
-                Grid.Column="2"
-                Style="{StaticResource labelStyle}"
-                Text="Role" />
-            <Label
-                Grid.Column="3"
-                Style="{StaticResource labelStyle}"
-                Text="Action" />
+                Grid.Row="0"
+                Style="{StaticResource labelHeaderStyle}"
+                Text="{Binding Title, StringFormat='{0}s'}" />
+            <BoxView Grid.Row="1" Style="{StaticResource boxViewStyle}" />
+            <Grid Grid.Row="2" ColumnDefinitions="Auto, *">
+                <Border Grid.Column="0" Style="{StaticResource categoryBorderStyle}">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding LoadUsersCommand}" />
+                    </Border.GestureRecognizers>
+                    <Label
+                        FontSize="16"
+                        HorizontalOptions="Center"
+                        Style="{StaticResource labelStyle}"
+                        Text="All" />
+                </Border>
+                <CollectionView
+                    Grid.Column="1"
+                    ItemsSource="{Binding Roles}"
+                    SelectedItem="{Binding SelectedUserRole, Mode=TwoWay}">
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Horizontal" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <HorizontalStackLayout>
+                                <Border Style="{StaticResource categoryBorderStyle}">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:EmployeePageViewModel}}, Path=RoleTappedCommand}" CommandParameter="{Binding .}" />
+                                    </Border.GestureRecognizers>
+                                    <Label
+                                        FontSize="16"
+                                        HorizontalOptions="Center"
+                                        Style="{StaticResource labelStyle}"
+                                        Text="{Binding .}" />
+                                </Border>
+                            </HorizontalStackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+            <CollectionView
+                Grid.Row="3"
+                ItemsSource="{Binding Users}"
+                SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border
+                            Margin="10"
+                            Padding="10,0"
+                            BackgroundColor="#1f1d2b"
+                            Stroke="Transparent"
+                            StrokeShape="RoundRectangle 10">
+                            <Grid ColumnDefinitions="*,*,*,Auto" Style="{StaticResource employeePageGridStyle}">
+                                <Label
+                                    Grid.Column="0"
+                                    Style="{StaticResource labelStyle}"
+                                    Text="{Binding Name}" />
+                                <Label
+                                    Grid.Column="1"
+                                    Style="{StaticResource labelStyle}"
+                                    Text="{Binding Email}" />
+                                <Label
+                                    Grid.Column="2"
+                                    Style="{StaticResource labelStyle}"
+                                    Text="{Binding Role}" />
+                                <HorizontalStackLayout Grid.Column="3" Spacing="10">
+                                    <Image Source="edit.png" Style="{StaticResource shellHeaderImageStyle}">
+                                        <Image.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:EmployeePageViewModel}}, Path=EditUserCommand}" CommandParameter="{Binding .}" />
+                                        </Image.GestureRecognizers>
+                                    </Image>
+                                    <Image Source="delete.png" Style="{StaticResource shellHeaderImageStyle}">
+                                        <Image.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:EmployeePageViewModel}}, Path=RemoveUserCommand}" CommandParameter="{Binding .}" />
+                                        </Image.GestureRecognizers>
+                                    </Image>
+                                </HorizontalStackLayout>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
         </Grid>
-
-        <CollectionView
-            Grid.Row="2"
-            ItemsSource="{Binding Users}"
-            SelectionMode="None">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Grid ColumnDefinitions="*,*,*,Auto" Style="{StaticResource employeePageGridStyle}">
+        <Grid Grid.Column="1" Style="{StaticResource sideGridStyle}">
+            <Grid RowDefinitions=".1*, .05*, .6*, .1*">
+                <Grid Grid.Row="0" ColumnDefinitions="*, Auto">
+                    <VerticalStackLayout Grid.Column="0">
                         <Label
                             Grid.Column="0"
-                            Style="{StaticResource labelStyle}"
-                            Text="{Binding Name}" />
-                        <Label
-                            Grid.Column="1"
-                            Style="{StaticResource labelStyle}"
-                            Text="{Binding Email}" />
-                        <Label
-                            Grid.Column="2"
-                            Style="{StaticResource labelStyle}"
-                            Text="{Binding Role}" />
-                        <HorizontalStackLayout Grid.Column="3" Spacing="10">
-                            <Image Source="edit.png" Style="{StaticResource shellHeaderImageStyle}">
-                                <Image.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:EmployeePageViewModel}}, Path=EditUserCommand}" CommandParameter="{Binding .}" />
-                                </Image.GestureRecognizers>
-                            </Image>
-                            <Image Source="delete.png" Style="{StaticResource shellHeaderImageStyle}">
-                                <Image.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:EmployeePageViewModel}}, Path=RemoveUserCommand}" CommandParameter="{Binding .}" />
-                                </Image.GestureRecognizers>
-                            </Image>
-                        </HorizontalStackLayout>
-                    </Grid>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-        <Button
-            Grid.Row="3"
-            Command="{Binding ShowAddUserPopupCommand}"
-            Style="{StaticResource smallButtonStyle}"
-            Text="Add New Employee" />
-
-        <Border
-            Grid.RowSpan="3"
-            IsVisible="{Binding IsPopupVisible}"
-            Style="{StaticResource employeePageBorderStyle}">
-            <VerticalStackLayout Spacing="10">
-                <Label
-                    FontAttributes="Bold"
-                    HorizontalOptions="Center"
-                    Style="{StaticResource labelStyle}"
-                    Text="{Binding SelectedUser.Name, StringFormat='Editing: {0}', FallbackValue='Add New Employee'}" />
-
-                <Entry Placeholder="Name" Text="{Binding Name}" />
-
-                <Entry Placeholder="Email" Text="{Binding Email}" />
-
-                <Entry Placeholder="Password" Text="{Binding Password}" />
-
-                <Picker
-                    Title="Select Role"
-                    ItemsSource="{Binding Roles}"
-                    SelectedItem="{Binding Role}" />
-
-                <HorizontalStackLayout HorizontalOptions="Center" Spacing="10">
-                    <Button Command="{Binding SaveUserCommand}" Text="Save" />
+                            Style="{StaticResource labelHeaderStyle}"
+                            Text="Employee Details " />
+                    </VerticalStackLayout>
                     <Button
-                        BackgroundColor="Red"
-                        Command="{Binding CancelPopupCommand}"
+                        Grid.Column="1"
+                        Margin="10,30,30,0"
+                        Command="{Binding CancelEmployeeCommand}"
+                        HeightRequest="40"
+                        Style="{StaticResource smallButtonStyle}"
                         Text="Cancel"
-                        TextColor="White" />
-                </HorizontalStackLayout>
-            </VerticalStackLayout>
-        </Border>
+                        VerticalOptions="Center" />
+                </Grid>
+                <BoxView Grid.Row="1" Style="{StaticResource boxViewStyle}" />
+                <VerticalStackLayout Grid.Row="2" Spacing="10">
+                    <Label
+                        FontSize="18"
+                        HorizontalOptions="Center"
+                        Style="{StaticResource labelStyle}"
+                        Text="Name"
+                        VerticalOptions="Center"
+                        WidthRequest="325" />
+                    <Frame
+                        Padding="10,0,10,0"
+                        HeightRequest="40"
+                        Style="{StaticResource inputEntryFrameStyle}"
+                        WidthRequest="325">
+                        <controls:BorderlessEntry
+                            Placeholder="Name"
+                            Style="{StaticResource inputEntryStyle}"
+                            Text="{Binding Name}" />
+                    </Frame>
+                    <Label
+                        FontSize="18"
+                        HorizontalOptions="Center"
+                        Style="{StaticResource labelStyle}"
+                        Text="Email"
+                        VerticalOptions="Center"
+                        WidthRequest="325" />
+                    <Frame
+                        Padding="10,0,10,0"
+                        HeightRequest="40"
+                        Style="{StaticResource inputEntryFrameStyle}"
+                        WidthRequest="325">
+                        <controls:BorderlessEntry
+                            Placeholder="Email"
+                            Style="{StaticResource inputEntryStyle}"
+                            Text="{Binding Email}" />
+                    </Frame>
+                    <Label
+                        FontSize="18"
+                        HorizontalOptions="Center"
+                        Style="{StaticResource labelStyle}"
+                        Text="Password"
+                        VerticalOptions="Center"
+                        WidthRequest="325" />
+                    <Frame
+                        Padding="10,0,10,0"
+                        HeightRequest="40"
+                        Style="{StaticResource inputEntryFrameStyle}"
+                        WidthRequest="325">
+                        <controls:BorderlessEntry
+                            Placeholder="Password"
+                            Style="{StaticResource inputEntryStyle}"
+                            Text="{Binding Password}" />
+                    </Frame>
+                    <Label
+                        FontSize="18"
+                        HorizontalOptions="Center"
+                        Style="{StaticResource labelStyle}"
+                        Text="Role"
+                        VerticalOptions="Center"
+                        WidthRequest="325" />
+                    <Frame
+                        Padding="10,0,10,0"
+                        HeightRequest="40"
+                        Style="{StaticResource inputEntryFrameStyle}"
+                        WidthRequest="325">
+                        <controls:BorderlessPicker
+                            Title="Select Role"
+                            ItemsSource="{Binding Roles}"
+                            SelectedItem="{Binding Role}"
+                            TextColor="{StaticResource Black}" />
+                    </Frame>
+
+                </VerticalStackLayout>
+                <Button
+                    Grid.Row="3"
+                    Command="{Binding SaveUserCommand}"
+                    Style="{StaticResource smallButtonStyle}"
+                    Text="Add User" />
+            </Grid>
+        </Grid>
     </Grid>
 </ContentPage>
