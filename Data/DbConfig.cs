@@ -5,14 +5,19 @@ namespace DineSync.Data
 {
     public class DbConfig
     {
+        #region Fields
         private readonly SQLiteAsyncConnection _Connection;
+        #endregion
 
+        #region Constructor
         public DbConfig()
         {
             var dbPath = GetDatabasePath();
             _Connection = new SQLiteAsyncConnection(dbPath, SQLiteOpenFlags.Create | SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.SharedCache);
         }
+        #endregion
 
+        #region Methods
         public string GetDatabasePath()
         {
 #if WINDOWS
@@ -40,5 +45,6 @@ namespace DineSync.Data
             await _Connection.CreateTableAsync<OrderItem>();
             await _Connection.CreateTableAsync<Order>();
         }
+        #endregion
     }
 }

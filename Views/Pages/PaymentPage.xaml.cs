@@ -16,27 +16,18 @@ public partial class PaymentPage : ContentPage
 			OnUserReceived(value);
 		}
 	}
-	public PaymentPage(OrderPageViewModel orderPageViewModel)
+	public PaymentPage(TablePageViewModel tablePageViewModel)
 	{
 		InitializeComponent();
-		BindingContext = orderPageViewModel;
+		BindingContext = tablePageViewModel;
 
     }
 
 	public void OnUserReceived(User user)
 	{
-		if(BindingContext is OrderPageViewModel orderPageViewModel)
+		if(BindingContext is TablePageViewModel tablePageViewModel)
 		{
-            orderPageViewModel.User = user;
+            tablePageViewModel.User = user;
 		}
 	}
-
-    protected override void OnAppearing()
-    {
-        base.OnAppearing();
-        if (BindingContext is OrderPageViewModel orderPageViewModel)
-        {
-            orderPageViewModel.LoadOrders();
-        }
-    }
 }

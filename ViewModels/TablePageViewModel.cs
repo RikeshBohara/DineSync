@@ -14,6 +14,7 @@ namespace DineSync.ViewModels
         #region Fields
         private readonly ITableRepository _TableRepository;
         private readonly IOrderRepository _OrderRepository;
+        private readonly IOrderItemRepository _OrderItemRepository;
         #endregion
 
         #region Properties
@@ -44,14 +45,46 @@ namespace DineSync.ViewModels
         [ObservableProperty]
         private decimal _TotalTableAmount;
 
+        [ObservableProperty]
+        private ObservableCollection<OrderItem> _OrderItems;
+
+        [ObservableProperty]
+        private Order _SelectedOrder;
+
+        [ObservableProperty]
+        private bool _IsPaymentEnabled;
+
+        [ObservableProperty]
+        private Table _OrderTable;
+
+        [ObservableProperty]
+        private string _OrderNumber;
+
+        [ObservableProperty]
+        private int _TableNumber;
+
+        [ObservableProperty]
+        private int _GuestCount;
+
+        [ObservableProperty]
+        private string _OrderDate;
+
+        [ObservableProperty]
+        private string _OrderTime;
+
+        [ObservableProperty]
+        private string _OrderStatus;
+
         private Popup _AddTablePopup;
+        private Popup _OrderDetailsPopup;
         #endregion
 
         #region Constructor
-        public TablePageViewModel(ITableRepository tableRepository, IOrderRepository orderRepository)
+        public TablePageViewModel(ITableRepository tableRepository, IOrderItemRepository orderItemRepository, IOrderRepository orderRepository)
         {
             _TableRepository = tableRepository;
             _OrderRepository = orderRepository;
+            _OrderItemRepository = orderItemRepository;
             Tables = new ObservableCollection<Table>();
             TableOrders = new ObservableCollection<Order>();
             LoadTables();
@@ -189,23 +222,12 @@ namespace DineSync.ViewModels
         }
 
         [RelayCommand]
-        public void TablePopup(Table table)
-        {
-            var popup = new AddTablePopup
-            {
-                BindingContext = this
-            };
-            _AddTablePopup = popup;
-            Shell.Current.ShowPopup(popup);
-        }
-
-        [RelayCommand]
         public async Task GetOrders(Table selectedTable)
         {
             TotalTableAmount = 0;
             var orders = await _OrderRepository.GetOrdersByTableAsync(selectedTable.Id);
             TableOrders = new ObservableCollection<Order>(orders);
-            foreach(var order in orders)
+            foreach (var order in orders)
             {
                 TotalTableAmount += order.TotalAmount;
             }
@@ -238,6 +260,69 @@ namespace DineSync.ViewModels
             var orders = await _OrderRepository.ClearOrdersByTable(selectedTable.TableNumber);
             TableOrders = new ObservableCollection<Order>(orders);
         }
-        #endregion
+
+        [RelayCommand]
+        public async Task OrderTapped(Order selectedOrder)
+        {
+            var popup = new OrderDetailsPopup
+            {
+                BindingContext = this
+            };
+            _OrderDetailsPopup = popup;
+            Shell.Current.ShowPopup(popup);
+
+            IsPaymentEnabled = true;
+            if (selectedOrder == null)
+            {
+                IsPaymentEnabled = false;
+                return;
+            }
+            if (selectedOrder.PaymentStatus == "Paid")
+            {
+                IsPaymentEnabled = false;
+            }
+
+            SelectedOrder = selectedOrder;
+            OrderTable = await _TableRepository.GetTableByIdAsync(selectedOrder.TableNumber);
+            var items = await _OrderItemRepository.GetOrderItemsByOrderIdAsync(selectedOrder.Id);
+            OrderItems = new ObservableCollection<OrderItem>(items);
+
+            string date = SelectedOrder.OrderDate.ToString("yyyy-MM-dd");
+            string time = SelectedOrder.OrderDate.ToString("hh:mm tt");
+
+            OrderDate = date;
+            OrderTime = time;
+            OrderNumber = selectedOrder.OrderNumber;
+            TableNumber = selectedOrder.TableNumber;
+            GuestCount = selectedOrder.GuestCount;
+            OrderStatus = selectedOrder.Status;
+        }
+
+        [RelayCommand]
+        public async Task UpdatePaymentStatus()
+        {
+            if (SelectedOrder == null) return;
+            else if (SelectedOrder.PaymentStatus == "Paid")
+            {
+                IsPaymentEnabled = false;
+            }
+            SelectedOrder.PaymentStatus = "Paid";
+            await _OrderRepository.UpdateOrderAsync(SelectedOrder);
+            await GetOrders(SelectedTable);
+            LoadTables();
+            IsPaymentEnabled = false;
+        }
+
+        [RelayCommand]
+        public void TablePopup(Table table)
+        {
+            var popup = new AddTablePopup
+            {
+                BindingContext = this
+            };
+            _AddTablePopup = popup;
+            Shell.Current.ShowPopup(popup);
+        }
     }
+    #endregion
 }

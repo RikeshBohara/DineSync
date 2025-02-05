@@ -13,7 +13,6 @@
             <converters:TableStatusColorConverter x:Key="TableStatusColorConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
-
     <Grid ColumnDefinitions=".70*, .30*">
         <Grid
             Grid.Column="0"
@@ -24,11 +23,6 @@
                     Grid.Column="0"
                     Style="{StaticResource labelHeaderStyle}"
                     Text="Tables" />
-                <Button
-                    Grid.Column="1"
-                    Command="{Binding TablePopupCommand}"
-                    Style="{StaticResource smallButtonStyle}"
-                    Text="Add Table" />
             </Grid>
             <BoxView
                 Grid.Row="1"
@@ -92,7 +86,7 @@
             </CollectionView>
         </Grid>
         <Grid Grid.Column="1" Style="{StaticResource sideGridStyle}">
-            <Grid RowDefinitions=".1*, .1*, 0.1*, .7*, .1*, .1*">
+            <Grid RowDefinitions=".13*, .05*, 0.1*, .7*, .1*, .1*">
                 <Grid Grid.Row="0" ColumnDefinitions="*, Auto">
                     <VerticalStackLayout Grid.Column="0">
                         <Label
@@ -103,14 +97,13 @@
                         <Label
                             Margin="20,0,0,0"
                             Style="{StaticResource labelStyle}"
-                            Text="{Binding User.Name, StringFormat='Waiter: {0}', FallbackValue=''}" />
+                            Text="{Binding User.Name}" />
                     </VerticalStackLayout>
-                    <Button
+                    <Label
                         Grid.Column="1"
-                        Margin="10,30,30,0"
-                        Command="{Binding RemoveTableCommand}"
-                        Style="{StaticResource smallButtonStyle}"
-                        Text="Delete Table"
+                        Margin="10,30,30,1"
+                        Style="{StaticResource labelHeaderStyle}"
+                        Text="Current Orders"
                         VerticalOptions="Center" />
                 </Grid>
                 <BoxView Grid.Row="1" Style="{StaticResource boxViewStyle}" />
@@ -131,13 +124,6 @@
                                 Style="{StaticResource inputEntryStyle}"
                                 Text="{Binding GuestsCount}" />
                         </Frame>
-                        <Button
-                            Grid.Column="2"
-                            Margin="0"
-                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:TablePageViewModel}}, Path=ChangeTableStatusCommand}"
-                            IsVisible="{Binding IsOccupied}"
-                            Style="{StaticResource smallButtonStyle}"
-                            Text="Status" />
                     </Grid>
                 </VerticalStackLayout>
                 <CollectionView Grid.Row="3" ItemsSource="{Binding TableOrders}">
@@ -145,6 +131,9 @@
                         <DataTemplate>
                             <Grid Margin="10,0" Padding="10">
                                 <Border Style="{StaticResource tablePageOrderBorderStyle}">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:TablePageViewModel}}, Path=OrderTappedCommand}" CommandParameter="{Binding .}" />
+                                    </Border.GestureRecognizers>
                                     <Grid
                                         ColumnDefinitions="*, .5*, Auto"
                                         RowDefinitions="0.5*, 0.5*"
