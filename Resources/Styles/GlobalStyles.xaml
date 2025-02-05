@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <?xaml-comp compile="true" ?>
 <ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
     <Style x:Key="heroImageStyle" TargetType="Image">
         <Setter Property="HeightRequest" Value="400" />
         <Setter Property="VerticalOptions" Value="Center" />
@@ -113,39 +114,6 @@
         <Setter Property="VerticalOptions" Value="Center" />
     </Style>
 
-    <Style x:Key="tableGridStyle" TargetType="Grid">
-        <Setter Property="Margin" Value="20,0,20,0" />
-    </Style>
-
-    <Style x:Key="tableGridSecondRowStyle" TargetType="Grid">
-        <Setter Property="Margin" Value="20,80,20,0" />
-    </Style>
-
-    <Style x:Key="tableBottomGridStyle" TargetType="Grid">
-        <Setter Property="Margin" Value="30,0,30,0" />
-        <Setter Property="HeightRequest" Value="40" />
-        <Setter Property="VerticalOptions" Value="Start" />
-    </Style>
-
-    <Style x:Key="tableHorizontalLayoutStyle" TargetType="HorizontalStackLayout">
-        <Setter Property="Margin" Value="0,0,50,0" />
-        <Setter Property="Spacing" Value="10" />
-    </Style>
-
-    <Style x:Key="tablePageButtonStyle" TargetType="Button">
-        <Setter Property="HorizontalOptions" Value="End" />
-        <Setter Property="BackgroundColor" Value="#f67f20" />
-        <Setter Property="FontAttributes" Value="Bold" />
-        <Setter Property="FontFamily" Value="Inter-SemiBold" />
-        <Setter Property="FontSize" Value="16" />
-        <Setter Property="TextColor" Value="#ffffff" />
-    </Style>
-
-    <Style x:Key="employeePageGridStyle" TargetType="Grid">
-        <Setter Property="Margin" Value="30,20,30,0" />
-        <Setter Property="Padding" Value="10" />
-    </Style>
-
     <Style x:Key="smallButtonStyle" TargetType="Button">
         <Setter Property="HorizontalOptions" Value="Center" />
         <Setter Property="VerticalOptions" Value="Center" />
@@ -155,17 +123,6 @@
         <Setter Property="TextColor" Value="#ffffff" />
         <Setter Property="HeightRequest" Value="40" />
         <Setter Property="Margin" Value="10,20,30,20" />
-    </Style>
-
-    <Style x:Key="employeePageBorderStyle" TargetType="Border">
-        <Setter Property="BackgroundColor" Value="#252836" />
-        <Setter Property="HorizontalOptions" Value="Center" />
-        <Setter Property="VerticalOptions" Value="Center" />
-        <Setter Property="WidthRequest" Value="300" />
-        <Setter Property="Stroke" Value="#1f1d2b" />
-        <Setter Property="StrokeThickness" Value="1" />
-        <Setter Property="StrokeShape" Value="RoundRectangle 10" />
-        <Setter Property="Padding" Value="20" />
     </Style>
 
     <Style x:Key="tableImageStyle" TargetType="Image">
