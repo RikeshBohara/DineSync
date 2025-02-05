@@ -12,5 +12,6 @@ namespace DineSync.Repository.Interfaces
         Task<List<Order>> GetPendingOrdersAsync();
         Task<List<Order>> GetCompletedOrdersAsync();
         Task<List<Order>> GetOrdersByTableAsync(int tableId);
+        Task<List<Order>> ClearOrdersByTable(int tableNumber);
     }
 }

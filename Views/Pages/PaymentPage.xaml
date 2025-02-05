@@ -7,12 +7,12 @@
     Shell.NavBarIsVisible="False"
     Style="{StaticResource contentPageBackgroundStyle}">
     <Grid ColumnDefinitions="0.6*, 0.4*">
-        <Grid RowDefinitions=".1*, .1*, .05*, .85*" Style="{StaticResource mainGridStyle}">
+        <Grid RowDefinitions=".12*, .05*, .05*, .85*" Style="{StaticResource mainGridStyle}">
             <HorizontalStackLayout Grid.Row="0">
                 <Label
                     Grid.Column="0"
                     Style="{StaticResource labelHeaderStyle}"
-                    Text="Orders" />
+                    Text="{Binding Title}" />
             </HorizontalStackLayout>
             <BoxView Grid.Row="1" Style="{StaticResource boxViewStyle}" />
             <HorizontalStackLayout Grid.Row="2" Margin="15,10">

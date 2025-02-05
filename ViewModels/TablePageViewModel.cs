@@ -5,6 +5,7 @@ using CommunityToolkit.Mvvm.Input;
 using DineSync.Models;
 using DineSync.Repository.Interfaces;
 using DineSync.Views.Popups;
+using SQLitePCL;
 
 namespace DineSync.ViewModels
 {
@@ -12,7 +13,6 @@ namespace DineSync.ViewModels
     {
         #region Fields
         private readonly ITableRepository _TableRepository;
-        private readonly IUserRepository _UserRepository;
         private readonly IOrderRepository _OrderRepository;
 
         [ObservableProperty]
@@ -33,9 +33,16 @@ namespace DineSync.ViewModels
         [ObservableProperty]
         private ObservableCollection<Order> _TableOrders;
 
-        private Popup _AddTablePopup;
+        [ObservableProperty]
+        private bool _IsWaiter;
 
-        private Popup _SaveTableOccupantsPopup;
+        [ObservableProperty]
+        private bool _IsOccupied;
+
+        [ObservableProperty]
+        private decimal _TotalTableAmount;
+
+        private Popup _AddTablePopup;
         #endregion
 
         #region Constructor
@@ -52,6 +59,7 @@ namespace DineSync.ViewModels
         #region Methods
         public async void LoadTables()
         {
+            IsOccupied = false;
             var tables = await _TableRepository.GetAllTablesAsync();
             Tables = new ObservableCollection<Table>(tables);
         }
@@ -87,9 +95,22 @@ namespace DineSync.ViewModels
         [RelayCommand]
         public async Task TableTapped(Table selectedTable)
         {
-            _SelectedTable = selectedTable;
-            OnPropertyChanged(nameof(SelectedTable));
-            await GetOrders(selectedTable);
+            IsOccupied = false;
+            IsWaiter = true;
+            try
+            {
+                if (selectedTable.Status == "Occupied")
+                {
+                    IsOccupied = true;
+                }
+                _SelectedTable = selectedTable;
+                OnPropertyChanged(nameof(SelectedTable));
+                await GetOrders(selectedTable);
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", $"{ex}", "OK");
+            }
         }
 
         [RelayCommand]
@@ -115,7 +136,7 @@ namespace DineSync.ViewModels
                     {
                         await SaveGuestCount(count);
                         GuestsCount = string.Empty;
-                        _SaveTableOccupantsPopup?.Close();
+                        IsOccupied = true;
 
                         var navigationParams = new Dictionary<string, object>
                         {
@@ -130,6 +151,7 @@ namespace DineSync.ViewModels
                 }
                 else
                 {
+                    IsOccupied = true;
                     var navigationParams = new Dictionary<string, object>
                     {
                         { "SelectedTable", SelectedTable }
@@ -146,11 +168,13 @@ namespace DineSync.ViewModels
         [RelayCommand]
         public async Task SaveGuestCount(int count)
         {
-            SelectedTable.GuestCount = count;
-            SelectedTable.Status = "Occupied";
-            SelectedTable.AssignedWaiterId = User.Id;
-            await _TableRepository.UpdateTableAsync(SelectedTable);
-            LoadTables();
+            if (count > 0)
+            {
+                SelectedTable.GuestCount = count;
+                SelectedTable.Status = "Occupied";
+                await _TableRepository.UpdateTableAsync(SelectedTable);
+                LoadTables();
+            }
         }
 
         [RelayCommand]
@@ -158,7 +182,6 @@ namespace DineSync.ViewModels
         {
             SelectedTable.GuestCount = count;
             SelectedTable.Status = "Occupied";
-            SelectedTable.AssignedWaiterId = User.Id;
             await _TableRepository.UpdateTableAsync(SelectedTable);
             LoadTables();
         }
@@ -177,7 +200,40 @@ namespace DineSync.ViewModels
         [RelayCommand]
         public async Task GetOrders(Table selectedTable)
         {
+            TotalTableAmount = 0;
             var orders = await _OrderRepository.GetOrdersByTableAsync(selectedTable.Id);
+            TableOrders = new ObservableCollection<Order>(orders);
+            foreach(var order in orders)
+            {
+                TotalTableAmount += order.TotalAmount;
+            }
+        }
+
+        [RelayCommand]
+        public async Task ChangeTableStatus()
+        {
+            bool confirm = await Shell.Current.DisplayAlert(
+                   "Delete Category",
+                   $"Are you sure you want to make Table '{SelectedTable.TableNumber}' Available?",
+                   "Yes", "No");
+
+            if (!confirm)
+                return;
+
+            SelectedTable.Status = "Available";
+            SelectedTable.GuestCount = 0;
+            GuestsCount = null;
+            TotalTableAmount = 0;
+            await SaveGuestCount(SelectedTable.GuestCount);
+            await _TableRepository.UpdateTableAsync(SelectedTable);
+            await ClearOrders(SelectedTable);
+            LoadTables();
+        }
+
+        [RelayCommand]
+        public async Task ClearOrders(Table selectedTable)
+        {
+            var orders = await _OrderRepository.ClearOrdersByTable(selectedTable.TableNumber);
             TableOrders = new ObservableCollection<Order>(orders);
         }
         #endregion

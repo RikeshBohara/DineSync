@@ -33,10 +33,6 @@ namespace DineSync
             Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
             Routing.RegisterRoute(nameof(SignupPage), typeof(SignupPage));
             Routing.RegisterRoute(nameof(PaymentPage), typeof(PaymentPage));
-            Routing.RegisterRoute(nameof(EmployeePage), typeof(EmployeePage));
-            Routing.RegisterRoute(nameof(EditMenuPage), typeof(EditMenuPage));
-            Routing.RegisterRoute(nameof(MenuPage), typeof(MenuPage));
-            Routing.RegisterRoute(nameof(OrderPage), typeof(OrderPage));
             Routing.RegisterRoute(nameof(TablePage), typeof(TablePage));
         }
 
@@ -55,7 +51,7 @@ namespace DineSync
             {
                 TablePageShellContent.IsVisible = true;
                 MenuPageShellContent.IsVisible = true;
-                OrderPageShellContent.IsVisible = true;
+                OrderPageShellContent.IsVisible = false;
                 PaymentPageShellContent.IsVisible = false;
                 EmployeePageShellContent.IsVisible = false;
                 EditMenuPageShellContent.IsVisible = false;

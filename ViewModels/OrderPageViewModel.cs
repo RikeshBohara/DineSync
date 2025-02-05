@@ -52,6 +52,9 @@ namespace DineSync.ViewModels
         [ObservableProperty]
         private bool _IsPaymentEnabled;
 
+        [ObservableProperty]
+        private string _Title;
+
         public OrderPageViewModel(IOrderRepository orderRepository, IOrderItemRepository orderItemRepository, ITableRepository tableRepository)
         {
             _OrderRepository = orderRepository;
@@ -71,6 +74,7 @@ namespace DineSync.ViewModels
         {
             var orders = await _OrderRepository.GetAllOrdersAsync();
             Orders = new ObservableCollection<Order>(orders.OrderByDescending(order => order.OrderDate));
+            Title = "All Orders";
         }
 
         [RelayCommand]
@@ -142,6 +146,7 @@ namespace DineSync.ViewModels
         {
             var paidOrders = await _OrderRepository.GetPaidPaymentOrdersAsync();
             Orders = new ObservableCollection<Order>(paidOrders.OrderByDescending(paidOrder => paidOrder.OrderDate));
+            Title = "Paid Orders";
         }
 
         [RelayCommand]
@@ -149,6 +154,7 @@ namespace DineSync.ViewModels
         {
             var unpaidOrders = await _OrderRepository.GetUnpaidPaymentOrdersAsync();
             Orders = new ObservableCollection<Order>(unpaidOrders.OrderByDescending(unpaidOrder => unpaidOrder.OrderDate));
+            Title = "Unpaid Orders";
         }
 
         [RelayCommand]
@@ -156,6 +162,7 @@ namespace DineSync.ViewModels
         {
             var pendingOrders = await _OrderRepository.GetPendingOrdersAsync();
             Orders = new ObservableCollection<Order>(pendingOrders.OrderByDescending(pendingOrder => pendingOrder.OrderDate));
+            Title = "Pending Orders";
         }
 
         [RelayCommand]
@@ -163,6 +170,7 @@ namespace DineSync.ViewModels
         {
             var completedOrders = await _OrderRepository.GetCompletedOrdersAsync();
             Orders = new ObservableCollection<Order>(completedOrders.OrderByDescending(completedOrder => completedOrder.OrderDate));
+            Title = "Completed Orders";
         }
     }
 }
