@@ -67,17 +67,6 @@ namespace DineSync.ViewModels
         }
 
         [RelayCommand]
-        private void AddUser()
-        {
-            SelectedUser = null;
-            Name = string.Empty;
-            Email = string.Empty;
-            Password = string.Empty;
-            Role = string.Empty;
-            IsPopupVisible = true;
-        }
-
-        [RelayCommand]
         private void EditUser(User user)
         {
             SelectedUser = user;
@@ -138,10 +127,11 @@ namespace DineSync.ViewModels
 
             IsPopupVisible = false;
             LoadUsers();
+            ClearEmployee();
         }
 
         [RelayCommand]
-        private void CancelEmployee()
+        private void ClearEmployee()
         {
             SelectedUser = null;
             Name = string.Empty;
