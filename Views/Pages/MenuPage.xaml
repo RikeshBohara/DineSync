@@ -132,7 +132,7 @@
                         <Label
                             HorizontalOptions="Center"
                             Style="{StaticResource labelHeaderStyle}"
-                            Text="Current Order" />
+                            Text="Order Items List" />
                         <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
                             <HorizontalStackLayout Spacing="10">
                                 <Image HeightRequest="20" Source="table.png" />

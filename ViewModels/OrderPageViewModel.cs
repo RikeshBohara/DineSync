@@ -53,9 +53,6 @@ namespace DineSync.ViewModels
         private string _OrderTime;
 
         [ObservableProperty]
-        private bool _IsPaymentEnabled;
-
-        [ObservableProperty]
         private string _Title;
         #endregion
 
@@ -88,20 +85,14 @@ namespace DineSync.ViewModels
         public async Task ShowOrderDetails(Order order)
         {
             IsEnabled = true;
-            IsPaymentEnabled = true;
             if (order == null)
             {
                 IsEnabled = false;
-                IsPaymentEnabled = false;
                 return;
             }
             if (order.Status == "Completed")
             {
                 IsEnabled = false;
-            }
-            if (order.PaymentStatus == "Paid")
-            {
-                IsPaymentEnabled = false;
             }
 
             SelectedOrder = order;
@@ -132,36 +123,6 @@ namespace DineSync.ViewModels
             await _OrderRepository.UpdateOrderAsync(SelectedOrder);
             await LoadOrders();
             IsEnabled = false;
-        }
-
-        [RelayCommand]
-        public async Task UpdatePaymentStatus()
-        {
-            if (SelectedOrder == null) return;
-            else if (SelectedOrder.PaymentStatus == "Paid")
-            {
-                IsPaymentEnabled = false;
-            }
-            SelectedOrder.PaymentStatus = "Paid";
-            await _OrderRepository.UpdateOrderAsync(SelectedOrder);
-            await LoadOrders();
-            IsPaymentEnabled = false;
-        }
-
-        [RelayCommand]
-        public async Task LoadPaidOrders()
-        {
-            var paidOrders = await _OrderRepository.GetPaidPaymentOrdersAsync();
-            Orders = new ObservableCollection<Order>(paidOrders.OrderByDescending(paidOrder => paidOrder.OrderDate));
-            Title = "Paid Orders";
-        }
-
-        [RelayCommand]
-        public async Task LoadUnpaidOrders()
-        {
-            var unpaidOrders = await _OrderRepository.GetUnpaidPaymentOrdersAsync();
-            Orders = new ObservableCollection<Order>(unpaidOrders.OrderByDescending(unpaidOrder => unpaidOrder.OrderDate));
-            Title = "Unpaid Orders";
         }
 
         [RelayCommand]

@@ -3,174 +3,212 @@
     x:Class="DineSync.Views.Pages.PaymentPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:DineSync.Controls"
+    xmlns:converters="clr-namespace:DineSync.Converters"
     xmlns:viewmodels="clr-namespace:DineSync.ViewModels"
     Shell.NavBarIsVisible="False"
     Style="{StaticResource contentPageBackgroundStyle}">
-    <Grid ColumnDefinitions="0.6*, 0.4*">
-        <Grid RowDefinitions=".12*, .05*, .05*, .85*" Style="{StaticResource mainGridStyle}">
-            <HorizontalStackLayout Grid.Row="0">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:TableStatusColorConverter x:Key="TableStatusColorConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid ColumnDefinitions=".70*, .30*">
+        <Grid
+            Grid.Column="0"
+            RowDefinitions=".1*, .02*, .70*"
+            Style="{StaticResource mainGridStyle}">
+            <Grid Grid.Row="0" ColumnDefinitions="*, Auto">
                 <Label
                     Grid.Column="0"
                     Style="{StaticResource labelHeaderStyle}"
-                    Text="{Binding Title}" />
-            </HorizontalStackLayout>
-            <BoxView Grid.Row="1" Style="{StaticResource boxViewStyle}" />
-            <HorizontalStackLayout Grid.Row="2" Margin="15,10">
-                <Border Style="{StaticResource categoryBorderStyle}">
-                    <Border.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding LoadOrdersCommand}" />
-                    </Border.GestureRecognizers>
-                    <Label
-                        FontSize="16"
-                        HorizontalOptions="Center"
-                        Style="{StaticResource labelStyle}"
-                        Text="All" />
-                </Border>
-                <Border Style="{StaticResource categoryBorderStyle}">
-                    <Border.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding LoadPaidOrdersCommand}" />
-                    </Border.GestureRecognizers>
-                    <Label
-                        FontSize="16"
-                        HorizontalOptions="Center"
-                        Style="{StaticResource labelStyle}"
-                        Text="Paid" />
-                </Border>
-                <Border Style="{StaticResource categoryBorderStyle}">
-                    <Border.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding LoadUnpaidOrdersCommand}" />
-                    </Border.GestureRecognizers>
-                    <Label
-                        FontSize="16"
-                        HorizontalOptions="Center"
-                        Style="{StaticResource labelStyle}"
-                        Text="Unpaid" />
-                </Border>
-            </HorizontalStackLayout>
-            <CollectionView Grid.Row="3" ItemsSource="{Binding Orders}">
+                    Text="Payment" />
+                <Button
+                    Grid.Column="1"
+                    Command="{Binding TablePopupCommand}"
+                    Style="{StaticResource smallButtonStyle}"
+                    Text="Add Table" />
+            </Grid>
+            <BoxView
+                Grid.Row="1"
+                Margin="30"
+                BackgroundColor="Gray"
+                HeightRequest="2"
+                HorizontalOptions="FillAndExpand" />
+            <CollectionView
+                Grid.Row="2"
+                ItemsSource="{Binding Tables}"
+                SelectedItem="{Binding SelectedTable, Mode=TwoWay}">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" Span="3" />
+                </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Grid Margin="20,0,20,0" Padding="10">
-                            <Border Style="{StaticResource orderBorderStyle}">
+                        <Grid Margin="20,0,20,10" Padding="10">
+                            <Border
+                                BackgroundColor="#1f1d2b"
+                                Stroke="{Binding Status, Converter={StaticResource TableStatusColorConverter}}"
+                                StrokeShape="RoundRectangle 10"
+                                StrokeThickness="3">
                                 <Border.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:OrderPageViewModel}}, Path=ShowOrderDetailsCommand}" CommandParameter="{Binding .}" />
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:TablePageViewModel}}, Path=TableTappedCommand}" CommandParameter="{Binding .}" />
                                 </Border.GestureRecognizers>
-                                <Grid
-                                    ColumnDefinitions="*, Auto"
-                                    RowDefinitions="0.5*, 0.5*"
-                                    RowSpacing="10">
-                                    <HorizontalStackLayout Spacing="10">
-                                        <Label
-                                            FontSize="20"
-                                            Style="{StaticResource labelStyle}"
-                                            Text="Order Number" />
-                                        <Label
-                                            FontSize="20"
-                                            Style="{StaticResource labelStyle}"
-                                            Text="{Binding OrderNumber, StringFormat='# {0}'}" />
-                                    </HorizontalStackLayout>
-                                    <Label
-                                        Grid.Column="1"
-                                        FontSize="20"
-                                        Style="{StaticResource labelStyle}"
-                                        Text="{Binding PaymentStatus}" />
-                                    <HorizontalStackLayout Grid.Row="1" Spacing="20">
-                                        <HorizontalStackLayout Spacing="10">
-                                            <Image HeightRequest="20" Source="table.png" />
-                                            <Label Style="{StaticResource labelStyle}" Text="{Binding TableNumber}" />
-                                        </HorizontalStackLayout>
-                                        <HorizontalStackLayout Spacing="10">
-                                            <Image HeightRequest="20" Source="user.png" />
-                                            <Label Style="{StaticResource labelStyle}" Text="{Binding GuestCount}" />
-                                        </HorizontalStackLayout>
-                                    </HorizontalStackLayout>
-                                    <Label
+                                <Grid RowDefinitions="*, Auto">
+                                    <Image
+                                        Grid.Row="0"
+                                        Source="tables.png"
+                                        Style="{StaticResource tableImageStyle}" />
+                                    <Grid
                                         Grid.Row="1"
-                                        Grid.Column="1"
-                                        Style="{StaticResource labelStyle}"
-                                        Text="{Binding TotalAmount, StringFormat='रु. {0}'}" />
+                                        Padding="10"
+                                        ColumnDefinitions="*, Auto">
+                                        <HorizontalStackLayout Grid.Column="0" Spacing="10">
+                                            <Image HeightRequest="20" Source="table.png" />
+                                            <Label
+                                                FontSize="16"
+                                                Style="{StaticResource labelStyle}"
+                                                Text="{Binding TableNumber}" />
+                                        </HorizontalStackLayout>
+                                        <HorizontalStackLayout Grid.Column="1" Spacing="10">
+                                            <Image HeightRequest="20" Source="user.png" />
+                                            <Label
+                                                FontSize="16"
+                                                Style="{StaticResource labelStyle}"
+                                                Text="{Binding Capacity}" />
+                                        </HorizontalStackLayout>
+                                    </Grid>
                                 </Grid>
                             </Border>
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
+                <CollectionView.EmptyView>
+                    <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                        <Label Style="{StaticResource labelStyle}" Text="No tables available" />
+                        <Label Style="{StaticResource labelStyle}" Text="Click 'Add Table' to create a new table" />
+                    </StackLayout>
+                </CollectionView.EmptyView>
             </CollectionView>
         </Grid>
         <Grid Grid.Column="1" Style="{StaticResource sideGridStyle}">
-            <Grid RowDefinitions=".15*, .5*, .05*, .1*">
-                <Border Grid.Row="0" Style="{StaticResource orderDetailBorderStyle}">
-                    <StackLayout>
+            <Grid RowDefinitions=".1*, .1*, 0.1*, .7*, .1*, .1*">
+                <Grid Grid.Row="0" ColumnDefinitions="*, Auto">
+                    <VerticalStackLayout Grid.Column="0">
                         <Label
-                            Margin="0"
-                            HorizontalOptions="Center"
+                            Grid.Column="0"
+                            FontSize="20"
                             Style="{StaticResource labelHeaderStyle}"
-                            Text="{Binding SelectedOrder.OrderNumber, StringFormat='Order #{0}'}" />
-                        <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
-                            <HorizontalStackLayout Spacing="10">
-                                <Image HeightRequest="20" Source="table.png" />
-                                <Label Style="{StaticResource labelStyle}" Text="{Binding TableNumber}" />
-                            </HorizontalStackLayout>
-                            <HorizontalStackLayout Spacing="10">
-                                <Image HeightRequest="20" Source="user.png" />
-                                <Label Style="{StaticResource labelStyle}" Text="{Binding SelectedOrder.GuestCount}" />
-                            </HorizontalStackLayout>
-                        </HorizontalStackLayout>
-                        <Grid ColumnDefinitions="*, Auto">
-                            <Label
-                                Grid.Column="0"
-                                Style="{StaticResource labelStyle}"
-                                Text="{Binding OrderDate}" />
-                            <Label
-                                Grid.Column="1"
-                                Style="{StaticResource labelStyle}"
-                                Text="{Binding OrderTime}" />
-                        </Grid>
-                    </StackLayout>
-                </Border>
-                <CollectionView
-                    Grid.Row="1"
-                    ItemsSource="{Binding OrderItems}"
-                    SelectionMode="None">
+                            Text="{Binding SelectedTable.TableNumber, StringFormat='Table# {0}', FallbackValue='Select a Table'}" />
+                        <Label
+                            Margin="20,0,0,0"
+                            Style="{StaticResource labelStyle}"
+                            Text="{Binding User.Name, StringFormat='Owner: {0}', FallbackValue=''}" />
+                    </VerticalStackLayout>
+                    <Button
+                        Grid.Column="1"
+                        Margin="10,30,30,0"
+                        Command="{Binding RemoveTableCommand}"
+                        Style="{StaticResource smallButtonStyle}"
+                        Text="Delete Table"
+                        VerticalOptions="Center" />
+                </Grid>
+                <BoxView Grid.Row="1" Style="{StaticResource boxViewStyle}" />
+                <VerticalStackLayout Grid.Row="2" Spacing="10">
+                    <Grid Margin="20,0" ColumnDefinitions="Auto, Auto, *">
+                        <Label
+                            Grid.Column="0"
+                            Style="{StaticResource labelStyle}"
+                            Text="Occupants: "
+                            VerticalOptions="Center" />
+                        <Frame
+                            Grid.Column="1"
+                            HeightRequest="40"
+                            Style="{StaticResource inputEntryFrameStyle}"
+                            WidthRequest="100">
+                            <controls:BorderlessEntry
+                                IsEnabled="false"
+                                Placeholder="{Binding SelectedTable.GuestCount}"
+                                Style="{StaticResource inputEntryStyle}"
+                                Text="{Binding GuestsCount}" />
+                        </Frame>
+                        <Button
+                            Grid.Column="2"
+                            Margin="0"
+                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:TablePageViewModel}}, Path=ChangeTableStatusCommand}"
+                            IsVisible="{Binding IsOccupied}"
+                            Style="{StaticResource smallButtonStyle}"
+                            Text="Status" />
+                    </Grid>
+                </VerticalStackLayout>
+                <CollectionView Grid.Row="3" ItemsSource="{Binding TableOrders}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <Border Style="{StaticResource orderDetailBorderStyle}">
-                                <Grid ColumnDefinitions="Auto,*,*,Auto" ColumnSpacing="10">
-                                    <Image
-                                        Grid.Column="0"
-                                        HeightRequest="40"
-                                        Source="{Binding Icon}"
-                                        WidthRequest="40" />
-                                    <Label
-                                        Grid.Column="1"
-                                        Style="{StaticResource labelStyle}"
-                                        Text="{Binding Name}"
-                                        VerticalOptions="Center" />
-                                    <Label
-                                        Grid.Column="2"
-                                        Style="{StaticResource labelStyle}"
-                                        Text="{Binding Quantity, StringFormat='x{0}'}"
-                                        VerticalOptions="Center" />
-                                    <Label
-                                        Grid.Column="3"
-                                        Style="{StaticResource labelStyle}"
-                                        Text="{Binding Amount, StringFormat='रु. {0}'}"
-                                        VerticalOptions="Center" />
-                                </Grid>
-                            </Border>
+                            <Grid Margin="10,0" Padding="10">
+                                <Border Style="{StaticResource tablePageOrderBorderStyle}">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:TablePageViewModel}}, Path=OrderTappedCommand}" CommandParameter="{Binding .}" />
+                                    </Border.GestureRecognizers>
+                                    <Grid
+                                        ColumnDefinitions="*, .5*, Auto"
+                                        RowDefinitions="0.5*, 0.5*"
+                                        RowSpacing="10">
+                                        <HorizontalStackLayout Spacing="10">
+                                            <Label
+                                                FontSize="20"
+                                                Style="{StaticResource labelStyle}"
+                                                Text="Order Number" />
+                                            <Label
+                                                FontSize="20"
+                                                Style="{StaticResource labelStyle}"
+                                                Text="{Binding OrderNumber, StringFormat='# {0}'}" />
+                                        </HorizontalStackLayout>
+                                        <Label
+                                            Grid.Column="2"
+                                            Style="{StaticResource labelStyle}"
+                                            Text="{Binding Status}" />
+                                        <HorizontalStackLayout Grid.Row="1" Spacing="20">
+                                            <HorizontalStackLayout Spacing="10">
+                                                <Image HeightRequest="20" Source="table.png" />
+                                                <Label Style="{StaticResource labelStyle}" Text="{Binding TableNumber}" />
+                                            </HorizontalStackLayout>
+                                            <HorizontalStackLayout Spacing="10">
+                                                <Image HeightRequest="20" Source="user.png" />
+                                                <Label Style="{StaticResource labelStyle}" Text="{Binding GuestCount}" />
+                                            </HorizontalStackLayout>
+                                        </HorizontalStackLayout>
+                                        <Label
+                                            Grid.Row="1"
+                                            Grid.Column="1"
+                                            Style="{StaticResource labelStyle}"
+                                            Text="{Binding TotalAmount, StringFormat='रु. {0}'}" />
+                                        <Label
+                                            Grid.Row="1"
+                                            Grid.Column="2"
+                                            Style="{StaticResource labelStyle}"
+                                            Text="{Binding PaymentStatus}" />
+                                    </Grid>
+                                </Border>
+                            </Grid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
+                    <CollectionView.EmptyView>
+                        <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                            <Label Style="{StaticResource labelStyle}" Text="No Orders available" />
+                        </StackLayout>
+                    </CollectionView.EmptyView>
                 </CollectionView>
                 <Label
-                    Grid.Row="2"
+                    Grid.Row="4"
                     Margin="20,0"
                     Style="{StaticResource labelStyle}"
-                    Text="{Binding SelectedOrder.TotalAmount, StringFormat='Total: रु. {0}'}" />
+                    Text="{Binding TotalTableAmount, StringFormat='Table Total:  रु. {0}'}" />
                 <Button
-                    Grid.Row="3"
+                    Grid.Row="5"
                     Command="{Binding UpdatePaymentStatusCommand}"
                     IsEnabled="{Binding IsPaymentEnabled}"
                     Style="{StaticResource smallButtonStyle}"
                     Text="Confirm Payment" />
+                <VerticalStackLayout Spacing="10" />
             </Grid>
         </Grid>
     </Grid>
