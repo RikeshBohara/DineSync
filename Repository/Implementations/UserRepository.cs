@@ -7,13 +7,18 @@ namespace DineSync.Repository.Implementations
 {
     public class UserRepository : IUserRepository
     {
+        #region Fields
         private readonly SQLiteAsyncConnection _Connection;
+        #endregion
 
+        #region Constructor
         public UserRepository(DbConfig dbConfig)
         {
             _Connection = dbConfig.GetConnection();
         }
+        #endregion
 
+        #region Methods
         public async Task<List<User>> GetAllUsersAsync()
         {
             return await _Connection.Table<User>().ToListAsync();
@@ -38,5 +43,13 @@ namespace DineSync.Repository.Implementations
         {
             return await _Connection.Table<User>().FirstOrDefaultAsync(user => user.Id == id);
         }
+
+        public async Task<List<User>> GetUsersByRoleAsync(string role)
+        {
+            var query = @"select * from User where Role=?";
+            var users = await _Connection.QueryAsync<User>(query, role);
+            return users.ToList();
+        }
+        #endregion
     }
 }

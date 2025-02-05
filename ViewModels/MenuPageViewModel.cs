@@ -20,7 +20,9 @@ namespace DineSync.ViewModels
         private readonly IOrderItemRepository _OrderItemRepository;
 
         private readonly IOrderRepository _OrderRepository;
+        #endregion
 
+        #region Properties
         [ObservableProperty]
         private ObservableCollection<MenuCategory> _MenuCategories;
 
@@ -65,6 +67,9 @@ namespace DineSync.ViewModels
 
         [ObservableProperty]
         private string _OrderNumber;
+
+        [ObservableProperty]
+        private string _Title;
 
         private Popup _AddMenuCategoryPopup;
         #endregion
@@ -189,7 +194,7 @@ namespace DineSync.ViewModels
             }
             catch (Exception ex)
             {
-                await Shell.Current.DisplayAlert("Error", ex.Message, "OK");
+                await Shell.Current.DisplayAlert("Error", $"{ex}", "OK");
             }
             finally
             {
@@ -412,6 +417,7 @@ namespace DineSync.ViewModels
                 SelectedMenuCategory = category;
                 var filteredMenus = await _MenuRepository.GetMenusByCategoryAsync(category.Id);
                 Menus = new ObservableCollection<Menu>(filteredMenus);
+                Title = category.Name;
             }
             else
             {
@@ -426,6 +432,7 @@ namespace DineSync.ViewModels
 
             var menus = await _MenuRepository.GetAllMenuAsync();
             Menus = new ObservableCollection<Menu>(menus);
+            Title = "All Menu";
         }
 
         [RelayCommand]

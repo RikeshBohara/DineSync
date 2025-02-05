@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Data.Common;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DineSync.Models;
@@ -9,8 +8,11 @@ namespace DineSync.ViewModels
 {
     public partial class EmployeePageViewModel : ObservableObject
     {
+        #region Fields
         private readonly IUserRepository _UserRepository;
+        #endregion
 
+        #region Properties
         [ObservableProperty]
         private ObservableCollection<User> _Users;
 
@@ -32,28 +34,40 @@ namespace DineSync.ViewModels
         [ObservableProperty]
         private string _Role;
 
+        [ObservableProperty]
+        private string _SelectedUserRole;
+
+        [ObservableProperty]
+        private string _Title;
+
         public List<string> Roles { get; } = new List<string>
         {
             "Waiter",
             "Kitchen",
             "Owner"
         };
+        #endregion
 
+        #region Constructor
         public EmployeePageViewModel(IUserRepository userRepository)
         {
             _UserRepository = userRepository;
             Users = new ObservableCollection<User>();
             LoadUsers();
         }
+        #endregion
 
+        #region Methods
+        [RelayCommand]
         public async void LoadUsers()
         {
             var users = await _UserRepository.GetAllUsersAsync();
             Users = new ObservableCollection<User>(users);
+            Title = "All Employee";
         }
 
         [RelayCommand]
-        private void ShowAddUserPopup()
+        private void AddUser()
         {
             SelectedUser = null;
             Name = string.Empty;
@@ -127,9 +141,31 @@ namespace DineSync.ViewModels
         }
 
         [RelayCommand]
-        private void CancelPopup()
+        private void CancelEmployee()
         {
-            IsPopupVisible = false;
+            SelectedUser = null;
+            Name = string.Empty;
+            Email = string.Empty;
+            Password = string.Empty;
+            Role = string.Empty;
+            IsPopupVisible = true;
         }
+
+        [RelayCommand]
+        private async Task RoleTapped(string role)
+        {
+            if (role != null)
+            {
+                SelectedUserRole = role;
+                var filteredRoles = await _UserRepository.GetUsersByRoleAsync(role);
+                Users = new ObservableCollection<User>(filteredRoles);
+                Title = role;
+            }
+            else
+            {
+                LoadUsers();
+            }
+        }
+        #endregion
     }
 }

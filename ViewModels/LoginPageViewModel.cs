@@ -6,8 +6,11 @@ namespace DineSync.ViewModels
 {
     public partial class LoginPageViewModel : ObservableObject
     {
+        #region Fields
         private readonly ILoginRepository _LoginRepository;
+        #endregion
 
+        #region Properties
         [ObservableProperty]
         private string _Email;
 
@@ -31,12 +34,16 @@ namespace DineSync.ViewModels
                 OnPropertyChanged();
             }
         }
+        #endregion
 
+        #region Constructor
         public LoginPageViewModel(ILoginRepository loginRepository)
         {
             _LoginRepository = loginRepository;
         }
+        #endregion
 
+        #region Methods
         [RelayCommand]
         private void TogglePasswordVisibility()
         {
@@ -86,5 +93,6 @@ namespace DineSync.ViewModels
             Email = string.Empty;
             Password = string.Empty;
         }
+        #endregion
     }
 }

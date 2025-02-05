@@ -9,10 +9,13 @@ namespace DineSync.ViewModels
 {
     public partial class OrderPageViewModel : ObservableObject
     {
+        #region Fields
         private readonly IOrderRepository _OrderRepository;
         private readonly IOrderItemRepository _OrderItemRepository;
         private readonly ITableRepository _TableRepository;
+        #endregion
 
+        #region Properties
         [ObservableProperty]
         private User _User;
 
@@ -54,7 +57,9 @@ namespace DineSync.ViewModels
 
         [ObservableProperty]
         private string _Title;
+        #endregion
 
+        #region Constructor
         public OrderPageViewModel(IOrderRepository orderRepository, IOrderItemRepository orderItemRepository, ITableRepository tableRepository)
         {
             _OrderRepository = orderRepository;
@@ -62,7 +67,9 @@ namespace DineSync.ViewModels
             _TableRepository = tableRepository;
             _ = LoadOrders();
         }
+        #endregion
 
+        #region Methods
         public void SetOrderNumber(string orderNumber)
         {
             OrderNumber = orderNumber;
@@ -172,5 +179,6 @@ namespace DineSync.ViewModels
             Orders = new ObservableCollection<Order>(completedOrders.OrderByDescending(completedOrder => completedOrder.OrderDate));
             Title = "Completed Orders";
         }
+        #endregion
     }
 }

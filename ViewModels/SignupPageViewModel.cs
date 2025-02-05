@@ -8,8 +8,11 @@ namespace DineSync.ViewModels
 {
     public partial class SignupPageViewModel: ObservableObject
     {
+        #region Fields
         private readonly ISignupRepository _SignupRepository;
+        #endregion
 
+        #region Properties
         [ObservableProperty]
         private bool _IsPasswordVisible = true;
 
@@ -33,12 +36,16 @@ namespace DineSync.ViewModels
 
         [ObservableProperty]
         private string _ConfirmPassword;
+        #endregion
 
+        #region Constructor
         public SignupPageViewModel(ISignupRepository signupRepository)
         {
             _SignupRepository = signupRepository;
         }
+        #endregion
 
+        #region Methods
         [RelayCommand]
         private void TogglePasswordVisibility()
         {
@@ -117,5 +124,6 @@ namespace DineSync.ViewModels
         {
             return Regex.IsMatch(email, @"^[^@\s]+@dinesync\.com$");
         }
+        #endregion
     }
 }

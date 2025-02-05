@@ -7,13 +7,18 @@ namespace DineSync.Repository.Implementations
 {
     public class OrderItemRepository : IOrderItemRepository
     {
+        #region Fields
         private readonly SQLiteAsyncConnection _Connection;
+        #endregion
 
+        #region Constructor
         public OrderItemRepository(DbConfig dbConfig)
         {
             _Connection = dbConfig.GetConnection();
         }
+        #endregion
 
+        #region Methods
         public async Task<List<OrderItem>> GetAllOrderItemsAsync()
         {
             return await _Connection.Table<OrderItem>().ToListAsync();
@@ -28,5 +33,6 @@ namespace DineSync.Repository.Implementations
         {
             return await _Connection.Table<OrderItem>().Where(orderItem => orderItem.OrderId == orderId).ToListAsync();
         }
+        #endregion
     }
 }
