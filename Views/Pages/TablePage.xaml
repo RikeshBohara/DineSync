@@ -92,11 +92,12 @@
             </CollectionView>
         </Grid>
         <Grid Grid.Column="1" Style="{StaticResource sideGridStyle}">
-            <Grid RowDefinitions=".1*, .1*, 0.1*, .7*, .1*">
+            <Grid RowDefinitions=".1*, .1*, 0.1*, .7*, .1*, .1*">
                 <Grid Grid.Row="0" ColumnDefinitions="*, Auto">
                     <VerticalStackLayout Grid.Column="0">
                         <Label
                             Grid.Column="0"
+                            FontSize="20"
                             Style="{StaticResource labelHeaderStyle}"
                             Text="{Binding SelectedTable.TableNumber, StringFormat='Table# {0}', FallbackValue='Select a Table'}" />
                         <Label
@@ -106,6 +107,7 @@
                     </VerticalStackLayout>
                     <Button
                         Grid.Column="1"
+                        Margin="10,30,30,0"
                         Command="{Binding RemoveTableCommand}"
                         Style="{StaticResource smallButtonStyle}"
                         Text="Delete Table"
@@ -113,7 +115,7 @@
                 </Grid>
                 <BoxView Grid.Row="1" Style="{StaticResource boxViewStyle}" />
                 <VerticalStackLayout Grid.Row="2" Spacing="10">
-                    <Grid Margin="20,0" ColumnDefinitions="Auto, Auto">
+                    <Grid Margin="20,0" ColumnDefinitions="Auto, Auto, *">
                         <Label
                             Grid.Column="0"
                             Style="{StaticResource labelStyle}"
@@ -129,6 +131,13 @@
                                 Style="{StaticResource inputEntryStyle}"
                                 Text="{Binding GuestsCount}" />
                         </Frame>
+                        <Button
+                            Grid.Column="2"
+                            Margin="0"
+                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:TablePageViewModel}}, Path=ChangeTableStatusCommand}"
+                            IsVisible="{Binding IsOccupied}"
+                            Style="{StaticResource smallButtonStyle}"
+                            Text="Status" />
                     </Grid>
                 </VerticalStackLayout>
                 <CollectionView Grid.Row="3" ItemsSource="{Binding TableOrders}">
@@ -137,7 +146,7 @@
                             <Grid Margin="10,0" Padding="10">
                                 <Border Style="{StaticResource tablePageOrderBorderStyle}">
                                     <Grid
-                                        ColumnDefinitions="*, Auto"
+                                        ColumnDefinitions="*, .5*, Auto"
                                         RowDefinitions="0.5*, 0.5*"
                                         RowSpacing="10">
                                         <HorizontalStackLayout Spacing="10">
@@ -151,7 +160,7 @@
                                                 Text="{Binding OrderNumber, StringFormat='# {0}'}" />
                                         </HorizontalStackLayout>
                                         <Label
-                                            Grid.Column="1"
+                                            Grid.Column="2"
                                             Style="{StaticResource labelStyle}"
                                             Text="{Binding Status}" />
                                         <HorizontalStackLayout Grid.Row="1" Spacing="20">
@@ -168,6 +177,11 @@
                                             Grid.Row="1"
                                             Grid.Column="1"
                                             Style="{StaticResource labelStyle}"
+                                            Text="{Binding TotalAmount, StringFormat='रु. {0}'}" />
+                                        <Label
+                                            Grid.Row="1"
+                                            Grid.Column="2"
+                                            Style="{StaticResource labelStyle}"
                                             Text="{Binding PaymentStatus}" />
                                     </Grid>
                                 </Border>
@@ -180,9 +194,15 @@
                         </StackLayout>
                     </CollectionView.EmptyView>
                 </CollectionView>
-                <Button
+                <Label
                     Grid.Row="4"
+                    Margin="20,0"
+                    Style="{StaticResource labelStyle}"
+                    Text="{Binding TotalTableAmount, StringFormat='Table Total:  रु. {0}'}" />
+                <Button
+                    Grid.Row="5"
                     Command="{Binding SaveGuestsCommand}"
+                    IsEnabled="{Binding IsWaiter}"
                     Style="{StaticResource smallButtonStyle}"
                     Text="Order Menu" />
                 <VerticalStackLayout Spacing="10" />
