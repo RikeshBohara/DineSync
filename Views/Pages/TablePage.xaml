@@ -93,7 +93,7 @@
                             Grid.Column="0"
                             FontSize="20"
                             Style="{StaticResource labelHeaderStyle}"
-                            Text="{Binding SelectedTable.TableNumber, StringFormat='Table# {0}', FallbackValue='Select a Table'}" />
+                            Text="{Binding SelectedTable.TableNumber, StringFormat='Table# {0}', FallbackValue=''}" />
                         <Label
                             Margin="20,0,0,0"
                             Style="{StaticResource labelStyle}"

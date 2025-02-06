@@ -45,6 +45,7 @@
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Border
+                            Margin="10"
                             Padding="20"
                             BackgroundColor="#1f1d2b"
                             Stroke="Transparent"

@@ -10,6 +10,7 @@ namespace DineSync.Models
         public int Capacity { get; set; }
         public string Status { get; set; } = "Available";
         public int GuestCount { get; set; }
+        public int AssignedWaiterId { get; set; }
         public int OrderId {  get; set; }
 
         [Ignore]

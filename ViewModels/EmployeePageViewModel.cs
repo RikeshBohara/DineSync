@@ -40,6 +40,9 @@ namespace DineSync.ViewModels
         [ObservableProperty]
         private string _Title;
 
+        [ObservableProperty]
+        private string _SearchEmployee;
+
         public List<string> Roles { get; } = new List<string>
         {
             "Waiter",
@@ -67,7 +70,7 @@ namespace DineSync.ViewModels
         }
 
         [RelayCommand]
-        private void EditUser(User user)
+        public void EditUser(User user)
         {
             SelectedUser = user;
             Name = user.Name;
@@ -78,7 +81,7 @@ namespace DineSync.ViewModels
         }
 
         [RelayCommand]
-        private async Task RemoveUser(User user)
+        public async Task RemoveUser(User user)
         {
             var confirm = await Shell.Current.DisplayAlert(
                 "Confirm Delete",
@@ -95,7 +98,7 @@ namespace DineSync.ViewModels
         }
 
         [RelayCommand]
-        private async Task SaveUser()
+        public async Task SaveUser()
         {
             if (string.IsNullOrWhiteSpace(Name) ||
             string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password) ||
@@ -131,7 +134,7 @@ namespace DineSync.ViewModels
         }
 
         [RelayCommand]
-        private void ClearEmployee()
+        public void ClearEmployee()
         {
             SelectedUser = null;
             Name = string.Empty;
@@ -142,7 +145,7 @@ namespace DineSync.ViewModels
         }
 
         [RelayCommand]
-        private async Task RoleTapped(string role)
+        public async Task RoleTapped(string role)
         {
             if (role != null)
             {
@@ -155,6 +158,16 @@ namespace DineSync.ViewModels
             {
                 LoadUsers();
             }
+        }
+
+        [RelayCommand]
+        public async Task SearchHandler(string user)
+        {
+            user = SearchEmployee;
+            var searchedEmployee = await _UserRepository.GetSerachedUserAsync(user);
+            Users = new ObservableCollection<User>(searchedEmployee);
+            Title = "Employee";
+            SearchEmployee = string.Empty;
         }
         #endregion
     }

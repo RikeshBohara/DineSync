@@ -50,6 +50,13 @@ namespace DineSync.Repository.Implementations
             var users = await _Connection.QueryAsync<User>(query, role);
             return users.ToList();
         }
+
+        public async Task<List<User>> GetSerachedUserAsync(string user)
+        {
+            var query = @"select * from User where Name = ?";
+            var users = await _Connection.QueryAsync<User>(query, user);
+            return users.ToList();
+        }
         #endregion
     }
 }

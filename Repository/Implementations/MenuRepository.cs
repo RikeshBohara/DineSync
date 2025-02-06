@@ -66,6 +66,13 @@ namespace DineSync.Repository.Implementations
             var menus = await _Connection.QueryAsync<Menu>(query, categoryId, name, price, description);
             return menus.FirstOrDefault();
         }
+
+        public async Task<List<Menu>> GetSearchedMenuAsync(string menu)
+        {
+            var query = @"select menu.* from Menu where Name = ?";
+            var menus = await _Connection.QueryAsync<Menu>(query, menu);
+            return menus.ToList<Menu>();
+        }
         #endregion
     }
 }
