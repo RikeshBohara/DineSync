@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="DineSync.Views.Pages.OrderPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:DineSync.Controls"
+    xmlns:viewmodels="clr-namespace:DineSync.ViewModels"
+    Shell.NavBarIsVisible="False"
+    Style="{StaticResource contentPageBackgroundStyle}">
+    <Grid ColumnDefinitions="0.6*, 0.4*">
+        <Grid RowDefinitions=".12*, .05*, .05*, .85*" Style="{StaticResource mainGridStyle}">
+            <Label
+                Grid.Row="0"
+                Style="{StaticResource labelHeaderStyle}"
+                Text="{Binding Title}" />
+            <Frame
+                Margin="20,30,30,0"
+                HorizontalOptions="End"
+                Style="{StaticResource inputFrameStyle}"
+                VerticalOptions="Center"
+                WidthRequest="343">
+                <Grid ColumnDefinitions="*, auto,auto">
+                    <controls:BorderlessEntry
+                        Grid.Column="0"
+                        Keyboard="Numeric"
+                        Placeholder="Search for Order Number"
+                        Text="{Binding SearchOrder}"
+                        VerticalOptions="Center" />
+                    <BoxView Grid.Column="1" Style="{StaticResource inputBoxViewStyle}" />
+                    <Image
+                        Grid.Column="2"
+                        HeightRequest="30"
+                        Source="search_order.png">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SearchHandlerCommand}" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                </Grid>
+            </Frame>
+            <BoxView Grid.Row="1" Style="{StaticResource boxViewStyle}" />
+            <HorizontalStackLayout Grid.Row="2" Margin="15,10">
+                <Border Style="{StaticResource categoryBorderStyle}">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding LoadOrdersCommand}" />
+                    </Border.GestureRecognizers>
+                    <Label
+                        FontSize="16"
+                        HorizontalOptions="Center"
+                        Style="{StaticResource labelStyle}"
+                        Text="All" />
+                </Border>
+                <Border Style="{StaticResource categoryBorderStyle}">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding LoadPendingOrdersCommand}" />
+                    </Border.GestureRecognizers>
+                    <Label
+                        FontSize="16"
+                        HorizontalOptions="Center"
+                        Style="{StaticResource labelStyle}"
+                        Text="Pending" />
+                </Border>
+                <Border Style="{StaticResource categoryBorderStyle}">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding LoadCompletedOrdersCommand}" />
+                    </Border.GestureRecognizers>
+                    <Label
+                        FontSize="16"
+                        HorizontalOptions="Center"
+                        Style="{StaticResource labelStyle}"
+                        Text="Completed" />
+                </Border>
+            </HorizontalStackLayout>
+            <CollectionView Grid.Row="3" ItemsSource="{Binding Orders}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="20,0,20,0" Padding="10">
+                            <Border Style="{StaticResource orderBorderStyle}">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:OrderPageViewModel}}, Path=ShowOrderDetailsCommand}" CommandParameter="{Binding .}" />
+                                </Border.GestureRecognizers>
+                                <Grid
+                                    ColumnDefinitions="*, Auto"
+                                    RowDefinitions="0.5*, 0.5*"
+                                    RowSpacing="10">
+                                    <HorizontalStackLayout Spacing="10">
+                                        <Label
+                                            FontSize="20"
+                                            Style="{StaticResource labelStyle}"
+                                            Text="Order Number" />
+                                        <Label
+                                            FontSize="20"
+                                            Style="{StaticResource labelStyle}"
+                                            Text="{Binding OrderNumber, StringFormat='# {0}'}" />
+                                    </HorizontalStackLayout>
+                                    <Label
+                                        Grid.Column="1"
+                                        FontSize="20"
+                                        Style="{StaticResource labelStyle}"
+                                        Text="{Binding Status}" />
+                                    <HorizontalStackLayout Grid.Row="1" Spacing="20">
+                                        <HorizontalStackLayout Spacing="10">
+                                            <Image HeightRequest="20" Source="table.png" />
+                                            <Label Style="{StaticResource labelStyle}" Text="{Binding TableNumber}" />
+                                        </HorizontalStackLayout>
+                                        <HorizontalStackLayout Spacing="10">
+                                            <Image HeightRequest="20" Source="user.png" />
+                                            <Label Style="{StaticResource labelStyle}" Text="{Binding GuestCount}" />
+                                        </HorizontalStackLayout>
+                                    </HorizontalStackLayout>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+        <Grid Grid.Column="1" Style="{StaticResource sideGridStyle}">
+            <Grid RowDefinitions=".15*,.5*,.1*">
+                <Border Grid.Row="0" Style="{StaticResource orderDetailBorderStyle}">
+                    <StackLayout>
+                        <Label
+                            Margin="0"
+                            HorizontalOptions="Center"
+                            Style="{StaticResource labelHeaderStyle}"
+                            Text="{Binding SelectedOrder.OrderNumber, StringFormat='Order #{0}'}" />
+                        <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
+                            <HorizontalStackLayout Spacing="10">
+                                <Image HeightRequest="20" Source="table.png" />
+                                <Label Style="{StaticResource labelStyle}" Text="{Binding TableNumber}" />
+                            </HorizontalStackLayout>
+                            <HorizontalStackLayout Spacing="10">
+                                <Image HeightRequest="20" Source="user.png" />
+                                <Label Style="{StaticResource labelStyle}" Text="{Binding SelectedOrder.GuestCount}" />
+                            </HorizontalStackLayout>
+                        </HorizontalStackLayout>
+                        <Grid ColumnDefinitions="*, Auto">
+                            <Label
+                                Grid.Column="0"
+                                Style="{StaticResource labelStyle}"
+                                Text="{Binding OrderDate}" />
+                            <Label
+                                Grid.Column="1"
+                                Style="{StaticResource labelStyle}"
+                                Text="{Binding OrderTime}" />
+                        </Grid>
+                    </StackLayout>
+                </Border>
+                <CollectionView
+                    Grid.Row="1"
+                    ItemsSource="{Binding OrderItems}"
+                    SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Border Margin="10" Style="{StaticResource orderDetailBorderStyle}">
+                                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="15">
+                                    <Image
+                                        Grid.Column="0"
+                                        HeightRequest="40"
+                                        Source="{Binding Icon}"
+                                        WidthRequest="40" />
+                                    <Label
+                                        Grid.Column="1"
+                                        Style="{StaticResource labelStyle}"
+                                        Text="{Binding Name}"
+                                        VerticalOptions="Center" />
+                                    <Label
+                                        Grid.Column="2"
+                                        Style="{StaticResource labelStyle}"
+                                        Text="{Binding Quantity, StringFormat='x{0}'}"
+                                        VerticalOptions="Center" />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+                <Button
+                    Grid.Row="2"
+                    Command="{Binding UpdateOrderStatusCommand}"
+                    IsEnabled="{Binding IsEnabled}"
+                    Style="{StaticResource smallButtonStyle}"
+                    Text="Completed" />
+            </Grid>
+        </Grid>
+    </Grid>
+</ContentPage>

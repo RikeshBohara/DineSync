@@ -4,12 +4,58 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:DineSync"
-    Shell.FlyoutBehavior="Disabled"
-    Title="DineSync">
-
+    xmlns:viewmodels="clr-namespace:DineSync.ViewModels"
+    xmlns:views="clr-namespace:DineSync.Views.Pages"
+    Title="DineSync"
+    Shell.FlyoutBackgroundColor="#1f1d2b"
+    Style="{StaticResource shellStyle}">
+    <Shell.FlyoutHeader>
+        <Image Source="logo.png" Style="{StaticResource shellHeaderImageStyle}" />
+    </Shell.FlyoutHeader>
     <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+        ContentTemplate="{DataTemplate views:LoginPage}"
+        Route="MainPage"
+        Shell.FlyoutItemIsVisible="False" />
+    <ShellContent
+        ContentTemplate="{DataTemplate views:SignupPage}"
+        Route="SignupPage"
+        Shell.FlyoutItemIsVisible="False" />
+    <ShellContent
+        x:Name="PaymentPageShellContent"
+        ContentTemplate="{DataTemplate views:PaymentPage}"
+        FlyoutIcon="payment.png"
+        Route="PaymentPage" />
+    <ShellContent
+        x:Name="EmployeePageShellContent"
+        ContentTemplate="{DataTemplate views:EmployeePage}"
+        FlyoutIcon="user.png"
+        Route="EmployeePage" />
+    <ShellContent
+        x:Name="EditMenuPageShellContent"
+        ContentTemplate="{DataTemplate views:EditMenuPage}"
+        FlyoutIcon="bowls.png"
+        Route="EditMenuPage" />
+    <ShellContent
+        x:Name="TablePageShellContent"
+        ContentTemplate="{DataTemplate views:TablePage}"
+        FlyoutIcon="table.png"
+        Route="TablePage" />
+    <ShellContent
+        x:Name="MenuPageShellContent"
+        ContentTemplate="{DataTemplate views:MenuPage}"
+        FlyoutIcon="menu.png"
+        Route="MenuPage" />
+    <ShellContent
+        x:Name="OrderPageShellContent"
+        ContentTemplate="{DataTemplate views:OrderPage}"
+        FlyoutIcon="list.png"
+        Route="OrderPage" />
 
+    <Shell.FlyoutFooter>
+        <Image Source="logout.png" Style="{StaticResource shellFooterImageStyle}">
+            <Image.GestureRecognizers>
+                <TapGestureRecognizer Tapped="NavigateToLogin" />
+            </Image.GestureRecognizers>
+        </Image>
+    </Shell.FlyoutFooter>
 </Shell>

@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="DineSync.Views.Pages.MenuPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:DineSync.Controls"
+    xmlns:viewmodels="clr-namespace:DineSync.ViewModels"
+    Shell.NavBarIsVisible="False"
+    Style="{StaticResource contentPageBackgroundStyle}">
+    <Grid ColumnDefinitions=".70*, .30*">
+        <Grid RowDefinitions=".1*, .05*, .1*, .75*" Style="{StaticResource mainGridStyle}">
+            <Label
+                Grid.Row="0"
+                Style="{StaticResource labelHeaderStyle}"
+                Text="{Binding Title}" />
+            <Frame
+                Margin="20,30,30,0"
+                HorizontalOptions="End"
+                Style="{StaticResource inputFrameStyle}"
+                VerticalOptions="Center"
+                WidthRequest="343">
+                <Grid ColumnDefinitions="*, auto,auto">
+                    <controls:BorderlessEntry
+                        Grid.Column="0"
+                        Placeholder="Search for Menu Items"
+                        Text="{Binding SearchMenu}"
+                        VerticalOptions="Center" />
+                    <BoxView Grid.Column="1" Style="{StaticResource inputBoxViewStyle}" />
+                    <Image
+                        Grid.Column="2"
+                        HeightRequest="30"
+                        Source="search.png">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SearchHandlerCommand}" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                </Grid>
+            </Frame>
+            <BoxView Grid.Row="1" Style="{StaticResource boxViewStyle}" />
+            <Grid Grid.Row="2" ColumnDefinitions="Auto, *">
+                <Border Grid.Column="0" Style="{StaticResource categoryBorderStyle}">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding LoadAllMenuCommand}" />
+                    </Border.GestureRecognizers>
+                    <Grid Padding="0,5,0,5" ColumnDefinitions=".3*, .6*">
+                        <Image
+                            Grid.Column="0"
+                            Aspect="AspectFit"
+                            HeightRequest="20"
+                            Source="bowls.png" />
+                        <Label
+                            Grid.Column="1"
+                            FontSize="16"
+                            Style="{StaticResource labelStyle}"
+                            Text="All" />
+                    </Grid>
+                </Border>
+                <CollectionView
+                    Grid.Column="1"
+                    ItemsSource="{Binding MenuCategories}"
+                    SelectedItem="{Binding SelectedMenuCategory, Mode=TwoWay}">
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Horizontal" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <HorizontalStackLayout>
+                                <Border Style="{StaticResource categoryBorderStyle}">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MenuPageViewModel}}, Path=CategoryTappedCommand}" CommandParameter="{Binding .}" />
+                                    </Border.GestureRecognizers>
+                                    <Grid Padding="0,5,0,5" ColumnDefinitions=".3*, .6*">
+                                        <Image
+                                            Grid.Column="0"
+                                            Aspect="AspectFit"
+                                            HeightRequest="20"
+                                            Source="bowls.png" />
+                                        <Label
+                                            Grid.Column="1"
+                                            FontSize="16"
+                                            Style="{StaticResource labelStyle}"
+                                            Text="{Binding Name}" />
+                                    </Grid>
+                                </Border>
+                            </HorizontalStackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                    <CollectionView.EmptyView>
+                        <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                            <Label Style="{StaticResource labelStyle}" Text="No Menu Category available" />
+                            <Label Style="{StaticResource labelStyle}" Text="Click 'Add Menu Category' to create a new Menu Category" />
+                        </StackLayout>
+                    </CollectionView.EmptyView>
+                </CollectionView>
+            </Grid>
+            <CollectionView
+                Grid.Row="3"
+                ItemsSource="{Binding Menus}"
+                SelectedItem="{Binding SelectedMenu, Mode=TwoWay}">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" Span="3" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="20,0,20,10" Padding="10">
+                            <Border Style="{StaticResource menuBorderStyle}">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MenuPageViewModel}}, Path=MenuItemTappedCommand}" CommandParameter="{Binding .}" />
+                                </Border.GestureRecognizers>
+                                <Grid RowDefinitions="*, Auto">
+                                    <Image
+                                        Grid.Row="0"
+                                        Aspect="Fill"
+                                        HeightRequest="150"
+                                        Source="{Binding Image}" />
+                                    <Grid
+                                        Grid.Row="1"
+                                        Padding="10"
+                                        RowDefinitions="*, Auto">
+                                        <VerticalStackLayout Spacing="10">
+                                            <Grid ColumnDefinitions="*, Auto">
+                                                <Label
+                                                    Grid.Column="0"
+                                                    Style="{StaticResource labelStyle}"
+                                                    Text="{Binding Name}" />
+                                                <Label
+                                                    Grid.Column="1"
+                                                    Style="{StaticResource paragraphLabelStyle}"
+                                                    Text="{Binding Price, StringFormat='रु. {0}'}" />
+                                            </Grid>
+                                            <Label
+                                                HorizontalOptions="Start"
+                                                Style="{StaticResource paragraphLabelStyle}"
+                                                Text="{Binding Description}"
+                                                TextColor="#a2b1b8" />
+                                        </VerticalStackLayout>
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                <CollectionView.EmptyView>
+                    <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                        <Label Style="{StaticResource labelStyle}" Text="No Menu Items available" />
+                        <Label Style="{StaticResource labelStyle}" Text="Add Menu Items" />
+                    </StackLayout>
+                </CollectionView.EmptyView>
+            </CollectionView>
+        </Grid>
+        <Grid Grid.Column="1" Style="{StaticResource sideGridStyle}">
+            <Grid RowDefinitions=".25*, .7*, .1*, .13*">
+                <Border Grid.Row="0" Style="{StaticResource sideGridBorderStyle}">
+                    <StackLayout>
+                        <Label
+                            HorizontalOptions="Center"
+                            Style="{StaticResource labelHeaderStyle}"
+                            Text="Order Items List" />
+                        <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
+                            <HorizontalStackLayout Spacing="10">
+                                <Image HeightRequest="20" Source="table.png" />
+                                <Label
+                                    FontSize="16"
+                                    Style="{StaticResource labelStyle}"
+                                    Text="{Binding SelectedTable.TableNumber}" />
+                            </HorizontalStackLayout>
+                            <HorizontalStackLayout Grid.Column="1" Spacing="10">
+                                <Image HeightRequest="20" Source="user.png" />
+                                <Label
+                                    FontSize="16"
+                                    Style="{StaticResource labelStyle}"
+                                    Text="{Binding SelectedTable.GuestCount}" />
+                            </HorizontalStackLayout>
+                        </HorizontalStackLayout>
+                    </StackLayout>
+                </Border>
+                <CollectionView Grid.Row="1" ItemsSource="{Binding CurrentOrderItems}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Border Style="{StaticResource menuOrderGridBorderStyle}">
+                                <Grid
+                                    ColumnDefinitions="Auto, *, *"
+                                    ColumnSpacing="20"
+                                    RowDefinitions="Auto, *">
+                                    <Image
+                                        Grid.Row="0"
+                                        Grid.RowSpan="2"
+                                        Grid.Column="0"
+                                        Aspect="AspectFit"
+                                        HeightRequest="60"
+                                        Source="{Binding Icon}"
+                                        WidthRequest="60" />
+                                    <Label
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        Style="{StaticResource labelStyle}"
+                                        Text="{Binding Name}" />
+                                    <Label
+                                        Grid.Row="0"
+                                        Grid.Column="2"
+                                        Style="{StaticResource labelStyle}"
+                                        Text="Quantity" />
+                                    <Label
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        Style="{StaticResource labelStyle}"
+                                        Text="{Binding Amount, StringFormat='रु. {0}'}" />
+                                    <Grid
+                                        Grid.Row="1"
+                                        Grid.Column="2"
+                                        ColumnDefinitions="*, *, *"
+                                        ColumnSpacing="10">
+                                        <Button
+                                            Grid.Column="0"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MenuPageViewModel}}, Path=DecrementQuantityCommand}"
+                                            CommandParameter="{Binding .}"
+                                            HeightRequest="40"
+                                            Style="{StaticResource smallButtonStyle}"
+                                            Text="-"
+                                            WidthRequest="40" />
+                                        <Label
+                                            Grid.Column="1"
+                                            Style="{StaticResource labelStyle}"
+                                            Text="{Binding Quantity}" />
+                                        <Button
+                                            Grid.Column="2"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MenuPageViewModel}}, Path=IncrementQuantityCommand}"
+                                            CommandParameter="{Binding .}"
+                                            HeightRequest="40"
+                                            Style="{StaticResource smallButtonStyle}"
+                                            Text="+"
+                                            WidthRequest="40" />
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+                <Label
+                    Grid.Row="2"
+                    Margin="20,0"
+                    Style="{StaticResource labelStyle}"
+                    Text="{Binding CurrentOrder.TotalAmount, StringFormat='Total: रु. {0}'}" />
+                <HorizontalStackLayout
+                    Grid.Row="3"
+                    HorizontalOptions="Center"
+                    Spacing="20">
+                    <Button
+                        Command="{Binding SaveOrderCommand}"
+                        Style="{StaticResource smallButtonStyle}"
+                        Text="Save Order" />
+                    <Button
+                        Command="{Binding CancelOrderCommand}"
+                        Style="{StaticResource smallButtonStyle}"
+                        Text="Cancel Order" />
+                </HorizontalStackLayout>
+            </Grid>
+        </Grid>
+    </Grid>
+</ContentPage>

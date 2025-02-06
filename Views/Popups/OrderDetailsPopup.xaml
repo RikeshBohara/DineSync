@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup
+    x:Class="DineSync.Views.Popups.OrderDetailsPopup"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:DineSync.Controls"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    Size="700, 600"
+    Color="{DynamicResource PopupColor}">
+    <Border Padding="10" StrokeShape="RoundRectangle 10">
+        <Grid RowDefinitions=".2*, .5*, .1*">
+            <Border Grid.Row="0" Style="{StaticResource orderDetailBorderStyle}">
+                <StackLayout>
+                    <Label
+                        Margin="0"
+                        HorizontalOptions="Center"
+                        Style="{StaticResource labelHeaderStyle}"
+                        Text="{Binding SelectedOrder.OrderNumber, StringFormat='Order #{0}'}" />
+                    <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
+                        <HorizontalStackLayout Spacing="10">
+                            <Image HeightRequest="20" Source="table.png" />
+                            <Label Style="{StaticResource labelStyle}" Text="{Binding TableNumber}" />
+                        </HorizontalStackLayout>
+                        <HorizontalStackLayout Spacing="10">
+                            <Image HeightRequest="20" Source="user.png" />
+                            <Label Style="{StaticResource labelStyle}" Text="{Binding SelectedOrder.GuestCount}" />
+                        </HorizontalStackLayout>
+                    </HorizontalStackLayout>
+                    <Grid ColumnDefinitions="*, Auto">
+                        <Label
+                            Grid.Column="0"
+                            Style="{StaticResource labelStyle}"
+                            Text="{Binding OrderDate}" />
+                        <Label
+                            Grid.Column="1"
+                            Style="{StaticResource labelStyle}"
+                            Text="{Binding OrderTime}" />
+                    </Grid>
+                </StackLayout>
+            </Border>
+            <CollectionView
+                Grid.Row="1"
+                ItemsSource="{Binding OrderItems}"
+                SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border
+                            Margin="10"
+                            Padding="20"
+                            BackgroundColor="#1f1d2b"
+                            Stroke="Transparent"
+                            StrokeShape="RoundRectangle 10">
+                            <Grid ColumnDefinitions="Auto,*,*,Auto" ColumnSpacing="10">
+                                <Image
+                                    Grid.Column="0"
+                                    HeightRequest="40"
+                                    Source="{Binding Icon}"
+                                    WidthRequest="40" />
+                                <Label
+                                    Grid.Column="1"
+                                    Style="{StaticResource labelStyle}"
+                                    Text="{Binding Name}"
+                                    VerticalOptions="Center" />
+                                <Label
+                                    Grid.Column="2"
+                                    Style="{StaticResource labelStyle}"
+                                    Text="{Binding Quantity, StringFormat='x{0}'}"
+                                    VerticalOptions="Center" />
+                                <Label
+                                    Grid.Column="3"
+                                    Style="{StaticResource labelStyle}"
+                                    Text="{Binding Amount, StringFormat='रु. {0}'}"
+                                    VerticalOptions="Center" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <Label
+                Grid.Row="2"
+                Margin="20,0"
+                Style="{StaticResource labelStyle}"
+                Text="{Binding SelectedOrder.TotalAmount, StringFormat='Total: रु. {0}'}" />
+        </Grid>
+    </Border>
+</toolkit:Popup>
