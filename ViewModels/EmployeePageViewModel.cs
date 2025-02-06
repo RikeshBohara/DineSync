@@ -104,7 +104,7 @@ namespace DineSync.ViewModels
             string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(Password) ||
                 string.IsNullOrWhiteSpace(Role))
             {
-                await Shell.Current.DisplayAlert("Error", "Please fill all fields", "OK");
+                await Shell.Current.DisplayAlert("Cannot Add User", "Please fill all fields", "OK");
                 return;
             }
 
