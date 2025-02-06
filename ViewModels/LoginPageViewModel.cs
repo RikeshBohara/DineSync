@@ -64,7 +64,7 @@ namespace DineSync.ViewModels
         {
             if (string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Password))
             {
-                await Shell.Current.DisplayAlert("Error", "Please Enter both email and password.", "OK");
+                await Shell.Current.DisplayAlert("Login Failed", "Please Enter both email and password.", "OK");
                 return;
             }
 
@@ -84,7 +84,7 @@ namespace DineSync.ViewModels
             }
             else
             {
-                await Shell.Current.DisplayAlert("Error", "Invalid email or password.", "OK");
+                await Shell.Current.DisplayAlert("Login Failed", "Invalid email or password.", "OK");
                 return;
             }
             Role = user.Role;

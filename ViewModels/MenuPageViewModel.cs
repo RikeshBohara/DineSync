@@ -325,13 +325,13 @@ namespace DineSync.ViewModels
             {
                 if (CurrentOrderItems == null || !CurrentOrderItems.Any())
                 {
-                    await Shell.Current.DisplayAlert("Error", "Cannot save empty order", "OK");
+                    await Shell.Current.DisplayAlert("Cannot Save Order", "Cannot save empty order", "OK");
                     return;
                 }
 
                 if (SelectedTable == null)
                 {
-                    await Shell.Current.DisplayAlert("Error", "No table selected", "OK");
+                    await Shell.Current.DisplayAlert("Cannot Save Order", "No table selected", "OK");
                     return;
                 }
 
@@ -379,7 +379,7 @@ namespace DineSync.ViewModels
             }
             catch (Exception ex)
             {
-                await Shell.Current.DisplayAlert("Error", $"Failed to save order: {ex.Message}", "OK");
+                await Shell.Current.DisplayAlert("Cannot Save Order", $"Failed to save order: {ex.Message}", "OK");
             }
         }
 
