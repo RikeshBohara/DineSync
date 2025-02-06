@@ -80,7 +80,7 @@ namespace DineSync.ViewModels
             }
             else if (user != null && (user.Role == "Kitchen"))
             {
-                await Shell.Current.GoToAsync($"///OrderPage", new Dictionary<string, object> { { "User", user } });
+                await Shell.Current.GoToAsync($"/OrderPage", new Dictionary<string, object> { { "User", user } });
             }
             else
             {
