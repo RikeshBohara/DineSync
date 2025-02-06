@@ -34,6 +34,7 @@ namespace DineSync
             Routing.RegisterRoute(nameof(SignupPage), typeof(SignupPage));
             Routing.RegisterRoute(nameof(PaymentPage), typeof(PaymentPage));
             Routing.RegisterRoute(nameof(TablePage), typeof(TablePage));
+            Routing.RegisterRoute(nameof(OrderPage), typeof(OrderPage));
         }
 
         private void UpdateFlyoutItemsVisibility()
