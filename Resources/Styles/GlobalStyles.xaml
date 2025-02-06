@@ -191,4 +191,11 @@
         <Setter Property="Stroke" Value="Transparent" />
         <Setter Property="StrokeShape" Value="RoundRectangle 10" />
     </Style>
+
+    <Style x:Key="inputBoxViewStyle" TargetType="BoxView">
+        <Setter Property="Margin" Value="10,0" />
+        <Setter Property="BackgroundColor" Value="Gray" />
+        <Setter Property="HeightRequest" Value="30" />
+        <Setter Property="WidthRequest" Value="2" />
+    </Style>
 </ResourceDictionary>

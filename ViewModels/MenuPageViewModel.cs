@@ -71,6 +71,9 @@ namespace DineSync.ViewModels
         [ObservableProperty]
         private string _Title;
 
+        [ObservableProperty]
+        private string _SearchMenu;
+
         private Popup _AddMenuCategoryPopup;
         #endregion
 
@@ -101,6 +104,7 @@ namespace DineSync.ViewModels
         {
             var menus = await _MenuRepository.GetAllMenuAsync();
             Menus = new ObservableCollection<Menu>(menus);
+            Title = "All Menu";
         }
 
         [RelayCommand]
@@ -423,6 +427,16 @@ namespace DineSync.ViewModels
             {
                 LoadMenu();
             }
+        }
+
+        [RelayCommand]
+        public async Task SearchHandler(string menu)
+        {
+            menu = SearchMenu;
+            var searchedMenu = await _MenuRepository.GetSearchedMenuAsync(menu);
+            Menus = new ObservableCollection<Menu>(searchedMenu);
+            Title = "Menu";
+            SearchMenu = string.Empty;
         }
 
         [RelayCommand]

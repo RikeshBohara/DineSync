@@ -54,6 +54,9 @@ namespace DineSync.ViewModels
 
         [ObservableProperty]
         private string _Title;
+
+        [ObservableProperty]
+        private string _SearchOrder;
         #endregion
 
         #region Constructor
@@ -139,6 +142,16 @@ namespace DineSync.ViewModels
             var completedOrders = await _OrderRepository.GetCompletedOrdersAsync();
             Orders = new ObservableCollection<Order>(completedOrders.OrderByDescending(completedOrder => completedOrder.OrderDate));
             Title = "Completed Orders";
+        }
+
+        [RelayCommand]
+        public async Task SearchHandler(string orderNumber)
+        {
+            orderNumber = SearchOrder;
+            var searchedOrder = await _OrderRepository.GeatSearchedOrderAsync(orderNumber);
+            Orders = new ObservableCollection<Order>(searchedOrder);
+            Title = "Order";
+            SearchOrder = string.Empty;
         }
         #endregion
     }

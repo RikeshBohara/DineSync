@@ -11,5 +11,6 @@ namespace DineSync.Repository.Interfaces
         Task AddMenuCategoryMappingAsync(MenuCategoryMapping mapping);
         Task<List<Menu>> GetMenusByCategoryAsync(int categoryId);
         Task<Menu> CheckIfMenuExistsAsync(string name, decimal price, string description, int categoryId);
+        Task<List<Menu>> GetSearchedMenuAsync(string menu);
     }
 }

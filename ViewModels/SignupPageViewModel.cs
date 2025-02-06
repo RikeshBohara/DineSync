@@ -47,7 +47,7 @@ namespace DineSync.ViewModels
 
         #region Methods
         [RelayCommand]
-        private void TogglePasswordVisibility()
+        public void TogglePasswordVisibility()
         {
             IsPasswordVisible = !IsPasswordVisible;
             PasswordVisibilityIcon = IsPasswordVisible
@@ -56,7 +56,7 @@ namespace DineSync.ViewModels
         }
 
         [RelayCommand]
-        private void TogglePassword2Visibility()
+        public void TogglePassword2Visibility()
         {
             IsPassword2Visible = !IsPassword2Visible;
             Password2VisibilityIcon = IsPassword2Visible
@@ -120,7 +120,7 @@ namespace DineSync.ViewModels
 
             await NavigateToLogin();
         }
-        private bool IsValidDineSyncEmail(string email)
+        public bool IsValidDineSyncEmail(string email)
         {
             return Regex.IsMatch(email, @"^[^@\s]+@dinesync\.com$");
         }

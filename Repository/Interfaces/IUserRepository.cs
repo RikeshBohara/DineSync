@@ -10,5 +10,6 @@ namespace DineSync.Repository.Interfaces
         Task<int> UpdateUserAsync(User user);
         Task<User> GetUserByIdAsync(int id);
         Task<List<User>> GetUsersByRoleAsync(string role);
+        Task<List<User>> GetSerachedUserAsync(string user);
     }
 }
