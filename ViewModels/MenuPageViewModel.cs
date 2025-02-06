@@ -113,13 +113,13 @@ namespace DineSync.ViewModels
             IsImageAdded = true;
             if (string.IsNullOrEmpty(NewMenuCategory))
             {
-                await Shell.Current.DisplayAlert("Error", "Category Name cannot be empty", "OK");
+                await Shell.Current.DisplayAlert("Cannot Save Category", "Category Name cannot be empty", "OK");
                 return;
             }
             var existingCategory = await _MenuCategoryRepository.CheckIfCategoryExistsAsync(Name);
             if (existingCategory != null)
             {
-                await Shell.Current.DisplayAlert("Error", "This Category already exists. Please add a different Category", "OK");
+                await Shell.Current.DisplayAlert("Duplicate Category", "This Category already exists. Please add a different Category", "OK");
                 Name = string.Empty;
                 return;
             }
@@ -211,7 +211,7 @@ namespace DineSync.ViewModels
         {
             if (SelectedCategory == null || string.IsNullOrEmpty(Name) || Price <= 0)
             {
-                await Shell.Current.DisplayAlert("Error", "Please fill all required fields", "OK");
+                await Shell.Current.DisplayAlert("Cannot Save Menu", "Please fill all required fields", "OK");
                 return;
             }
 
@@ -226,7 +226,7 @@ namespace DineSync.ViewModels
             var existingMenu = await _MenuRepository.CheckIfMenuExistsAsync(Name, Price, Description, SelectedCategory.Id);
             if (existingMenu != null)
             {
-                await Shell.Current.DisplayAlert("Error", "This Menu Item already exists. Please add a different item", "OK");
+                await Shell.Current.DisplayAlert("Duplicate Menu", "This Menu Item already exists. Please add a different item", "OK");
                 Name = string.Empty;
                 Price = 0;
                 Description = string.Empty;
@@ -260,7 +260,7 @@ namespace DineSync.ViewModels
         {
             if (SelectedTable == null)
             {
-                await Shell.Current.DisplayAlert("Error", "Select a table to take orders", "OK");
+                await Shell.Current.DisplayAlert("Cannot Take Order", "Select a table to take orders", "OK");
             }
             else
             {
