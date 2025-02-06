@@ -110,7 +110,7 @@ namespace DineSync.ViewModels
             }
             else
             {
-                await Shell.Current.DisplayAlert("Error", "Capacity must be a valid number greater than 0", "OK");
+                await Shell.Current.DisplayAlert("Cannot Add Table", "Capacity must be a valid number greater than 0", "OK");
             }
         }
 
@@ -181,7 +181,7 @@ namespace DineSync.ViewModels
                     }
                     else
                     {
-                        await Shell.Current.DisplayAlert("Error", "Occupants must be a valid number greater than 0", "OK");
+                        await Shell.Current.DisplayAlert("Invalid Occupants", "Occupants must be a valid number greater than 0", "OK");
                     }
                 }
                 else

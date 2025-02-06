@@ -75,32 +75,32 @@ namespace DineSync.ViewModels
         {
             if (string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(Email) || string.IsNullOrEmpty(Password) || string.IsNullOrEmpty(ConfirmPassword))
             {
-                await Shell.Current.DisplayAlert("Error", "Enter all fields", "OK");
+                await Shell.Current.DisplayAlert("Signup Failed", "Enter all fields", "OK");
                 return;
             }
 
             if (!IsValidDineSyncEmail(Email))
             {
-                await Shell.Current.DisplayAlert("Error", "Please use a valid @dinesync.com email address.", "OK");
+                await Shell.Current.DisplayAlert("Signup Failed", "Please use a valid @dinesync.com email address.", "OK");
                 return;
             }
 
             if(Password.Length < 6)
             {
-                await Shell.Current.DisplayAlert("Error", "Passwords must be at least 6 characters long", "OK");
+                await Shell.Current.DisplayAlert("Signup Failed", "Passwords must be at least 6 characters long", "OK");
                 return;
             }
 
             if (Password != ConfirmPassword)
             {
-                await Shell.Current.DisplayAlert("Error", "Passwords don't match", "OK");
+                await Shell.Current.DisplayAlert("Signup Failed", "Passwords don't match", "OK");
                 return;
             }
 
             var existingUser = await _SignupRepository.CheckIfEmailExistsAsync(Email);
             if (existingUser != null)
             {
-                await Shell.Current.DisplayAlert("Error", "This email is already registered. Please use a different email", "OK");
+                await Shell.Current.DisplayAlert("Duplicate User", "This email is already registered. Please use a different email", "OK");
                 return;
             }
 
