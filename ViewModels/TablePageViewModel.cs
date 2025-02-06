@@ -257,7 +257,7 @@ namespace DineSync.ViewModels
         [RelayCommand]
         public async Task ClearOrders(Table selectedTable)
         {
-            var orders = await _OrderRepository.ClearOrdersByTable(selectedTable.TableNumber);
+            var orders = await _OrderRepository.ClearOrdersByTableAsync(selectedTable.TableNumber);
             TableOrders = new ObservableCollection<Order>(orders);
         }
 

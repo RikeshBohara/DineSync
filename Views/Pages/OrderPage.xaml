@@ -3,6 +3,7 @@
     x:Class="DineSync.Views.Pages.OrderPage"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:DineSync.Controls"
     xmlns:viewmodels="clr-namespace:DineSync.ViewModels"
     Shell.NavBarIsVisible="False"
     Style="{StaticResource contentPageBackgroundStyle}">
@@ -12,6 +13,30 @@
                 Grid.Row="0"
                 Style="{StaticResource labelHeaderStyle}"
                 Text="{Binding Title}" />
+            <Frame
+                Margin="20,30,30,0"
+                HorizontalOptions="End"
+                Style="{StaticResource inputFrameStyle}"
+                VerticalOptions="Center"
+                WidthRequest="343">
+                <Grid ColumnDefinitions="*, auto,auto">
+                    <controls:BorderlessEntry
+                        Grid.Column="0"
+                        Keyboard="Numeric"
+                        Placeholder="Search for Order Number"
+                        Text="{Binding SearchOrder}"
+                        VerticalOptions="Center" />
+                    <BoxView Grid.Column="1" Style="{StaticResource inputBoxViewStyle}" />
+                    <Image
+                        Grid.Column="2"
+                        HeightRequest="30"
+                        Source="search_order.png">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SearchHandlerCommand}" />
+                        </Image.GestureRecognizers>
+                    </Image>
+                </Grid>
+            </Frame>
             <BoxView Grid.Row="1" Style="{StaticResource boxViewStyle}" />
             <HorizontalStackLayout Grid.Row="2" Margin="15,10">
                 <Border Style="{StaticResource categoryBorderStyle}">

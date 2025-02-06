@@ -45,7 +45,7 @@ namespace DineSync.ViewModels
 
         #region Methods
         [RelayCommand]
-        private void TogglePasswordVisibility()
+        public void TogglePasswordVisibility()
         {
             IsPasswordVisible = !IsPasswordVisible;
             PasswordVisibilityIcon = IsPasswordVisible
@@ -54,7 +54,7 @@ namespace DineSync.ViewModels
         }
 
         [RelayCommand]
-        private async Task NavigateToSignup()
+        public async Task NavigateToSignup()
         {
             await Shell.Current.GoToAsync("SignupPage");
         }

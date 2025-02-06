@@ -68,10 +68,17 @@ namespace DineSync.Repository.Implementations
             return orders.ToList();
         }
 
-        public async Task<List<Order>> ClearOrdersByTable(int tableNumber)
+        public async Task<List<Order>> ClearOrdersByTableAsync(int tableNumber)
         {
             var query = @"update [Order] set TableId = null where TableNumber = ?";
             var orders = await _Connection.QueryAsync<Order>(query, tableNumber);
+            return orders.ToList();
+        }
+
+        public async Task<List<Order>> GeatSearchedOrderAsync(string orderNumber)
+        {
+            var query = @"select * from [Order] where OrderNumber = ?";
+            var orders = await _Connection.QueryAsync<Order>(query, orderNumber);
             return orders.ToList();
         }
         #endregion
